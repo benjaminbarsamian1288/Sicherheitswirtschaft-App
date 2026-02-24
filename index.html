@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#060611">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Sicherheitswirtschaft Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#060611;--surface:rgba(255,255,255,0.035);--surface2:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.07);--text:#eef0f6;--text-dim:rgba(255,255,255,0.4);
+  --accent:#00d4aa;--accent-dim:rgba(0,212,170,0.12);--accent-glow:rgba(0,212,170,0.3);
+  --red:#ff6b6b;--red-dim:rgba(255,107,107,0.12);
+  --blue:#5b9cf6;--blue-dim:rgba(91,156,246,0.12);
+  --amber:#f5a623;--amber-dim:rgba(245,166,35,0.12);
+  --radius:16px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;scroll-behavior:smooth}
+body{padding-bottom:80px}
+
+/* Nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,17,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;font-weight:400}
+.nav-item.active{color:var(--accent)}
+.nav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Sections */
+.section{display:none;padding:16px;padding-top:env(safe-area-inset-top,16px);animation:fadeUp .4s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* Header */
+.header{margin-bottom:20px}
+.header-label{font-size:11px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:6px}
+.header-title{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
+.header-sub{font-size:13px;color:var(--text-dim);margin-top:4px;font-weight:300}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:12px}
+
+/* KPI Row */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.kpi-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;font-weight:400}
+.kpi-value{font-size:28px;font-weight:700;letter-spacing:-1px;line-height:1}
+.kpi-change{font-size:11px;margin-top:6px;font-weight:500}
+.kpi-change.up{color:var(--accent)}
+.kpi-change.down{color:var(--red)}
+.kpi.accent .kpi-value{color:var(--accent)}
+.kpi.blue .kpi-value{color:var(--blue)}
+.kpi.amber .kpi-value{color:var(--amber)}
+.kpi.red .kpi-value{color:var(--red)}
+
+/* Chart */
+.chart-wrap{position:relative;width:100%;height:220px;margin-top:8px}
+.chart-wrap canvas{width:100%!important;height:100%!important}
+
+/* Ranking */
+.rank-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.rank-item:last-child{border-bottom:none}
+.rank-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.rank-num.r1{background:var(--accent-dim);color:var(--accent)}
+.rank-num.r2{background:var(--blue-dim);color:var(--blue)}
+.rank-num.r3{background:var(--amber-dim);color:var(--amber)}
+.rank-num.r4,.rank-num.r5{background:var(--surface2);color:var(--text-dim)}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-detail{font-size:11px;color:var(--text-dim);margin-top:2px}
+.rank-umsatz{font-size:15px;font-weight:600;text-align:right;white-space:nowrap}
+
+/* News */
+.news-item{padding:14px 0;border-bottom:1px solid var(--border)}
+.news-item:last-child{border-bottom:none}
+.news-date{font-size:11px;color:var(--accent);font-weight:500;font-family:'JetBrains Mono',monospace}
+.news-title{font-size:14px;font-weight:500;margin-top:4px;line-height:1.4}
+.news-desc{font-size:12px;color:var(--text-dim);margin-top:4px;line-height:1.5}
+
+/* Trends tags */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tag{padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;background:var(--surface2);border:1px solid var(--border)}
+.tag.green{background:var(--accent-dim);border-color:rgba(0,212,170,.15);color:var(--accent)}
+.tag.blue{background:var(--blue-dim);border-color:rgba(91,156,246,.15);color:var(--blue)}
+.tag.amber{background:var(--amber-dim);border-color:rgba(245,166,35,.15);color:var(--amber)}
+
+/* Info Section */
+.info-block{margin-bottom:18px}
+.info-block h3{font-size:15px;font-weight:600;margin-bottom:8px}
+.info-block p{font-size:13px;color:var(--text-dim);line-height:1.6}
+.info-block a{color:var(--accent);text-decoration:none}
+
+/* Badge */
+.badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.badge.live{background:var(--accent-dim);color:var(--accent)}
+
+.source-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic}
+</style>
+</head>
+<body>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="section active" id="sec-dashboard">
+  <div class="header">
+    <div class="header-label">BDSW · Sicherheitswirtschaft</div>
+    <div class="header-title">Branchendashboard</div>
+    <div class="header-sub">Aktuelle Kennzahlen der deutschen Sicherheitswirtschaft</div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="kpi-label">Branchenumsatz 2023</div>
+      <div class="kpi-value">13,4 Mrd€</div>
+      <div class="kpi-change up">↑ +12,6% ggü. Vorjahr</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Beschäftigte</div>
+      <div class="kpi-value">284.500</div>
+      <div class="kpi-change up">↑ +7.500 ggü. 2022</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Top 25 Umsatz 2024</div>
+      <div class="kpi-value">5,4 Mrd€</div>
+      <div class="kpi-change up">↑ +7,5% Wachstum</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Marktführer 2024</div>
+      <div class="kpi-value">1,21 Mrd€</div>
+      <div class="kpi-change">Securitas Deutschland</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Umsatzentwicklung (in Mrd. €)</div>
+    <div class="chart-wrap"><canvas id="chartUmsatz"></canvas></div>
+    <div class="source-note">Quelle: BDSW, Statistisches Bundesamt</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Beschäftigtenentwicklung (in Tsd.)</div>
+    <div class="chart-wrap"><canvas id="chartBeschaeftigte"></canvas></div>
+    <div class="source-note">Quelle: Bundesagentur für Arbeit, BDSW</div>
+  </div>
+</div>
+
+<!-- ═══ RANKING ═══ -->
+<div class="section" id="sec-ranking">
+  <div class="header">
+    <div class="header-label">Lünendonk-Liste 2025</div>
+    <div class="header-title">Top Sicherheitsdienstleister</div>
+    <div class="header-sub">Geschäftsjahr 2024 · Umsatz in Deutschland</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Top 5 nach Umsatz</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="chartRanking"></canvas></div>
+  </div>
+
+  <div class="card" id="rankList">
+    <div class="card-title">Vollständiges Ranking</div>
+    <!-- Filled by JS -->
+  </div>
+  <div class="source-note">Quelle: Lünendonk & Hossenfelder, Oktober 2025</div>
+</div>
+
+<!-- ═══ TRENDS ═══ -->
+<div class="section" id="sec-trends">
+  <div class="header">
+    <div class="header-label">Branchentrends</div>
+    <div class="header-title">Entwicklungen & News</div>
+    <div class="header-sub">Aktuelle Trends in der Sicherheitswirtschaft</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Wachstumstreiber</div>
+    <div class="tags">
+      <span class="tag green">KI-Videoüberwachung</span>
+      <span class="tag blue">Robotik & Drohnen</span>
+      <span class="tag amber">Zutrittskontrolle</span>
+      <span class="tag green">KRITIS-Schutz</span>
+      <span class="tag blue">Cybersecurity</span>
+      <span class="tag amber">SiGG Gesetzgebung</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Wachstum Top 25 (in %)</div>
+    <div class="chart-wrap"><canvas id="chartWachstum"></canvas></div>
+    <div class="source-note">Quelle: Lünendonk-Listen 2021–2025</div>
+  </div>
+
+  <div class="card" id="newsList">
+    <div class="card-title">Branchen-News</div>
+    <!-- Filled by JS -->
+  </div>
+</div>
+
+<!-- ═══ INFO ═══ -->
+<div class="section" id="sec-info">
+  <div class="header">
+    <div class="header-label">Über die Branche</div>
+    <div class="header-title">BDSW & Sicherheitswirtschaft</div>
+  </div>
+
+  <div class="card">
+    <div class="info-block">
+      <h3>Bundesverband der Sicherheitswirtschaft</h3>
+      <p>Der BDSW vertritt als Wirtschafts- und Arbeitgeberverband die Interessen der Sicherheitswirtschaft gegenüber Politik, Behörden, Wissenschaft und Wirtschaft. Die Mitgliedsunternehmen von BDSW, BDGW und BDLS tragen mit rund 140.000 Mitarbeitern zur inneren Sicherheit bei.</p>
+    </div>
+    <div class="info-block">
+      <h3>Marktvolumen</h3>
+      <p>Die gesamte Sicherheitsbranche (Dienstleistungen + Technik) erwirtschaftete zuletzt geschätzt über 18 Mrd. Euro. Allein der Dienstleistungsbereich liegt bei ca. 13,4 Mrd. Euro (2023). Die Top 25 Unternehmen repräsentieren ~40% des Marktes.</p>
+    </div>
+    <div class="info-block">
+      <h3>Aufgabengebiete</h3>
+      <p>Werk-/Objektschutz, Veranstaltungssicherheit, KRITIS-Schutz, Luftsicherheit, Geld- und Werttransport, Revierdienste, Empfangsdienste, Notruf-/Serviceleitstellen, Videoüberwachung, Werkfeuerwehren, Sicherheitsberatung und -technik.</p>
+    </div>
+    <div class="info-block">
+      <h3>Quellen & Links</h3>
+      <p><a href="https://www.bdsw.de" target="_blank">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank">luenendonk.de</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Daten aktualisieren</div>
+    <div class="info-block">
+      <p>Um Daten zu aktualisieren: Bearbeite die Datei <strong>data.json</strong> im GitHub Repository und lade sie hoch. Die App liest beim Laden die neuesten Werte aus.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <button class="nav-item active" data-target="sec-dashboard">
+    <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+    Dashboard
+  </button>
+  <button class="nav-item" data-target="sec-ranking">
+    <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+    Ranking
+  </button>
+  <button class="nav-item" data-target="sec-trends">
+    <svg viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+    Trends
+  </button>
+  <button class="nav-item" data-target="sec-info">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+    Info
+  </button>
+</nav>
+
+<script>
+// ═══ DATA ═══
+const DATA = {
+  umsatz: {
+    jahre: ['2017','2018','2019','2020','2021','2022','2023'],
+    werte: [8.0, 8.7, 9.2, 9.2, 9.6, 11.1, 13.4]
+  },
+  beschaeftigte: {
+    jahre: ['2017','2018','2019','2020','2021','2022','2023'],
+    werte: [252, 258, 263, 260, 268, 277, 284.5]
+  },
+  ranking: [
+    {name:'Securitas', umsatz:1210, wachstum:'+4,1%', mitarbeiter:'~21.000'},
+    {name:'Kötter Gruppe', umsatz:722, wachstum:'+18,6%', mitarbeiter:'~15.000'},
+    {name:'Kieler Wach/Sicherheit Nord', umsatz:519, wachstum:'+6,1%', mitarbeiter:'~12.000'},
+    {name:'Nds. Wach- u. Schließges.', umsatz:400, wachstum:'+5,3%', mitarbeiter:'~8.000'},
+    {name:'Wisag Sicherheit', umsatz:293, wachstum:'+8,8%', mitarbeiter:'~6.500'},
+    {name:'Pond Security', umsatz:285, wachstum:'+3,2%', mitarbeiter:'~4.600'},
+    {name:'Klüh Security', umsatz:175, wachstum:'+5,5%', mitarbeiter:'~3.800'},
+    {name:'W.I.S. Sicherheit', umsatz:162, wachstum:'+4,0%', mitarbeiter:'~3.200'},
+    {name:'Stölting Security', umsatz:148, wachstum:'+6,3%', mitarbeiter:'~3.000'},
+    {name:'Dussmann', umsatz:105, wachstum:'+7,1%', mitarbeiter:'~2.200'}
+  ],
+  wachstumTop25: {
+    jahre: ['2020','2021','2022','2023','2024'],
+    werte: [3.2, 7.3, 10.5, 7.9, 7.5]
+  },
+  news: [
+    {date:'Okt 2025', title:'Lünendonk-Liste 2025 veröffentlicht', desc:'Top 25 erwirtschaften 5,4 Mrd. € — Digitalisierung & Robotik im Fokus.'},
+    {date:'Feb 2025', title:'BDSW fordert bessere Rahmenbedingungen', desc:'Rund 290.000 Beschäftigte in der Branche. Forderung nach höherem Stellenwert.'},
+    {date:'Sep 2024', title:'Security Essen 2024', desc:'Weltgrößte Sicherheitsmesse mit Fokus auf KI, Drohnen und Zutrittskontrolle.'},
+    {date:'Mai 2024', title:'Umsatz 2023: 13,4 Mrd. Euro', desc:'+12,6% Wachstum. Beschäftigung steigt auf 284.500 trotz Fachkräftemangel.'},
+    {date:'Jul 2024', title:'Lünendonk-Liste 2024', desc:'23 von 25 Top-Unternehmen sind BDSW-Mitglieder. Top 10 wachsen um 12,6%.'}
+  ]
+};
+
+// Try loading external data.json
+async function loadData() {
+  try {
+    const resp = await fetch('./data.json');
+    if (resp.ok) {
+      const ext = await resp.json();
+      Object.assign(DATA, ext);
+    }
+  } catch(e) {}
+  initCharts();
+  renderRanking();
+  renderNews();
+}
+
+// ═══ CHARTS ═══
+const chartColors = {
+  accent: '#00d4aa', accentBg: 'rgba(0,212,170,0.15)',
+  blue: '#5b9cf6', blueBg: 'rgba(91,156,246,0.15)',
+  amber: '#f5a623', amberBg: 'rgba(245,166,35,0.15)',
+  red: '#ff6b6b', redBg: 'rgba(255,107,107,0.15)',
+  grid: 'rgba(255,255,255,0.06)', tick: 'rgba(255,255,255,0.3)'
+};
+
+const baseOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { color: chartColors.grid }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 11 } } },
+    y: { grid: { color: chartColors.grid }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 11 } } }
+  }
+};
+
+function initCharts() {
+  // Umsatz
+  new Chart(document.getElementById('chartUmsatz'), {
+    type: 'line',
+    data: {
+      labels: DATA.umsatz.jahre,
+      datasets: [{
+        data: DATA.umsatz.werte,
+        borderColor: chartColors.accent, backgroundColor: chartColors.accentBg,
+        fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: chartColors.accent,
+        borderWidth: 2.5
+      }]
+    },
+    options: { ...baseOpts }
+  });
+
+  // Beschäftigte
+  new Chart(document.getElementById('chartBeschaeftigte'), {
+    type: 'bar',
+    data: {
+      labels: DATA.beschaeftigte.jahre,
+      datasets: [{
+        data: DATA.beschaeftigte.werte,
+        backgroundColor: chartColors.blueBg, borderColor: chartColors.blue,
+        borderWidth: 1.5, borderRadius: 6
+      }]
+    },
+    options: { ...baseOpts }
+  });
+
+  // Ranking Bar
+  const top5 = DATA.ranking.slice(0, 5);
+  new Chart(document.getElementById('chartRanking'), {
+    type: 'bar',
+    data: {
+      labels: top5.map(r => r.name.split('/')[0].substring(0,12)),
+      datasets: [{
+        data: top5.map(r => r.umsatz),
+        backgroundColor: [chartColors.accentBg, chartColors.blueBg, chartColors.amberBg, chartColors.redBg, 'rgba(255,255,255,0.06)'],
+        borderColor: [chartColors.accent, chartColors.blue, chartColors.amber, chartColors.red, 'rgba(255,255,255,0.2)'],
+        borderWidth: 1.5, borderRadius: 8
+      }]
+    },
+    options: {
+      ...baseOpts, indexAxis: 'y',
+      scales: {
+        x: { grid: { color: chartColors.grid }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 10 }, callback: v => v + ' Mio' } },
+        y: { grid: { display: false }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 11 } } }
+      }
+    }
+  });
+
+  // Wachstum
+  new Chart(document.getElementById('chartWachstum'), {
+    type: 'line',
+    data: {
+      labels: DATA.wachstumTop25.jahre,
+      datasets: [{
+        data: DATA.wachstumTop25.werte,
+        borderColor: chartColors.amber, backgroundColor: chartColors.amberBg,
+        fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: chartColors.amber,
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      ...baseOpts,
+      scales: {
+        ...baseOpts.scales,
+        y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks, callback: v => v + '%' } }
+      }
+    }
+  });
+}
+
+// ═══ RANKING LIST ═══
+function renderRanking() {
+  const container = document.getElementById('rankList');
+  let html = '<div class="card-title">Vollständiges Ranking</div>';
+  DATA.ranking.forEach((r, i) => {
+    const cls = i < 5 ? `r${i+1}` : 'r5';
+    html += `<div class="rank-item">
+      <div class="rank-num ${cls}">${i+1}</div>
+      <div class="rank-info">
+        <div class="rank-name">${r.name}</div>
+        <div class="rank-detail">${r.mitarbeiter} MA · ${r.wachstum}</div>
+      </div>
+      <div class="rank-umsatz">${r.umsatz} Mio</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ═══ NEWS ═══
+function renderNews() {
+  const container = document.getElementById('newsList');
+  let html = '<div class="card-title">Branchen-News</div>';
+  DATA.news.forEach(n => {
+    html += `<div class="news-item">
+      <div class="news-date">${n.date}</div>
+      <div class="news-title">${n.title}</div>
+      <div class="news-desc">${n.desc}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ═══ NAVIGATION ═══
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).classList.add('active');
+    window.scrollTo(0, 0);
+  });
+});
+
+// ═══ INIT ═══
+loadData();
+</script>
+</body>
+</html>

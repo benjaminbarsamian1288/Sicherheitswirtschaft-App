@@ -1,0 +1,33 @@
+{
+  "umsatz": {
+    "jahre": ["2017","2018","2019","2020","2021","2022","2023"],
+    "werte": [8.0, 8.7, 9.2, 9.2, 9.6, 11.1, 13.4]
+  },
+  "beschaeftigte": {
+    "jahre": ["2017","2018","2019","2020","2021","2022","2023"],
+    "werte": [252, 258, 263, 260, 268, 277, 284.5]
+  },
+  "ranking": [
+    {"name":"Securitas","umsatz":1210,"wachstum":"+4,1%","mitarbeiter":"~21.000"},
+    {"name":"Kötter Gruppe","umsatz":722,"wachstum":"+18,6%","mitarbeiter":"~15.000"},
+    {"name":"Kieler Wach/Sicherheit Nord","umsatz":519,"wachstum":"+6,1%","mitarbeiter":"~12.000"},
+    {"name":"Nds. Wach- u. Schließges.","umsatz":400,"wachstum":"+5,3%","mitarbeiter":"~8.000"},
+    {"name":"Wisag Sicherheit","umsatz":293,"wachstum":"+8,8%","mitarbeiter":"~6.500"},
+    {"name":"Pond Security","umsatz":285,"wachstum":"+3,2%","mitarbeiter":"~4.600"},
+    {"name":"Klüh Security","umsatz":175,"wachstum":"+5,5%","mitarbeiter":"~3.800"},
+    {"name":"W.I.S. Sicherheit","umsatz":162,"wachstum":"+4,0%","mitarbeiter":"~3.200"},
+    {"name":"Stölting Security","umsatz":148,"wachstum":"+6,3%","mitarbeiter":"~3.000"},
+    {"name":"Dussmann","umsatz":105,"wachstum":"+7,1%","mitarbeiter":"~2.200"}
+  ],
+  "wachstumTop25": {
+    "jahre": ["2020","2021","2022","2023","2024"],
+    "werte": [3.2, 7.3, 10.5, 7.9, 7.5]
+  },
+  "news": [
+    {"date":"Okt 2025","title":"Lünendonk-Liste 2025 veröffentlicht","desc":"Top 25 erwirtschaften 5,4 Mrd. € — Digitalisierung & Robotik im Fokus."},
+    {"date":"Feb 2025","title":"BDSW fordert bessere Rahmenbedingungen","desc":"Rund 290.000 Beschäftigte in der Branche. Forderung nach höherem Stellenwert."},
+    {"date":"Sep 2024","title":"Security Essen 2024","desc":"Weltgrößte Sicherheitsmesse mit Fokus auf KI, Drohnen und Zutrittskontrolle."},
+    {"date":"Mai 2024","title":"Umsatz 2023: 13,4 Mrd. Euro","desc":"+12,6% Wachstum. Beschäftigung steigt auf 284.500 trotz Fachkräftemangel."},
+    {"date":"Jul 2024","title":"Lünendonk-Liste 2024","desc":"23 von 25 Top-Unternehmen sind BDSW-Mitglieder. Top 10 wachsen um 12,6%."}
+  ]
+}

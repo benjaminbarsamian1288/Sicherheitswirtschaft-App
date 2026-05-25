@@ -1,4 +1,4 @@
-const CACHE_NAME = 'siwi-dashboard-v2';
+const CACHE_NAME = 'siwi-dashboard-v3';
 const ASSETS = ['./', './index.html', './manifest.json', './data.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

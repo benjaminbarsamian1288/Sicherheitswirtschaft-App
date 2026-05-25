@@ -28,7 +28,7 @@ body{padding-bottom:80px}
 
 /* Nav */
 .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,17,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;font-weight:400}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;font-weight:400}
 .nav-item.active{color:var(--accent)}
 .nav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
@@ -63,9 +63,25 @@ body{padding-bottom:80px}
 /* Chart */
 .chart-wrap{position:relative;width:100%;height:220px;margin-top:8px}
 .chart-wrap canvas{width:100%!important;height:100%!important}
+.doughnut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.doughnut-center span{display:block;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-1px}
+.doughnut-center small{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px}
+
+/* Search + controls */
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:12px}
+.search svg{width:18px;height:18px;stroke:var(--text-dim);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Sora',sans-serif;font-size:14px;min-width:0}
+.search input::placeholder{color:var(--text-dim)}
+.search .clear{background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0 4px;display:none}
+.search .clear.show{display:block}
+
+.segmented{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:14px;overflow-x:auto}
+.segmented::-webkit-scrollbar{display:none}
+.seg{flex:1;white-space:nowrap;padding:9px 10px;border-radius:9px;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
+.seg.active{background:var(--accent-dim);color:var(--accent)}
 
 /* Ranking */
-.rank-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.rank-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
 .rank-item:last-child{border-bottom:none}
 .rank-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
 .rank-num.r1{background:var(--accent-dim);color:var(--accent)}
@@ -74,8 +90,33 @@ body{padding-bottom:80px}
 .rank-num.r4,.rank-num.r5{background:var(--surface2);color:var(--text-dim)}
 .rank-info{flex:1;min-width:0}
 .rank-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rank-detail{font-size:11px;color:var(--text-dim);margin-top:2px}
-.rank-umsatz{font-size:15px;font-weight:600;text-align:right;white-space:nowrap}
+.rank-detail{font-size:11px;color:var(--text-dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-umsatz{font-size:15px;font-weight:600;text-align:right;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.rank-cmp{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:none;color:transparent;transition:all .2s;cursor:pointer}
+.rank-cmp.on{background:var(--accent);border-color:var(--accent);color:#04130f}
+.rank-cmp svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.rank-empty{padding:24px 0;text-align:center;color:var(--text-dim);font-size:13px}
+
+/* Compare floating bar */
+.cmp-bar{position:fixed;left:16px;right:16px;bottom:84px;background:var(--accent);color:#04130f;border:none;border-radius:14px;padding:15px;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;z-index:90;display:none;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 34px var(--accent-glow);cursor:pointer}
+.cmp-bar.show{display:flex;animation:fadeUp .3s ease}
+
+/* Chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;transition:all .2s}
+.chip.on{background:var(--accent-dim);border-color:rgba(0,212,170,.4);color:var(--accent)}
+.chip.dis{opacity:.3;pointer-events:none}
+
+/* Compare bars */
+.cmp-metric{margin-bottom:18px}
+.cmp-metric:last-child{margin-bottom:0}
+.cmp-metric-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:10px}
+.cmp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cmp-bar-row:last-child{margin-bottom:0}
+.cmp-bar-name{font-size:12px;width:84px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmp-track{flex:1;height:8px;border-radius:4px;background:var(--surface2);overflow:hidden}
+.cmp-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.cmp-val{font-size:12px;font-weight:600;width:78px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
 
 /* News */
 .news-item{padding:14px 0;border-bottom:1px solid var(--border)}
@@ -93,15 +134,29 @@ body{padding-bottom:80px}
 
 /* Info Section */
 .info-block{margin-bottom:18px}
+.info-block:last-child{margin-bottom:0}
 .info-block h3{font-size:15px;font-weight:600;margin-bottom:8px}
 .info-block p{font-size:13px;color:var(--text-dim);line-height:1.6}
 .info-block a{color:var(--accent);text-decoration:none}
 
-/* Badge */
-.badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-.badge.live{background:var(--accent-dim);color:var(--accent)}
-
 .source-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic}
+
+/* Bottom sheet */
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.sheet-backdrop.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;background:#0b0b1c;border-top:1px solid var(--border);border-radius:24px 24px 0 0;z-index:201;padding:22px;padding-bottom:max(22px,env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .38s cubic-bezier(.4,0,.2,1);max-height:86vh;overflow-y:auto}
+.sheet.show{transform:translateY(0)}
+.sheet-handle{width:42px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 18px}
+.sheet-rank{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.sheet-name{font-size:23px;font-weight:700;margin:4px 0 18px;line-height:1.2}
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border)}
+.detail-row:last-child{border-bottom:none}
+.detail-label{font-size:13px;color:var(--text-dim)}
+.detail-value{font-size:16px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.detail-bar{margin-top:18px}
+.detail-bar-head{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);margin-bottom:6px}
+.detail-bar-track{height:10px;border-radius:5px;background:var(--surface2);overflow:hidden}
+.detail-bar-fill{height:100%;background:linear-gradient(135deg,#00d4aa,#00b4d8);border-radius:5px;transition:width .6s cubic-bezier(.4,0,.2,1)}
 </style>
 </head>
 <body>
@@ -117,22 +172,22 @@ body{padding-bottom:80px}
   <div class="kpi-grid">
     <div class="kpi accent">
       <div class="kpi-label">Branchenumsatz 2023</div>
-      <div class="kpi-value">13,4 Mrd€</div>
+      <div class="kpi-value" data-count="13.4" data-dec="1" data-suffix=" Mrd€">13,4 Mrd€</div>
       <div class="kpi-change up">↑ +12,6% ggü. Vorjahr</div>
     </div>
     <div class="kpi blue">
       <div class="kpi-label">Beschäftigte</div>
-      <div class="kpi-value">284.500</div>
+      <div class="kpi-value" data-count="284500" data-dec="0">284.500</div>
       <div class="kpi-change up">↑ +7.500 ggü. 2022</div>
     </div>
     <div class="kpi amber">
       <div class="kpi-label">Top 25 Umsatz 2024</div>
-      <div class="kpi-value">5,4 Mrd€</div>
+      <div class="kpi-value" data-count="5.4" data-dec="1" data-suffix=" Mrd€">5,4 Mrd€</div>
       <div class="kpi-change up">↑ +7,5% Wachstum</div>
     </div>
     <div class="kpi red">
       <div class="kpi-label">Marktführer 2024</div>
-      <div class="kpi-value">1,21 Mrd€</div>
+      <div class="kpi-value" data-count="1.21" data-dec="2" data-suffix=" Mrd€">1,21 Mrd€</div>
       <div class="kpi-change">Securitas Deutschland</div>
     </div>
   </div>
@@ -148,6 +203,15 @@ body{padding-bottom:80px}
     <div class="chart-wrap"><canvas id="chartBeschaeftigte"></canvas></div>
     <div class="source-note">Quelle: Bundesagentur für Arbeit, BDSW</div>
   </div>
+
+  <div class="card">
+    <div class="card-title">Marktanteile am Gesamtmarkt</div>
+    <div class="chart-wrap" style="height:240px">
+      <canvas id="chartShare"></canvas>
+      <div class="doughnut-center"><span id="shareTop10">–</span><small>Top 10 Anteil</small></div>
+    </div>
+    <div class="source-note">Basis: Dienstleistungsmarkt ~13,4 Mrd. € (2023). Tippe in „Ranking" auf eine Firma für Details.</div>
+  </div>
 </div>
 
 <!-- ═══ RANKING ═══ -->
@@ -158,23 +222,46 @@ body{padding-bottom:80px}
     <div class="header-sub">Geschäftsjahr 2024 · Umsatz in Deutschland</div>
   </div>
 
-  <div class="card">
-    <div class="card-title">Top 5 nach Umsatz</div>
-    <div class="chart-wrap" style="height:240px"><canvas id="chartRanking"></canvas></div>
+  <div class="search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="text" id="rankSearch" placeholder="Unternehmen suchen…" autocomplete="off">
+    <button class="clear" id="rankClear" aria-label="Suche löschen">✕</button>
+  </div>
+
+  <div class="segmented" id="rankSort">
+    <button class="seg active" data-sort="umsatz">Umsatz</button>
+    <button class="seg" data-sort="wachstum">Wachstum</button>
+    <button class="seg" data-sort="mitarbeiter">Mitarbeiter</button>
+    <button class="seg" data-sort="prod">Produktivität</button>
   </div>
 
   <div class="card" id="rankList">
-    <div class="card-title">Vollständiges Ranking</div>
     <!-- Filled by JS -->
   </div>
-  <div class="source-note">Quelle: Lünendonk & Hossenfelder, Oktober 2025</div>
+  <div class="source-note">Quelle: Lünendonk &amp; Hossenfelder, Oktober 2025 · Produktivität = Umsatz je Mitarbeiter (errechnet)</div>
+</div>
+
+<!-- ═══ VERGLEICH ═══ -->
+<div class="section" id="sec-vergleich">
+  <div class="header">
+    <div class="header-label">Wettbewerbsanalyse</div>
+    <div class="header-title">Unternehmensvergleich</div>
+    <div class="header-sub">Wähle 2–3 Unternehmen für den direkten Vergleich</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Auswahl</div>
+    <div class="chips" id="cmpChips"><!-- Filled by JS --></div>
+  </div>
+
+  <div id="cmpBody"><!-- Filled by JS --></div>
 </div>
 
 <!-- ═══ TRENDS ═══ -->
 <div class="section" id="sec-trends">
   <div class="header">
     <div class="header-label">Branchentrends</div>
-    <div class="header-title">Entwicklungen & News</div>
+    <div class="header-title">Entwicklungen &amp; News</div>
     <div class="header-sub">Aktuelle Trends in der Sicherheitswirtschaft</div>
   </div>
 
@@ -182,7 +269,7 @@ body{padding-bottom:80px}
     <div class="card-title">Wachstumstreiber</div>
     <div class="tags">
       <span class="tag green">KI-Videoüberwachung</span>
-      <span class="tag blue">Robotik & Drohnen</span>
+      <span class="tag blue">Robotik &amp; Drohnen</span>
       <span class="tag amber">Zutrittskontrolle</span>
       <span class="tag green">KRITIS-Schutz</span>
       <span class="tag blue">Cybersecurity</span>
@@ -206,7 +293,7 @@ body{padding-bottom:80px}
 <div class="section" id="sec-info">
   <div class="header">
     <div class="header-label">Über die Branche</div>
-    <div class="header-title">BDSW & Sicherheitswirtschaft</div>
+    <div class="header-title">BDSW &amp; Sicherheitswirtschaft</div>
   </div>
 
   <div class="card">
@@ -223,8 +310,8 @@ body{padding-bottom:80px}
       <p>Werk-/Objektschutz, Veranstaltungssicherheit, KRITIS-Schutz, Luftsicherheit, Geld- und Werttransport, Revierdienste, Empfangsdienste, Notruf-/Serviceleitstellen, Videoüberwachung, Werkfeuerwehren, Sicherheitsberatung und -technik.</p>
     </div>
     <div class="info-block">
-      <h3>Quellen & Links</h3>
-      <p><a href="https://www.bdsw.de" target="_blank">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank">luenendonk.de</a></p>
+      <h3>Quellen &amp; Links</h3>
+      <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a></p>
     </div>
   </div>
 
@@ -233,6 +320,22 @@ body{padding-bottom:80px}
     <div class="info-block">
       <p>Um Daten zu aktualisieren: Bearbeite die Datei <strong>data.json</strong> im GitHub Repository und lade sie hoch. Die App liest beim Laden die neuesten Werte aus.</p>
     </div>
+  </div>
+</div>
+
+<!-- ═══ COMPARE FLOATING BAR ═══ -->
+<button class="cmp-bar" id="cmpBar">Vergleichen (<span id="cmpCount">0</span>)</button>
+
+<!-- ═══ DETAIL SHEET ═══ -->
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="detailSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-rank" id="detailRank"></div>
+  <div class="sheet-name" id="detailName"></div>
+  <div id="detailRows"></div>
+  <div class="detail-bar">
+    <div class="detail-bar-head"><span>Umsatz ggü. Marktführer</span><span id="detailBarPct"></span></div>
+    <div class="detail-bar-track"><div class="detail-bar-fill" id="detailBarFill" style="width:0"></div></div>
   </div>
 </div>
 
@@ -245,6 +348,10 @@ body{padding-bottom:80px}
   <button class="nav-item" data-target="sec-ranking">
     <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
     Ranking
+  </button>
+  <button class="nav-item" data-target="sec-vergleich">
+    <svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.2 5.2a3 3 0 006.4 0z"/><path d="M19 7l-2.2 5.2a3 3 0 006.4 0z"/></svg>
+    Vergleich
   </button>
   <button class="nav-item" data-target="sec-trends">
     <svg viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -292,6 +399,32 @@ const DATA = {
   ]
 };
 
+// ═══ STATE ═══
+let rankSort = 'umsatz';
+let rankQuery = '';
+let compareSel = [];
+let radarChart = null;
+let shareChart = null;
+
+// ═══ HELPERS ═══
+const COMPARE_COLORS = ['#00d4aa', '#5b9cf6', '#f5a623'];
+const deFmt = (n, dec = 0) => new Intl.NumberFormat('de-DE', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(n);
+function numVal(v){ return typeof v === 'number' ? v : (parseInt(String(v).replace(/[^0-9]/g, ''), 10) || 0); }
+function pctVal(v){ return parseFloat(String(v).replace(',', '.').replace(/[^0-9.\-]/g, '')) || 0; }
+function hexA(hex, a){ const n = parseInt(hex.slice(1), 16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; }
+function fmtPct(v){ return (v >= 0 ? '+' : '') + deFmt(v, 1) + '%'; }
+
+function computeDerived(){
+  const totalMarket = DATA.umsatz.werte[DATA.umsatz.werte.length - 1] * 1000; // Mio €
+  DATA.totalMarket = totalMarket;
+  DATA.ranking.forEach(r => {
+    r._mit = numVal(r.mitarbeiter);
+    r._wachstum = pctVal(r.wachstum);
+    r._prod = r._mit ? (r.umsatz * 1000 / r._mit) : 0; // T€ Umsatz je MA
+    r._share = totalMarket ? (r.umsatz / totalMarket * 100) : 0;
+  });
+}
+
 // Try loading external data.json
 async function loadData() {
   try {
@@ -301,9 +434,29 @@ async function loadData() {
       Object.assign(DATA, ext);
     }
   } catch(e) {}
-  initCharts();
+  computeDerived();
   renderRanking();
+  renderVergleich();
   renderNews();
+  animateKPIs();
+  try { initCharts(); } catch (e) { console.warn('Charts konnten nicht geladen werden (Chart.js offline?)', e); }
+}
+
+// ═══ KPI COUNTERS ═══
+function animateKPIs(){
+  document.querySelectorAll('.kpi-value[data-count]').forEach(el => {
+    const target = parseFloat(el.dataset.count);
+    const dec = +(el.dataset.dec || 0);
+    const suffix = el.dataset.suffix || '';
+    const dur = 950, start = performance.now();
+    function tick(now){
+      const t = Math.min(1, (now - start) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      el.textContent = deFmt(target * e, dec) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
 }
 
 // ═══ CHARTS ═══
@@ -354,27 +507,30 @@ function initCharts() {
     options: { ...baseOpts }
   });
 
-  // Ranking Bar
-  const top5 = DATA.ranking.slice(0, 5);
-  new Chart(document.getElementById('chartRanking'), {
-    type: 'bar',
+  // Marktanteile Doughnut (Top 10 + Sonstige)
+  const top10 = DATA.ranking.slice(0, 10);
+  const topSum = top10.reduce((a, r) => a + r.umsatz, 0);
+  const sonstige = Math.max(0, DATA.totalMarket - topSum);
+  const palette = ['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
+  new Chart(document.getElementById('chartShare'), {
+    type: 'doughnut',
     data: {
-      labels: top5.map(r => r.name.split('/')[0].substring(0,12)),
+      labels: [...top10.map(r => r.name), 'Übriger Markt'],
       datasets: [{
-        data: top5.map(r => r.umsatz),
-        backgroundColor: [chartColors.accentBg, chartColors.blueBg, chartColors.amberBg, chartColors.redBg, 'rgba(255,255,255,0.06)'],
-        borderColor: [chartColors.accent, chartColors.blue, chartColors.amber, chartColors.red, 'rgba(255,255,255,0.2)'],
-        borderWidth: 1.5, borderRadius: 8
+        data: [...top10.map(r => r.umsatz), sonstige],
+        backgroundColor: [...palette.slice(0, top10.length), 'rgba(255,255,255,0.06)'],
+        borderColor: '#060611', borderWidth: 2
       }]
     },
     options: {
-      ...baseOpts, indexAxis: 'y',
-      scales: {
-        x: { grid: { color: chartColors.grid }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 10 }, callback: v => v + ' Mio' } },
-        y: { grid: { display: false }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 11 } } }
+      responsive: true, maintainAspectRatio: false, cutout: '68%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => `${c.label}: ${deFmt(c.parsed)} Mio € (${deFmt(c.parsed / DATA.totalMarket * 100, 1)}%)` } }
       }
     }
   });
+  document.getElementById('shareTop10').textContent = deFmt(topSum / DATA.totalMarket * 100, 1) + '%';
 
   // Wachstum
   new Chart(document.getElementById('chartWachstum'), {
@@ -398,22 +554,187 @@ function initCharts() {
   });
 }
 
-// ═══ RANKING LIST ═══
+// ═══ RANKING ═══
+const SORT_KEY = { umsatz: 'umsatz', wachstum: '_wachstum', mitarbeiter: '_mit', prod: '_prod' };
+
+function sortedRanking(){
+  let arr = DATA.ranking.map((r, i) => ({ r, idx: i }));
+  if (rankQuery) {
+    const q = rankQuery.toLowerCase();
+    arr = arr.filter(o => o.r.name.toLowerCase().includes(q));
+  }
+  const key = SORT_KEY[rankSort];
+  arr.sort((a, b) => b.r[key] - a.r[key]);
+  return arr;
+}
+
 function renderRanking() {
   const container = document.getElementById('rankList');
-  let html = '<div class="card-title">Vollständiges Ranking</div>';
-  DATA.ranking.forEach((r, i) => {
-    const cls = i < 5 ? `r${i+1}` : 'r5';
-    html += `<div class="rank-item">
-      <div class="rank-num ${cls}">${i+1}</div>
+  const arr = sortedRanking();
+  let html = '<div class="card-title">' + (rankQuery ? `Treffer (${arr.length})` : 'Vollständiges Ranking') + '</div>';
+  if (!arr.length) {
+    html += '<div class="rank-empty">Kein Unternehmen gefunden.</div>';
+    container.innerHTML = html;
+    return;
+  }
+  arr.forEach((o, pos) => {
+    const r = o.r;
+    const cls = pos < 3 ? `r${pos+1}` : 'r5';
+    const on = compareSel.includes(o.idx);
+    html += `<div class="rank-item" data-idx="${o.idx}">
+      <div class="rank-num ${cls}">${pos+1}</div>
       <div class="rank-info">
         <div class="rank-name">${r.name}</div>
-        <div class="rank-detail">${r.mitarbeiter} MA · ${r.wachstum}</div>
+        <div class="rank-detail">${deFmt(r._mit)} MA · ${r.wachstum} · ${deFmt(r._prod, 1)} T€/MA</div>
       </div>
-      <div class="rank-umsatz">${r.umsatz} Mio</div>
+      <div class="rank-umsatz">${deFmt(r.umsatz)} Mio</div>
+      <button class="rank-cmp ${on ? 'on' : ''}" data-cmp="${o.idx}" aria-label="Zum Vergleich hinzufügen">
+        <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      </button>
     </div>`;
   });
   container.innerHTML = html;
+
+  container.querySelectorAll('.rank-item').forEach(el => {
+    el.addEventListener('click', () => openDetail(+el.dataset.idx));
+  });
+  container.querySelectorAll('.rank-cmp').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      toggleCompare(+btn.dataset.cmp);
+    });
+  });
+}
+
+// ═══ COMPARE ═══
+function toggleCompare(idx){
+  const at = compareSel.indexOf(idx);
+  if (at > -1) compareSel.splice(at, 1);
+  else if (compareSel.length < 3) compareSel.push(idx);
+  renderRanking();
+  renderVergleich();
+  updateCmpBar();
+}
+
+function updateCmpBar(){
+  const bar = document.getElementById('cmpBar');
+  const onRanking = document.getElementById('sec-ranking').classList.contains('active');
+  document.getElementById('cmpCount').textContent = compareSel.length;
+  bar.classList.toggle('show', compareSel.length >= 2 && onRanking);
+}
+
+function renderVergleich(){
+  const chipWrap = document.getElementById('cmpChips');
+  chipWrap.innerHTML = '';
+  DATA.ranking.forEach((r, i) => {
+    const on = compareSel.includes(i);
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (on ? ' on' : '') + ((!on && compareSel.length >= 3) ? ' dis' : '');
+    btn.textContent = r.name;
+    btn.addEventListener('click', () => toggleCompare(i));
+    chipWrap.appendChild(btn);
+  });
+
+  const body = document.getElementById('cmpBody');
+  if (compareSel.length < 2) {
+    body.innerHTML = '<div class="card"><div class="info-block"><p>Wähle oben oder im Ranking <strong>2–3 Unternehmen</strong> aus, um Umsatz, Mitarbeiter, Wachstum und Produktivität direkt gegenüberzustellen.</p></div></div>';
+    if (radarChart) { radarChart.destroy(); radarChart = null; }
+    return;
+  }
+
+  const sel = compareSel.map(i => DATA.ranking[i]);
+  const metrics = [
+    { key: 'umsatz',    label: 'Umsatz',        get: r => r.umsatz,    fmt: v => deFmt(v) + ' Mio' },
+    { key: 'mit',       label: 'Mitarbeiter',   get: r => r._mit,      fmt: v => deFmt(v) },
+    { key: 'wachstum',  label: 'Wachstum',      get: r => r._wachstum, fmt: v => fmtPct(v) },
+    { key: 'prod',      label: 'Produktivität', get: r => r._prod,     fmt: v => deFmt(v, 1) + ' T€' }
+  ];
+  const maxAll = metrics.map(m => Math.max(...DATA.ranking.map(m.get)));
+
+  let bars = '';
+  metrics.forEach(m => {
+    const maxSel = Math.max(...sel.map(m.get), 0);
+    bars += `<div class="cmp-metric"><div class="cmp-metric-label">${m.label}</div>`;
+    sel.forEach((r, k) => {
+      const v = m.get(r);
+      const w = maxSel > 0 ? Math.max(2, v / maxSel * 100) : 0;
+      bars += `<div class="cmp-bar-row">
+        <div class="cmp-bar-name" style="color:${COMPARE_COLORS[k]}">${r.name}</div>
+        <div class="cmp-track"><div class="cmp-fill" style="width:${w}%;background:${COMPARE_COLORS[k]}"></div></div>
+        <div class="cmp-val">${m.fmt(v)}</div>
+      </div>`;
+    });
+    bars += `</div>`;
+  });
+
+  body.innerHTML = `
+    <div class="card">
+      <div class="card-title">Stärkenprofil (relativ zum Branchenmaximum)</div>
+      <div class="chart-wrap" style="height:280px"><canvas id="chartRadar"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Kennzahlen im Direktvergleich</div>
+      ${bars}
+    </div>`;
+
+  if (radarChart) { radarChart.destroy(); radarChart = null; }
+  if (typeof Chart === 'undefined') return;
+  radarChart = new Chart(document.getElementById('chartRadar'), {
+    type: 'radar',
+    data: {
+      labels: metrics.map(m => m.label),
+      datasets: sel.map((r, k) => ({
+        label: r.name,
+        data: metrics.map((m, j) => maxAll[j] ? +(m.get(r) / maxAll[j] * 100).toFixed(1) : 0),
+        borderColor: COMPARE_COLORS[k],
+        backgroundColor: hexA(COMPARE_COLORS[k], 0.15),
+        pointBackgroundColor: COMPARE_COLORS[k],
+        borderWidth: 2, pointRadius: 3
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: chartColors.tick, font: { family: 'Sora', size: 11 }, boxWidth: 12 } } },
+      scales: {
+        r: {
+          angleLines: { color: chartColors.grid }, grid: { color: chartColors.grid },
+          pointLabels: { color: chartColors.tick, font: { family: 'Sora', size: 11 } },
+          ticks: { display: false, backdropColor: 'transparent' },
+          suggestedMin: 0, suggestedMax: 100
+        }
+      }
+    }
+  });
+}
+
+// ═══ DETAIL SHEET ═══
+function openDetail(idx){
+  const r = DATA.ranking[idx];
+  const umsatzRank = [...DATA.ranking].sort((a, b) => b.umsatz - a.umsatz).indexOf(r) + 1;
+  document.getElementById('detailRank').textContent = `Rang #${umsatzRank} nach Umsatz`;
+  document.getElementById('detailName').textContent = r.name;
+  const rows = [
+    ['Umsatz (Deutschland)', deFmt(r.umsatz) + ' Mio €'],
+    ['Mitarbeiter', deFmt(r._mit)],
+    ['Wachstum ggü. Vorjahr', r.wachstum],
+    ['Produktivität', deFmt(r._prod, 1) + ' T€ / MA'],
+    ['Marktanteil', deFmt(r._share, 1) + ' %']
+  ];
+  document.getElementById('detailRows').innerHTML = rows.map(([l, v]) =>
+    `<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`
+  ).join('');
+  const leader = DATA.ranking.reduce((m, x) => Math.max(m, x.umsatz), 0);
+  const pct = leader ? (r.umsatz / leader * 100) : 0;
+  document.getElementById('detailBarPct').textContent = deFmt(pct, 0) + '%';
+  document.getElementById('sheetBackdrop').classList.add('show');
+  document.getElementById('detailSheet').classList.add('show');
+  requestAnimationFrame(() => { document.getElementById('detailBarFill').style.width = pct + '%'; });
+}
+
+function closeDetail(){
+  document.getElementById('sheetBackdrop').classList.remove('show');
+  document.getElementById('detailSheet').classList.remove('show');
+  document.getElementById('detailBarFill').style.width = '0';
 }
 
 // ═══ NEWS ═══
@@ -431,18 +752,46 @@ function renderNews() {
 }
 
 // ═══ NAVIGATION ═══
+function navigateTo(target){
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.target === target));
+  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === target));
+  window.scrollTo(0, 0);
+  updateCmpBar();
+}
 document.querySelectorAll('.nav-item').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.target).classList.add('active');
-    window.scrollTo(0, 0);
-  });
+  btn.addEventListener('click', () => navigateTo(btn.dataset.target));
 });
+
+// ═══ CONTROLS ═══
+document.getElementById('rankSort').addEventListener('click', e => {
+  const seg = e.target.closest('.seg');
+  if (!seg) return;
+  rankSort = seg.dataset.sort;
+  document.querySelectorAll('#rankSort .seg').forEach(s => s.classList.toggle('active', s === seg));
+  renderRanking();
+});
+
+const searchInput = document.getElementById('rankSearch');
+const clearBtn = document.getElementById('rankClear');
+searchInput.addEventListener('input', () => {
+  rankQuery = searchInput.value.trim();
+  clearBtn.classList.toggle('show', rankQuery.length > 0);
+  renderRanking();
+});
+clearBtn.addEventListener('click', () => {
+  searchInput.value = ''; rankQuery = ''; clearBtn.classList.remove('show'); renderRanking(); searchInput.focus();
+});
+
+document.getElementById('cmpBar').addEventListener('click', () => navigateTo('sec-vergleich'));
+document.getElementById('sheetBackdrop').addEventListener('click', closeDetail);
 
 // ═══ INIT ═══
 loadData();
+
+// ═══ SERVICE WORKER ═══
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>

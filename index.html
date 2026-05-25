@@ -28,7 +28,7 @@ body{padding-bottom:84px}
 
 /* Nav */
 .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,17,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:9.5px;font-weight:400;flex:1;min-width:0}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:9.5px;font-weight:400;flex:1;min-width:0}
 .nav-item.active{color:var(--accent)}
 .nav-item svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
@@ -38,7 +38,7 @@ body{padding-bottom:84px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
 /* Header */
-.header{margin-bottom:20px}
+.header{margin-bottom:18px}
 .header-label{font-size:11px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:6px}
 .header-title{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
 .header-sub{font-size:13px;color:var(--text-dim);margin-top:4px;font-weight:300}
@@ -54,7 +54,6 @@ body{padding-bottom:84px}
 .kpi-value{font-size:28px;font-weight:700;letter-spacing:-1px;line-height:1}
 .kpi-change{font-size:11px;margin-top:6px;font-weight:500}
 .kpi-change.up{color:var(--accent)}
-.kpi-change.down{color:var(--red)}
 .kpi.accent .kpi-value{color:var(--accent)}
 .kpi.blue .kpi-value{color:var(--blue)}
 .kpi.amber .kpi-value{color:var(--amber)}
@@ -125,29 +124,28 @@ body{padding-bottom:84px}
 .news-title{font-size:14px;font-weight:500;margin-top:4px;line-height:1.4}
 .news-desc{font-size:12px;color:var(--text-dim);margin-top:4px;line-height:1.5}
 
-/* Trends tags */
+/* Tags */
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .tag{padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;background:var(--surface2);border:1px solid var(--border)}
 .tag.green{background:var(--accent-dim);border-color:rgba(0,212,170,.15);color:var(--accent)}
 .tag.blue{background:var(--blue-dim);border-color:rgba(91,156,246,.15);color:var(--blue)}
 .tag.amber{background:var(--amber-dim);border-color:rgba(245,166,35,.15);color:var(--amber)}
 
-/* Info Section */
+/* Info */
 .info-block{margin-bottom:18px}
 .info-block:last-child{margin-bottom:0}
 .info-block h3{font-size:15px;font-weight:600;margin-bottom:8px}
 .info-block p{font-size:13px;color:var(--text-dim);line-height:1.6}
 .info-block a{color:var(--accent);text-decoration:none}
+.source-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic;line-height:1.5}
 
-.source-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic}
-
-/* Accordion (Recht) */
+/* Accordion */
 .acc-item{border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;background:var(--surface)}
 .acc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;cursor:pointer;font-weight:600;font-size:14px}
 .acc-head .chev{transition:transform .25s;color:var(--text-dim);flex-shrink:0;width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2}
 .acc-item.open .chev{transform:rotate(180deg)}
 .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 16px}
-.acc-item.open .acc-body{max-height:2200px;padding-bottom:16px}
+.acc-item.open .acc-body{max-height:2600px;padding-bottom:16px}
 .acc-body p{font-size:13px;color:var(--text-dim);line-height:1.65;margin-bottom:8px}
 .acc-body ul{margin:6px 0 10px 18px}
 .acc-body li{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:5px}
@@ -158,7 +156,7 @@ body{padding-bottom:84px}
 .pill.blue{background:var(--blue-dim);color:var(--blue)}
 .pill.amber{background:var(--amber-dim);color:var(--amber)}
 
-/* Generic form / buttons */
+/* Forms / buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 18px;border-radius:12px;border:none;background:var(--accent);color:#04130f;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s}
 .btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .btn:disabled{opacity:.35;cursor:default}
@@ -167,7 +165,6 @@ body{padding-bottom:84px}
 .field label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px}
 .field input,.field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:15px;outline:none;appearance:none}
 .field input:focus,.field select:focus{border-color:var(--accent)}
-.field .hint{font-size:11px;color:var(--text-dim);margin-top:5px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 /* Finder */
@@ -183,7 +180,6 @@ body{padding-bottom:84px}
 .quiz-meta{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
 .quiz-q{font-size:16px;font-weight:600;line-height:1.45;margin-bottom:16px}
 .quiz-opt{display:block;width:100%;text-align:left;padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-size:14px;line-height:1.4;margin-bottom:10px;cursor:pointer;transition:all .15s}
-.quiz-opt:active{transform:scale(.99)}
 .quiz-opt.correct{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
 .quiz-opt.wrong{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 .quiz-opt.locked{pointer-events:none}
@@ -193,27 +189,40 @@ body{padding-bottom:84px}
 .quiz-score small{font-size:22px;color:var(--text-dim);font-weight:600}
 .quiz-verdict{font-size:15px;font-weight:600;margin:10px 0 18px}
 
-/* Insurance check */
-.ins-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
-.ins-row:last-of-type{border-bottom:none}
-.ins-info{flex:1;min-width:0}
-.ins-name{font-size:13px;font-weight:500}
-.ins-min{font-size:11px;color:var(--text-dim);margin-top:2px}
-.ins-row input{width:118px;flex-shrink:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;text-align:right}
-.ins-row input:focus{border-color:var(--accent)}
-.ins-flag{width:22px;text-align:center;font-size:15px;flex-shrink:0}
-.ins-summary{margin-top:14px;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:14px}
-.ins-summary.ok{background:var(--accent-dim);color:var(--accent)}
-.ins-summary.bad{background:var(--red-dim);color:var(--red)}
+/* Flashcards */
+.flash{perspective:1400px;height:250px;margin-bottom:16px}
+.flash-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;cursor:pointer}
+.flash.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;border:1px solid var(--border);padding:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.flash-front{background:var(--surface)}
+.flash-back{background:var(--accent-dim);border-color:rgba(0,212,170,.3);transform:rotateY(180deg)}
+.flash-cat{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:14px;font-weight:600}
+.flash-q{font-size:19px;font-weight:700;line-height:1.4}
+.flash-a{font-size:14px;color:var(--text);line-height:1.65}
+.flash-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:var(--text-dim)}
+.flash-nav{display:flex;align-items:center;gap:12px}
+.flash-nav .btn{flex:1}
+.flash-count{font-size:13px;color:var(--text-dim);min-width:62px;text-align:center;font-family:'JetBrains Mono',monospace}
 
-/* Calculator */
-.calc-result{margin-top:8px;padding:20px;border-radius:14px;background:var(--accent-dim);border:1px solid rgba(0,212,170,.3);text-align:center}
-.calc-result .big{font-size:36px;font-weight:800;color:var(--accent);letter-spacing:-1.5px;font-family:'Sora',sans-serif}
-.calc-result .sub{font-size:12px;color:var(--text-dim);margin-top:6px}
-.calc-break{margin-top:14px}
-.calc-break .row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border)}
-.calc-break .row:last-child{border-bottom:none;font-weight:700;color:var(--text)}
-.calc-break .row span:last-child{font-family:'JetBrains Mono',monospace}
+/* Glossar */
+.gloss-item{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--surface)}
+.gloss-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.gloss-ref{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:600}
+.gloss-cat{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);background:var(--surface2);padding:2px 8px;border-radius:6px;white-space:nowrap}
+.gloss-title{font-size:14px;font-weight:600;margin:7px 0 6px}
+.gloss-text{font-size:13px;color:var(--text-dim);line-height:1.6}
+
+/* Checklist */
+.chk-progress{height:8px;border-radius:4px;background:var(--surface2);overflow:hidden;margin-bottom:4px}
+.chk-progress-fill{height:100%;background:var(--accent);transition:width .3s;width:0}
+.chk-count{font-size:11px;color:var(--text-dim);margin-bottom:12px}
+.chk-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.chk-item:last-child{border-bottom:none}
+.chk-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent;transition:all .2s}
+.chk-item.done .chk-box{background:var(--accent);border-color:var(--accent);color:#04130f}
+.chk-box svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.chk-label{font-size:14px;line-height:1.4}
+.chk-item.done .chk-label{color:var(--text-dim);text-decoration:line-through}
 
 /* Bottom sheet */
 .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
@@ -242,371 +251,265 @@ body{padding-bottom:84px}
     <div class="header-title">Branchendashboard</div>
     <div class="header-sub">Aktuelle Kennzahlen der deutschen Sicherheitswirtschaft</div>
   </div>
-
   <div class="kpi-grid">
-    <div class="kpi accent">
-      <div class="kpi-label">Branchenumsatz 2023</div>
+    <div class="kpi accent"><div class="kpi-label">Branchenumsatz 2023</div>
       <div class="kpi-value" data-count="13.4" data-dec="1" data-suffix=" Mrd€">13,4 Mrd€</div>
-      <div class="kpi-change up">↑ +12,6% ggü. Vorjahr</div>
-    </div>
-    <div class="kpi blue">
-      <div class="kpi-label">Beschäftigte</div>
+      <div class="kpi-change up">↑ +12,6% ggü. Vorjahr</div></div>
+    <div class="kpi blue"><div class="kpi-label">Beschäftigte</div>
       <div class="kpi-value" data-count="284500" data-dec="0">284.500</div>
-      <div class="kpi-change up">↑ +7.500 ggü. 2022</div>
-    </div>
-    <div class="kpi amber">
-      <div class="kpi-label">Top 25 Umsatz 2024</div>
+      <div class="kpi-change up">↑ +7.500 ggü. 2022</div></div>
+    <div class="kpi amber"><div class="kpi-label">Top 25 Umsatz 2024</div>
       <div class="kpi-value" data-count="5.399" data-dec="2" data-suffix=" Mrd€">5,40 Mrd€</div>
-      <div class="kpi-change up">↑ +7,5% Wachstum</div>
-    </div>
-    <div class="kpi red">
-      <div class="kpi-label">Marktführer 2024</div>
+      <div class="kpi-change up">↑ +7,5% Wachstum</div></div>
+    <div class="kpi red"><div class="kpi-label">Marktführer 2024</div>
       <div class="kpi-value" data-count="1.21" data-dec="2" data-suffix=" Mrd€">1,21 Mrd€</div>
-      <div class="kpi-change">Securitas Deutschland</div>
-    </div>
+      <div class="kpi-change">Securitas Deutschland</div></div>
   </div>
-
-  <div class="card">
-    <div class="card-title">Umsatzentwicklung (in Mrd. €)</div>
+  <div class="card"><div class="card-title">Umsatzentwicklung (in Mrd. €)</div>
     <div class="chart-wrap"><canvas id="chartUmsatz"></canvas></div>
-    <div class="source-note">Quelle: BDSW, Statistisches Bundesamt</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Beschäftigtenentwicklung (in Tsd.)</div>
+    <div class="source-note">Quelle: BDSW, Statistisches Bundesamt</div></div>
+  <div class="card"><div class="card-title">Beschäftigtenentwicklung (in Tsd.)</div>
     <div class="chart-wrap"><canvas id="chartBeschaeftigte"></canvas></div>
-    <div class="source-note">Quelle: Bundesagentur für Arbeit, BDSW</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Marktanteile am Gesamtmarkt</div>
-    <div class="chart-wrap" style="height:240px">
-      <canvas id="chartShare"></canvas>
-      <div class="doughnut-center"><span id="shareTop10">–</span><small>Top 10 Anteil</small></div>
-    </div>
-    <div class="source-note">Basis: Dienstleistungsmarkt ~13,4 Mrd. € (2023). Tippe in „Ranking" auf eine Firma für Details.</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Wachstumstreiber</div>
+    <div class="source-note">Quelle: Bundesagentur für Arbeit, BDSW</div></div>
+  <div class="card"><div class="card-title">Marktanteile am Gesamtmarkt</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="chartShare"></canvas>
+      <div class="doughnut-center"><span id="shareTop10">–</span><small>Top 10 Anteil</small></div></div>
+    <div class="source-note">Basis: Dienstleistungsmarkt ~13,4 Mrd. € (2023). Tippe in „Ranking" auf eine Firma für Details.</div></div>
+  <div class="card"><div class="card-title">Wachstumstreiber</div>
     <div class="tags">
-      <span class="tag green">KI-Videoüberwachung</span>
-      <span class="tag blue">Robotik &amp; Drohnen</span>
-      <span class="tag amber">Zutrittskontrolle</span>
-      <span class="tag green">KRITIS-Schutz</span>
-      <span class="tag blue">Cybersecurity</span>
-      <span class="tag amber">Sicherheitsdienstleistungsgesetz</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Wachstum Top 25 (in %)</div>
+      <span class="tag green">KI-Videoüberwachung</span><span class="tag blue">Robotik &amp; Drohnen</span>
+      <span class="tag amber">Zutrittskontrolle</span><span class="tag green">KRITIS-Schutz</span>
+      <span class="tag blue">Cybersecurity</span><span class="tag amber">Sicherheitsdienstleistungsgesetz</span>
+    </div></div>
+  <div class="card"><div class="card-title">Wachstum Top 25 (in %)</div>
     <div class="chart-wrap"><canvas id="chartWachstum"></canvas></div>
-    <div class="source-note">Quelle: Lünendonk-Listen 2021–2025</div>
-  </div>
-
-  <div class="card" id="newsList">
-    <div class="card-title">Branchen-News</div>
-    <!-- Filled by JS -->
+    <div class="source-note">Quelle: Lünendonk-Listen 2021–2025</div></div>
+  <div class="card" id="newsList"><div class="card-title">Branchen-News</div></div>
+  <div class="card">
+    <div class="info-block"><h3>Über die Branche</h3>
+      <p>Der BDSW vertritt die Interessen der Sicherheitswirtschaft. Die Branche (Dienstleistungen + Technik) liegt bei über 18 Mrd. €; allein der Dienstleistungsbereich bei ca. 13,4 Mrd. € (2023). Die Top 25 erwirtschafteten 2024 rund 5,4 Mrd. € (~40 % des Marktes).</p></div>
+    <div class="info-block"><h3>Quellen &amp; Links</h3>
+      <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a> · <a href="https://www.gesetze-im-internet.de/bewachv_2019/" target="_blank" rel="noopener">BewachV</a> · <a href="https://publikationen.dguv.de" target="_blank" rel="noopener">DGUV V 23</a></p></div>
   </div>
 </div>
 
 <!-- ═══ RANKING ═══ -->
 <div class="section" id="sec-ranking">
-  <div class="header">
-    <div class="header-label">Lünendonk-Liste 2025</div>
+  <div class="header"><div class="header-label">Lünendonk-Liste 2025</div>
     <div class="header-title">Top Sicherheitsdienstleister</div>
-    <div class="header-sub">Geschäftsjahr 2024 · Umsatz in Deutschland</div>
-  </div>
-
+    <div class="header-sub">Geschäftsjahr 2024 · Umsatz in Deutschland</div></div>
   <div class="search">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
     <input type="text" id="rankSearch" placeholder="Unternehmen suchen…" autocomplete="off">
-    <button class="clear" id="rankClear" aria-label="Suche löschen">✕</button>
-  </div>
-
+    <button class="clear" id="rankClear" aria-label="Suche löschen">✕</button></div>
   <div class="segmented" id="rankSort">
     <button class="seg active" data-sort="umsatz">Umsatz</button>
     <button class="seg" data-sort="wachstum">Wachstum</button>
     <button class="seg" data-sort="mitarbeiter">Mitarbeiter</button>
-    <button class="seg" data-sort="prod">Produktivität</button>
-  </div>
-
-  <div class="card" id="rankList">
-    <!-- Filled by JS -->
-  </div>
+    <button class="seg" data-sort="prod">Produktivität</button></div>
+  <div class="card" id="rankList"></div>
   <div class="source-note">Quelle: Lünendonk &amp; Hossenfelder, Oktober 2025 · Produktivität = Umsatz je Mitarbeiter (errechnet)</div>
 </div>
 
 <!-- ═══ VERGLEICH ═══ -->
 <div class="section" id="sec-vergleich">
-  <div class="header">
-    <div class="header-label">Wettbewerbsanalyse</div>
+  <div class="header"><div class="header-label">Wettbewerbsanalyse</div>
     <div class="header-title">Unternehmensvergleich</div>
-    <div class="header-sub">Wähle 2–3 Unternehmen für den direkten Vergleich</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Auswahl</div>
-    <div class="chips" id="cmpChips"><!-- Filled by JS --></div>
-  </div>
-
-  <div id="cmpBody"><!-- Filled by JS --></div>
+    <div class="header-sub">Wähle 2–3 Unternehmen für den direkten Vergleich</div></div>
+  <div class="card"><div class="card-title">Auswahl</div><div class="chips" id="cmpChips"></div></div>
+  <div id="cmpBody"></div>
 </div>
 
-<!-- ═══ RECHT / BEWACHV ═══ -->
+<!-- ═══ RECHT ═══ -->
 <div class="section" id="sec-recht">
-  <div class="header">
-    <div class="header-label">§ 34a GewO · BewachV</div>
-    <div class="header-title">Bewacherverordnung</div>
-    <div class="header-sub">Rechtsrahmen für das Bewachungsgewerbe in Deutschland</div>
-  </div>
+  <div class="header"><div class="header-label">§ 34a GewO · Vorschriften</div>
+    <div class="header-title">Recht &amp; Vorschriften</div>
+    <div class="header-sub">BewachV, DGUV Vorschrift 23 und Paragraphen-Glossar</div></div>
+  <div class="segmented subtabs" data-group="recht">
+    <button class="seg active" data-sub="bewachv">BewachV</button>
+    <button class="seg" data-sub="dguv">DGUV 23</button>
+    <button class="seg" data-sub="glossar">Glossar</button></div>
 
-  <div class="card">
-    <div class="info-block">
-      <p style="font-size:13px;color:var(--text-dim);line-height:1.65">Die <strong style="color:var(--text)">Verordnung über das Bewachungsgewerbe (BewachV)</strong> konkretisiert seit dem 1. Juni 2019 die Anforderungen des <span class="lawref">§ 34a GewO</span>. Sie regelt Qualifikation, Zuverlässigkeit, Versicherung, Dokumentation, Kennzeichnung und die Eintragung im Bewacherregister. Tippe die Punkte an.</p>
+  <!-- BewachV -->
+  <div class="subpanel" data-group="recht" data-sub="bewachv">
+    <div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.65">Die <strong style="color:var(--text)">Verordnung über das Bewachungsgewerbe (BewachV)</strong> konkretisiert seit dem 1. Juni 2019 die Anforderungen des <span class="lawref">§ 34a GewO</span>. Tippe die Punkte an.</p></div></div>
+    <div class="accordion">
+      <div class="acc-item"><div class="acc-head">Unterrichtung (40 Stunden)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p><span class="pill blue">Grundqualifikation</span></p>
+          <p>Für die meisten Bewachungstätigkeiten genügt die <strong>40-stündige Unterrichtung</strong> bei der IHK. Sie weist nach, dass die Person mit den rechtlichen und fachlichen Grundlagen vertraut ist.</p>
+          <p><strong>Typische Tätigkeiten:</strong> Objekt- und Werkschutz, Pförtner-/Empfangsdienst, Separat-/Revierwachdienst, Veranstaltungsschutz (mitwirkend), Geld- und Werttransport.</p>
+          <p>Beleg: Unterrichtungsbescheinigung der IHK – ohne Prüfung.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Sachkundeprüfung § 34a<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p><span class="pill green">Erweiterte Qualifikation</span></p>
+          <p>Für bestimmte Tätigkeiten ist die <strong>bestandene Sachkundeprüfung</strong> zwingend:</p>
+          <ul><li>Kontrollgänge im <strong>öffentlichen Verkehrsraum</strong> (City-Streife)</li>
+            <li><strong>Schutz vor Ladendieben</strong> (Ladendetektiv)</li>
+            <li>Einlassbereich gastgewerblicher <strong>Diskotheken</strong> (Türsteher)</li>
+            <li><strong>Flüchtlings-/Asylunterkünfte</strong> in leitender Funktion</li>
+            <li>zugangsgeschützte <strong>Großveranstaltungen</strong> in leitender Funktion</li>
+            <li>selbstständige <strong>Gewerbetreibende</strong></li></ul>
+          <p><strong>Prüfung:</strong> schriftlich (Multiple Choice, ca. 72 Fragen, 120 Min.) + mündlich (ca. 15 Min.) vor der IHK. Beide Teile müssen bestanden werden.</p>
+          <p><strong>Prüfungsgebiete:</strong> Recht der öffentlichen Sicherheit/Ordnung &amp; Gewerberecht · Datenschutzrecht · BGB · Straf-/Verfahrensrecht · Umgang mit Waffen · Unfallverhütung (DGUV V 23) · Umgang mit Menschen/Deeskalation &amp; Sicherheitstechnik.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Zuverlässigkeit &amp; Bewacherregister<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Vor dem Einsatz prüft die Behörde die <strong>Zuverlässigkeit</strong> (Führungszeugnis, Gewerbezentralregister). Bei sachkundepflichtigen Tätigkeiten zusätzlich <strong>Regelanfrage beim Verfassungsschutz</strong>.</p>
+          <p>Jede Wachperson und jedes Unternehmen wird im <strong>Bewacherregister (BWR)</strong> erfasst und erhält eine <strong>Bewacher-ID</strong>. Das Register wird beim Statistischen Bundesamt geführt.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Haftpflichtversicherung (§ 14 BewachV)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Gesetzliche <strong>Mindestversicherungssummen je Schadensereignis</strong>:</p>
+          <ul><li>Personenschäden: <strong>1.000.000 €</strong></li><li>Sachschäden: <strong>250.000 €</strong></li>
+            <li>reine Vermögensschäden: <strong>12.500 €</strong></li><li>Abhandenkommen bewachter Sachen: <strong>15.000 €</strong></li></ul>
+          <p>Prüfe deine Police unter <strong>Tools → Versicherung</strong>.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Dienstausweis &amp; Kennzeichnung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Wachpersonen müssen einen <strong>Dienstausweis</strong> (Name/Kennnummer, Lichtbild, Bewacher-ID) mitführen und auf Verlangen vorzeigen.</p>
+          <p>Bei bestimmten Tätigkeiten besteht eine <strong>Kennzeichnungspflicht</strong> – sichtbares Schild mit Name oder Kennnummer und Firma.</p></div></div>
     </div>
   </div>
 
-  <div class="accordion">
-    <div class="acc-item">
-      <div class="acc-head">Unterrichtung (40 Stunden)
-        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-      <div class="acc-body">
-        <p><span class="pill blue">Grundqualifikation</span></p>
-        <p>Für die meisten Bewachungstätigkeiten genügt die <strong>40-stündige Unterrichtung</strong> bei der IHK. Sie weist nach, dass die Person mit den rechtlichen und fachlichen Grundlagen vertraut ist.</p>
-        <p><strong>Typische Tätigkeiten:</strong> Objekt- und Werkschutz, Pförtner- und Empfangsdienst, Separat- und Revierwachdienst, Veranstaltungsschutz (mitwirkend), Geld- und Werttransport.</p>
-        <p>Die Teilnahme wird mit einer Unterrichtungsbescheinigung der IHK belegt – eine Prüfung gibt es hier nicht.</p>
-      </div>
+  <!-- DGUV 23 -->
+  <div class="subpanel" data-group="recht" data-sub="dguv" style="display:none">
+    <div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.65">Die <strong style="color:var(--text)">DGUV Vorschrift 23 „Wach- und Sicherungsdienste"</strong> (früher BGV C7) ist die Unfallverhütungsvorschrift für den Arbeitsschutz im Sicherheitsgewerbe – Prüfungsstoff der Sachkunde.</p></div></div>
+    <div class="accordion">
+      <div class="acc-item"><div class="acc-head">Geltungsbereich &amp; Eignung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Die Vorschrift gilt für <strong>Wach- und Sicherungstätigkeiten</strong> zum Schutz von Personen und Sachwerten.</p>
+          <p>Tätigkeiten dürfen nur von <strong>geeigneten Versicherten</strong> ausgeführt werden, die die erforderliche Befähigung besitzen und nicht offensichtlich ungeeignet sind. <strong>Mindestalter: 18 Jahre.</strong></p></div></div>
+      <div class="acc-item"><div class="acc-head">Dienstanweisung &amp; Unterweisung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Der Unternehmer muss das Verhalten des Personals – einschließlich des <strong>Weitermeldens von Mängeln und besonderen Gefahren</strong> – durch <strong>Dienstanweisungen</strong> regeln.</p>
+          <p>Das Personal ist <strong>vor Aufnahme der Tätigkeit und danach regelmäßig</strong> anhand der Dienstanweisung zu unterweisen.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Wege, Beleuchtung &amp; Alleinarbeit<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Streifen- und Verkehrswege müssen <strong>sicher begehbar und ausreichend beleuchtet</strong> sein. Stolper-, Absturz- und sonstige Gefahrenstellen sind zu sichern.</p>
+          <p>Bei <strong>gefährlicher Alleinarbeit</strong> sind besondere Schutzmaßnahmen (z. B. Meldesysteme, Erreichbarkeit, Notruf) erforderlich.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Wachhunde (§§ 12–17)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Als Wachhund dürfen nur <strong>geprüfte Hunde mit ausgebildeten Hundeführern</strong> eingesetzt werden.</p>
+          <p>Halten, Führen und Transport der Hunde sind geregelt – inkl. sicherer Unterbringung und Schutz vor dem eigenen Hund. Ein Hundeführer führt grundsätzlich nur <strong>einen</strong> Hund.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Schusswaffen (§ 18)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Mit Schusswaffen dürfen nur Versicherte ausgerüstet werden, die waffenrechtlich <strong>zuverlässig, geeignet, sachkundig und an der Waffe ausgebildet</strong> sind.</p>
+          <p><span class="pill amber">Wichtig</span> Das Bereithalten und Führen von <strong>Schreck- oder Gas-Schusswaffen</strong> ist bei Wach- und Sicherungsaufgaben <strong>unzulässig</strong>.</p></div></div>
+      <div class="acc-item"><div class="acc-head">Erste Hilfe &amp; Schutzausrüstung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="acc-body"><p>Es müssen Maßnahmen und Mittel zur <strong>Ersten Hilfe</strong> bereitstehen; die Versicherten sind entsprechend zu unterweisen.</p>
+          <p>Erforderliche <strong>persönliche Schutzausrüstung</strong> (z. B. Witterungsschutz, ggf. Warnkleidung, Schutzweste je nach Gefährdung) ist bereitzustellen und zu benutzen.</p></div></div>
     </div>
-
-    <div class="acc-item">
-      <div class="acc-head">Sachkundeprüfung § 34a
-        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-      <div class="acc-body">
-        <p><span class="pill green">Erweiterte Qualifikation</span></p>
-        <p>Für bestimmte Tätigkeiten ist die bestandene <strong>Sachkundeprüfung nach § 34a GewO</strong> zwingend vorgeschrieben:</p>
-        <ul>
-          <li>Kontrollgänge im <strong>öffentlichen Verkehrsraum</strong> oder in Hausrechtsbereichen mit tatsächlich öffentlichem Verkehr (City-Streife)</li>
-          <li><strong>Schutz vor Ladendieben</strong> (Ladendetektiv)</li>
-          <li>Bewachung im <strong>Einlassbereich</strong> gastgewerblicher Diskotheken (Türsteher)</li>
-          <li>Bewachung von <strong>Flüchtlings-/Asylunterkünften</strong> in leitender Funktion</li>
-          <li>Bewachung <strong>zugangsgeschützter Großveranstaltungen</strong> in leitender Funktion</li>
-          <li>Selbstständige <strong>Gewerbetreibende</strong> (Inhaber der § 34a-Erlaubnis)</li>
-        </ul>
-        <p><strong>Prüfung:</strong> schriftlicher Teil (Multiple Choice, ca. 72 Fragen, 120 Min.) und mündlicher Teil (ca. 15 Min.) vor der IHK. Beide Teile müssen bestanden werden.</p>
-        <p><strong>5 Sachgebiete:</strong> Recht der öffentlichen Sicherheit/Ordnung &amp; Gewerbe-/Datenschutzrecht, BGB, Straf- &amp; Verfahrensrecht + Umgang mit Waffen, Unfallverhütungsvorschrift (DGUV V 23), Umgang mit Menschen/Deeskalation, Grundzüge der Sicherheitstechnik.</p>
-      </div>
-    </div>
-
-    <div class="acc-item">
-      <div class="acc-head">Zuverlässigkeit &amp; Bewacherregister
-        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-      <div class="acc-body">
-        <p>Vor dem Einsatz prüft die Behörde die <strong>Zuverlässigkeit</strong> – u. a. über Führungszeugnis und Auskunft aus dem Gewerbezentralregister. Bei sachkundepflichtigen Tätigkeiten erfolgt zusätzlich eine <strong>Regelanfrage beim Verfassungsschutz</strong>.</p>
-        <p>Jede Wachperson und jedes Unternehmen wird im <strong>Bewacherregister (BWR)</strong> erfasst und erhält eine eindeutige <strong>Bewacher-ID</strong>. Arbeitgeber müssen Beschäftigte vor dem ersten Einsatz registrieren.</p>
-        <p>Das Register wird vom Statistischen Bundesamt geführt; Behörden und Gewerbetreibende greifen online darauf zu.</p>
-      </div>
-    </div>
-
-    <div class="acc-item">
-      <div class="acc-head">Haftpflichtversicherung (§ 14 BewachV)
-        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-      <div class="acc-body">
-        <p>Jeder Gewerbetreibende muss eine Haftpflichtversicherung mit gesetzlichen <strong>Mindestversicherungssummen je Schadensereignis</strong> nachweisen:</p>
-        <ul>
-          <li>Personenschäden: <strong>1.000.000 €</strong></li>
-          <li>Sachschäden: <strong>250.000 €</strong></li>
-          <li>reine Vermögensschäden: <strong>12.500 €</strong></li>
-          <li>Abhandenkommen bewachter Sachen: <strong>15.000 €</strong></li>
-        </ul>
-        <p>Prüfe deine Police im Tab <strong>Tools → Versicherungs-Check</strong>.</p>
-      </div>
-    </div>
-
-    <div class="acc-item">
-      <div class="acc-head">Dienstausweis &amp; Kennzeichnung
-        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-      <div class="acc-body">
-        <p>Wachpersonen müssen bei der Arbeit einen <strong>Dienstausweis</strong> mit Namen bzw. Kennnummer, Lichtbild und Bewacher-ID mitführen und auf Verlangen vorzeigen.</p>
-        <p>Bei bestimmten Tätigkeiten (z. B. im öffentlichen Verkehrsraum, leitende Einsätze) besteht eine <strong>Kennzeichnungspflicht</strong> – sichtbares Schild mit Name oder Kennnummer und Firma.</p>
-      </div>
-    </div>
+    <div class="source-note">Quelle: DGUV Vorschrift 23 (UVV Wach- und Sicherungsdienste), bisher BGV C7. Auszug, keine Rechtsberatung.</div>
   </div>
 
-  <div class="source-note">Quellen: BewachV 2019 (gesetze-im-internet.de), § 34a GewO, IHK. Stand 2026 · Keine Rechtsberatung.</div>
+  <!-- Glossar -->
+  <div class="subpanel" data-group="recht" data-sub="glossar" style="display:none">
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="glossSearch" placeholder="Paragraph oder Begriff suchen…" autocomplete="off">
+      <button class="clear" id="glossClear" aria-label="Suche löschen">✕</button></div>
+    <div id="glossList"></div>
+  </div>
 </div>
 
-<!-- ═══ TOOLS ═══ -->
-<div class="section" id="sec-tools">
-  <div class="header">
-    <div class="header-label">Interaktiv</div>
-    <div class="header-title">Tools</div>
-    <div class="header-sub">Praktische Werkzeuge rund um § 34a &amp; BewachV</div>
-  </div>
+<!-- ═══ LERNEN ═══ -->
+<div class="section" id="sec-lernen">
+  <div class="header"><div class="header-label">Prüfungsvorbereitung</div>
+    <div class="header-title">Lernen</div>
+    <div class="header-sub">Quiz, Lernkarten und Dienst-Checklisten</div></div>
+  <div class="segmented subtabs" data-group="lernen">
+    <button class="seg active" data-sub="quiz">Quiz</button>
+    <button class="seg" data-sub="flash">Lernkarten</button>
+    <button class="seg" data-sub="check">Checklisten</button></div>
 
-  <div class="segmented" id="toolTabs">
-    <button class="seg active" data-tool="finder">Quali-Finder</button>
-    <button class="seg" data-tool="quiz">§34a-Quiz</button>
-    <button class="seg" data-tool="ins">Versicherung</button>
-    <button class="seg" data-tool="lohn">Lohnrechner</button>
-  </div>
-
-  <!-- Tool: Qualifikations-Finder -->
-  <div class="tool-panel" id="tool-finder">
+  <!-- Quiz -->
+  <div class="subpanel" data-group="lernen" data-sub="quiz">
     <div class="card">
-      <div class="card-title">Welche Qualifikation brauche ich?</div>
-      <div class="field">
-        <label>Geplante Tätigkeit</label>
-        <select id="finderSelect"></select>
-      </div>
-      <div class="finder-result" id="finderResult"></div>
-    </div>
-  </div>
-
-  <!-- Tool: Quiz -->
-  <div class="tool-panel" id="tool-quiz" style="display:none">
-    <div class="card" id="quizCard">
+      <div class="field"><label>Themengebiet</label><select id="quizCat"></select></div>
       <div class="quiz-bar"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
       <div id="quizContent"></div>
     </div>
   </div>
 
-  <!-- Tool: Versicherungs-Check -->
-  <div class="tool-panel" id="tool-ins" style="display:none">
+  <!-- Flashcards -->
+  <div class="subpanel" data-group="lernen" data-sub="flash" style="display:none">
     <div class="card">
-      <div class="card-title">Versicherungs-Check (§ 14 BewachV)</div>
+      <div class="card-title">Lernkarten · tippen zum Umdrehen</div>
+      <div class="flash" id="flashWrap"><div class="flash-inner">
+        <div class="flash-face flash-front"><div class="flash-cat" id="flashCat"></div><div class="flash-q" id="flashQ"></div><div class="flash-hint">tippen für Antwort</div></div>
+        <div class="flash-face flash-back"><div class="flash-a" id="flashA"></div><div class="flash-hint">tippen zum Zurückdrehen</div></div>
+      </div></div>
+      <div class="flash-nav">
+        <button class="btn secondary" id="flashPrev">‹ Zurück</button>
+        <span class="flash-count" id="flashCount"></span>
+        <button class="btn secondary" id="flashNext">Weiter ›</button></div>
+    </div>
+  </div>
+
+  <!-- Checklisten -->
+  <div class="subpanel" data-group="lernen" data-sub="check" style="display:none">
+    <div class="card">
+      <div class="field"><label>Checkliste</label><select id="checkSelect"></select></div>
+      <div class="chk-progress"><div class="chk-progress-fill" id="chkFill"></div></div>
+      <div class="chk-count" id="chkCount"></div>
+      <div id="chkList"></div>
+      <div style="margin-top:14px"><button class="btn secondary" id="chkReset">Zurücksetzen</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOOLS ═══ -->
+<div class="section" id="sec-tools">
+  <div class="header"><div class="header-label">Interaktiv</div>
+    <div class="header-title">Tools</div>
+    <div class="header-sub">Praktische Werkzeuge rund um § 34a &amp; BewachV</div></div>
+  <div class="segmented subtabs" data-group="tools">
+    <button class="seg active" data-sub="finder">Quali-Finder</button>
+    <button class="seg" data-sub="ins">Versicherung</button>
+    <button class="seg" data-sub="lohn">Lohnrechner</button></div>
+
+  <div class="subpanel" data-group="tools" data-sub="finder">
+    <div class="card"><div class="card-title">Welche Qualifikation brauche ich?</div>
+      <div class="field"><label>Geplante Tätigkeit</label><select id="finderSelect"></select></div>
+      <div class="finder-result" id="finderResult"></div></div>
+  </div>
+
+  <div class="subpanel" data-group="tools" data-sub="ins" style="display:none">
+    <div class="card"><div class="card-title">Versicherungs-Check (§ 14 BewachV)</div>
       <p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;line-height:1.5">Trage die Deckungssummen deiner Police ein – der Check vergleicht sie mit den gesetzlichen Mindestsummen.</p>
-      <div id="insRows"></div>
-      <div class="ins-summary" id="insSummary"></div>
-    </div>
+      <div id="insRows"></div><div class="ins-summary" id="insSummary"></div></div>
   </div>
 
-  <!-- Tool: Lohnrechner -->
-  <div class="tool-panel" id="tool-lohn" style="display:none">
-    <div class="card">
-      <div class="card-title">Lohn- &amp; Schichtrechner</div>
-      <div class="field">
-        <label>Stundenlohn (brutto)</label>
-        <input type="number" id="lohnStunde" inputmode="decimal" value="15.50" step="0.10" min="0">
-      </div>
-      <div class="field">
-        <label>Bezahlte Stunden / Monat</label>
-        <input type="number" id="lohnStunden" inputmode="decimal" value="173" step="1" min="0">
-      </div>
+  <div class="subpanel" data-group="tools" data-sub="lohn" style="display:none">
+    <div class="card"><div class="card-title">Lohn- &amp; Schichtrechner</div>
+      <div class="field"><label>Stundenlohn (brutto)</label><input type="number" id="lohnStunde" inputmode="decimal" value="15.50" step="0.10" min="0"></div>
+      <div class="field"><label>Bezahlte Stunden / Monat</label><input type="number" id="lohnStunden" inputmode="decimal" value="173" step="1" min="0"></div>
       <div class="grid2">
-        <div class="field">
-          <label>davon Nacht (Std.)</label>
-          <input type="number" id="lohnNacht" inputmode="decimal" value="0" step="1" min="0">
-        </div>
-        <div class="field">
-          <label>davon Sonntag (Std.)</label>
-          <input type="number" id="lohnSonntag" inputmode="decimal" value="0" step="1" min="0">
-        </div>
-      </div>
-      <div class="field">
-        <label>davon Feiertag (Std.)</label>
-        <input type="number" id="lohnFeiertag" inputmode="decimal" value="0" step="1" min="0">
-      </div>
-      <div class="calc-result">
-        <div class="big" id="lohnBrutto">–</div>
-        <div class="sub">geschätztes Brutto / Monat (inkl. Zuschläge)</div>
-      </div>
-      <div class="calc-break" id="lohnBreak"></div>
-      <div class="source-note">Steuerfreie Zuschlagssätze nach § 3b EStG: Nacht 25 %, Sonntag 50 %, Feiertag 125 %. Schätzung ohne Steuer/Sozialabgaben.</div>
-    </div>
+        <div class="field"><label>davon Nacht (Std.)</label><input type="number" id="lohnNacht" inputmode="decimal" value="0" step="1" min="0"></div>
+        <div class="field"><label>davon Sonntag (Std.)</label><input type="number" id="lohnSonntag" inputmode="decimal" value="0" step="1" min="0"></div></div>
+      <div class="field"><label>davon Feiertag (Std.)</label><input type="number" id="lohnFeiertag" inputmode="decimal" value="0" step="1" min="0"></div>
+      <div class="calc-result" style="margin-top:8px;padding:20px;border-radius:14px;background:var(--accent-dim);border:1px solid rgba(0,212,170,.3);text-align:center">
+        <div style="font-size:36px;font-weight:800;color:var(--accent);letter-spacing:-1.5px" id="lohnBrutto">–</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:6px">geschätztes Brutto / Monat (inkl. Zuschläge)</div></div>
+      <div id="lohnBreak" style="margin-top:14px"></div>
+      <div class="source-note">Steuerfreie Zuschlagssätze nach § 3b EStG: Nacht 25 %, Sonntag 50 %, Feiertag 125 %. Schätzung ohne Steuer/Sozialabgaben.</div></div>
   </div>
 </div>
 
-<!-- ═══ INFO ═══ -->
-<div class="section" id="sec-info">
-  <div class="header">
-    <div class="header-label">Über die Branche</div>
-    <div class="header-title">BDSW &amp; Sicherheitswirtschaft</div>
-  </div>
-
-  <div class="card">
-    <div class="info-block">
-      <h3>Bundesverband der Sicherheitswirtschaft</h3>
-      <p>Der BDSW vertritt als Wirtschafts- und Arbeitgeberverband die Interessen der Sicherheitswirtschaft gegenüber Politik, Behörden, Wissenschaft und Wirtschaft. Die Mitgliedsunternehmen von BDSW, BDGW und BDLS tragen mit rund 140.000 Mitarbeitern zur inneren Sicherheit bei.</p>
-    </div>
-    <div class="info-block">
-      <h3>Marktvolumen</h3>
-      <p>Die gesamte Sicherheitsbranche (Dienstleistungen + Technik) erwirtschaftete zuletzt geschätzt über 18 Mrd. Euro. Allein der Dienstleistungsbereich liegt bei ca. 13,4 Mrd. Euro (2023). Die Top 25 Unternehmen erwirtschafteten 2024 rund 5,4 Mrd. € (~40% des Marktes).</p>
-    </div>
-    <div class="info-block">
-      <h3>Aufgabengebiete</h3>
-      <p>Werk-/Objektschutz, Veranstaltungssicherheit, KRITIS-Schutz, Luftsicherheit, Geld- und Werttransport, Revierdienste, Empfangsdienste, Notruf-/Serviceleitstellen, Videoüberwachung, Werkfeuerwehren, Sicherheitsberatung und -technik.</p>
-    </div>
-    <div class="info-block">
-      <h3>Quellen &amp; Links</h3>
-      <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a> · <a href="https://www.gesetze-im-internet.de/bewachv_2019/" target="_blank" rel="noopener">BewachV</a></p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Daten aktualisieren</div>
-    <div class="info-block">
-      <p>Um Daten zu aktualisieren: Bearbeite die Datei <strong>data.json</strong> im GitHub Repository und lade sie hoch. Die App liest beim Laden die neuesten Werte aus.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ COMPARE FLOATING BAR ═══ -->
 <button class="cmp-bar" id="cmpBar">Vergleichen (<span id="cmpCount">0</span>)</button>
 
-<!-- ═══ DETAIL SHEET ═══ -->
 <div class="sheet-backdrop" id="sheetBackdrop"></div>
 <div class="sheet" id="detailSheet">
   <div class="sheet-handle"></div>
   <div class="sheet-rank" id="detailRank"></div>
   <div class="sheet-name" id="detailName"></div>
   <div id="detailRows"></div>
-  <div class="detail-bar">
-    <div class="detail-bar-head"><span>Umsatz ggü. Marktführer</span><span id="detailBarPct"></span></div>
-    <div class="detail-bar-track"><div class="detail-bar-fill" id="detailBarFill" style="width:0"></div></div>
-  </div>
+  <div class="detail-bar"><div class="detail-bar-head"><span>Umsatz ggü. Marktführer</span><span id="detailBarPct"></span></div>
+    <div class="detail-bar-track"><div class="detail-bar-fill" id="detailBarFill" style="width:0"></div></div></div>
 </div>
 
-<!-- ═══ NAVIGATION ═══ -->
 <nav class="nav">
-  <button class="nav-item active" data-target="sec-dashboard">
-    <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
-    Dashboard
-  </button>
-  <button class="nav-item" data-target="sec-ranking">
-    <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-    Ranking
-  </button>
-  <button class="nav-item" data-target="sec-vergleich">
-    <svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.2 5.2a3 3 0 006.4 0z"/><path d="M19 7l-2.2 5.2a3 3 0 006.4 0z"/></svg>
-    Vergleich
-  </button>
-  <button class="nav-item" data-target="sec-recht">
-    <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 8.5C8 19.5 5 16 5 12V6z"/></svg>
-    Recht
-  </button>
-  <button class="nav-item" data-target="sec-tools">
-    <svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
-    Tools
-  </button>
-  <button class="nav-item" data-target="sec-info">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
-    Info
-  </button>
+  <button class="nav-item active" data-target="sec-dashboard"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>Dashboard</button>
+  <button class="nav-item" data-target="sec-ranking"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Ranking</button>
+  <button class="nav-item" data-target="sec-vergleich"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.2 5.2a3 3 0 006.4 0z"/><path d="M19 7l-2.2 5.2a3 3 0 006.4 0z"/></svg>Vergleich</button>
+  <button class="nav-item" data-target="sec-recht"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 8.5C8 19.5 5 16 5 12V6z"/></svg>Recht</button>
+  <button class="nav-item" data-target="sec-lernen"><svg viewBox="0 0 24 24"><path d="M3 6h7a2 2 0 012 2v11a2.5 2.5 0 00-2.5-2.5H3zM21 6h-7a2 2 0 00-2 2v11a2.5 2.5 0 012.5-2.5H21z"/></svg>Lernen</button>
+  <button class="nav-item" data-target="sec-tools"><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Tools</button>
 </nav>
 
 <script>
 // ═══ DATA ═══
 const DATA = {
-  umsatz: {
-    jahre: ['2017','2018','2019','2020','2021','2022','2023'],
-    werte: [8.0, 8.7, 9.2, 9.2, 9.6, 11.1, 13.4]
-  },
-  beschaeftigte: {
-    jahre: ['2017','2018','2019','2020','2021','2022','2023'],
-    werte: [252, 258, 263, 260, 268, 277, 284.5]
-  },
+  umsatz: { jahre:['2017','2018','2019','2020','2021','2022','2023'], werte:[8.0,8.7,9.2,9.2,9.6,11.1,13.4] },
+  beschaeftigte: { jahre:['2017','2018','2019','2020','2021','2022','2023'], werte:[252,258,263,260,268,277,284.5] },
   ranking: [
     {name:'Securitas', umsatz:1210, wachstum:'+4,1%', mitarbeiter:'~21.000'},
     {name:'Kötter Gruppe', umsatz:722, wachstum:'+18,6%', mitarbeiter:'~15.000'},
@@ -619,10 +522,7 @@ const DATA = {
     {name:'Stölting Security', umsatz:148, wachstum:'+6,3%', mitarbeiter:'~3.000'},
     {name:'Dussmann', umsatz:105, wachstum:'+7,1%', mitarbeiter:'~2.200'}
   ],
-  wachstumTop25: {
-    jahre: ['2020','2021','2022','2023','2024'],
-    werte: [3.2, 7.3, 10.5, 7.9, 7.5]
-  },
+  wachstumTop25: { jahre:['2020','2021','2022','2023','2024'], werte:[3.2,7.3,10.5,7.9,7.5] },
   news: [
     {date:'Okt 2025', title:'Lünendonk-Liste 2025: +7,5 % Wachstum', desc:'Die Top 25 erwirtschaften 5.398,6 Mio. € (~40 % des Marktes). Securitas führt mit 1.210 Mio. €, Kötter wächst durch die Wako-Übernahme um 18,6 % auf 722 Mio. €.'},
     {date:'Okt 2025', title:'Sicherheitsdienstleister werden digital', desc:'Robotik, KI und berufsbegleitende Qualifizierung prägen die Branche – so begegnen die Anbieter dem Fachkräftemangel.'},
@@ -633,478 +533,297 @@ const DATA = {
 };
 
 // ═══ STATE ═══
-let rankSort = 'umsatz';
-let rankQuery = '';
-let compareSel = [];
-let radarChart = null;
+let rankSort='umsatz', rankQuery='', compareSel=[], radarChart=null;
 
 // ═══ HELPERS ═══
-const COMPARE_COLORS = ['#00d4aa', '#5b9cf6', '#f5a623'];
-const deFmt = (n, dec = 0) => new Intl.NumberFormat('de-DE', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(n);
-function numVal(v){ return typeof v === 'number' ? v : (parseInt(String(v).replace(/[^0-9]/g, ''), 10) || 0); }
-function pctVal(v){ return parseFloat(String(v).replace(',', '.').replace(/[^0-9.\-]/g, '')) || 0; }
-function hexA(hex, a){ const n = parseInt(hex.slice(1), 16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; }
-function fmtPct(v){ return (v >= 0 ? '+' : '') + deFmt(v, 1) + '%'; }
-
+const COMPARE_COLORS=['#00d4aa','#5b9cf6','#f5a623'];
+const deFmt=(n,dec=0)=>new Intl.NumberFormat('de-DE',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);
+function numVal(v){return typeof v==='number'?v:(parseInt(String(v).replace(/[^0-9]/g,''),10)||0);}
+function pctVal(v){return parseFloat(String(v).replace(',','.').replace(/[^0-9.\-]/g,''))||0;}
+function hexA(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;}
+function fmtPct(v){return (v>=0?'+':'')+deFmt(v,1)+'%';}
 function computeDerived(){
-  const totalMarket = DATA.umsatz.werte[DATA.umsatz.werte.length - 1] * 1000; // Mio €
-  DATA.totalMarket = totalMarket;
-  DATA.ranking.forEach(r => {
-    r._mit = numVal(r.mitarbeiter);
-    r._wachstum = pctVal(r.wachstum);
-    r._prod = r._mit ? (r.umsatz * 1000 / r._mit) : 0; // T€ Umsatz je MA
-    r._share = totalMarket ? (r.umsatz / totalMarket * 100) : 0;
-  });
+  const total=DATA.umsatz.werte[DATA.umsatz.werte.length-1]*1000; DATA.totalMarket=total;
+  DATA.ranking.forEach(r=>{r._mit=numVal(r.mitarbeiter);r._wachstum=pctVal(r.wachstum);r._prod=r._mit?r.umsatz*1000/r._mit:0;r._share=total?r.umsatz/total*100:0;});
+}
+async function loadData(){
+  try{const resp=await fetch('./data.json'); if(resp.ok){Object.assign(DATA,await resp.json());}}catch(e){}
+  computeDerived(); renderRanking(); renderVergleich(); renderNews(); animateKPIs();
+  try{initCharts();}catch(e){console.warn('Charts offline?',e);}
 }
 
-// Try loading external data.json
-async function loadData() {
-  try {
-    const resp = await fetch('./data.json');
-    if (resp.ok) {
-      const ext = await resp.json();
-      Object.assign(DATA, ext);
-    }
-  } catch(e) {}
-  computeDerived();
-  renderRanking();
-  renderVergleich();
-  renderNews();
-  animateKPIs();
-  try { initCharts(); } catch (e) { console.warn('Charts konnten nicht geladen werden (Chart.js offline?)', e); }
-}
-
-// ═══ KPI COUNTERS ═══
+// ═══ KPI ═══
 function animateKPIs(){
-  document.querySelectorAll('.kpi-value[data-count]').forEach(el => {
-    const target = parseFloat(el.dataset.count);
-    const dec = +(el.dataset.dec || 0);
-    const suffix = el.dataset.suffix || '';
-    const dur = 950, start = performance.now();
-    function tick(now){
-      const t = Math.min(1, (now - start) / dur);
-      const e = 1 - Math.pow(1 - t, 3);
-      el.textContent = deFmt(target * e, dec) + suffix;
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+  document.querySelectorAll('.kpi-value[data-count]').forEach(el=>{
+    const target=parseFloat(el.dataset.count), dec=+(el.dataset.dec||0), suffix=el.dataset.suffix||'', dur=950, start=performance.now();
+    (function tick(now){const t=Math.min(1,(now-start)/dur), e=1-Math.pow(1-t,3); el.textContent=deFmt(target*e,dec)+suffix; if(t<1)requestAnimationFrame(tick);})(start);
   });
 }
 
 // ═══ CHARTS ═══
-const chartColors = {
-  accent: '#00d4aa', accentBg: 'rgba(0,212,170,0.15)',
-  blue: '#5b9cf6', blueBg: 'rgba(91,156,246,0.15)',
-  amber: '#f5a623', amberBg: 'rgba(245,166,35,0.15)',
-  red: '#ff6b6b', redBg: 'rgba(255,107,107,0.15)',
-  grid: 'rgba(255,255,255,0.06)', tick: 'rgba(255,255,255,0.3)'
-};
-
-const baseOpts = {
-  responsive: true, maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
-  scales: {
-    x: { grid: { color: chartColors.grid }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 11 } } },
-    y: { grid: { color: chartColors.grid }, ticks: { color: chartColors.tick, font: { family: 'Sora', size: 11 } } }
-  }
-};
-
-function initCharts() {
-  new Chart(document.getElementById('chartUmsatz'), {
-    type: 'line',
-    data: { labels: DATA.umsatz.jahre, datasets: [{
-      data: DATA.umsatz.werte, borderColor: chartColors.accent, backgroundColor: chartColors.accentBg,
-      fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: chartColors.accent, borderWidth: 2.5 }] },
-    options: { ...baseOpts }
-  });
-
-  new Chart(document.getElementById('chartBeschaeftigte'), {
-    type: 'bar',
-    data: { labels: DATA.beschaeftigte.jahre, datasets: [{
-      data: DATA.beschaeftigte.werte, backgroundColor: chartColors.blueBg, borderColor: chartColors.blue,
-      borderWidth: 1.5, borderRadius: 6 }] },
-    options: { ...baseOpts }
-  });
-
-  // Marktanteile Doughnut (Top 10 + Sonstige)
-  const top10 = DATA.ranking.slice(0, 10);
-  const topSum = top10.reduce((a, r) => a + r.umsatz, 0);
-  const sonstige = Math.max(0, DATA.totalMarket - topSum);
-  const palette = ['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
-  new Chart(document.getElementById('chartShare'), {
-    type: 'doughnut',
-    data: { labels: [...top10.map(r => r.name), 'Übriger Markt'], datasets: [{
-      data: [...top10.map(r => r.umsatz), sonstige],
-      backgroundColor: [...palette.slice(0, top10.length), 'rgba(255,255,255,0.06)'],
-      borderColor: '#060611', borderWidth: 2 }] },
-    options: { responsive: true, maintainAspectRatio: false, cutout: '68%',
-      plugins: { legend: { display: false },
-        tooltip: { callbacks: { label: c => `${c.label}: ${deFmt(c.parsed)} Mio € (${deFmt(c.parsed / DATA.totalMarket * 100, 1)}%)` } } } }
-  });
-  document.getElementById('shareTop10').textContent = deFmt(topSum / DATA.totalMarket * 100, 1) + '%';
-
-  new Chart(document.getElementById('chartWachstum'), {
-    type: 'line',
-    data: { labels: DATA.wachstumTop25.jahre, datasets: [{
-      data: DATA.wachstumTop25.werte, borderColor: chartColors.amber, backgroundColor: chartColors.amberBg,
-      fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: chartColors.amber, borderWidth: 2.5 }] },
-    options: { ...baseOpts, scales: { ...baseOpts.scales,
-      y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks, callback: v => v + '%' } } } }
-  });
+const chartColors={accent:'#00d4aa',accentBg:'rgba(0,212,170,0.15)',blue:'#5b9cf6',blueBg:'rgba(91,156,246,0.15)',amber:'#f5a623',amberBg:'rgba(245,166,35,0.15)',grid:'rgba(255,255,255,0.06)',tick:'rgba(255,255,255,0.3)'};
+const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:chartColors.grid},ticks:{color:chartColors.tick,font:{family:'Sora',size:11}}},y:{grid:{color:chartColors.grid},ticks:{color:chartColors.tick,font:{family:'Sora',size:11}}}}};
+function initCharts(){
+  new Chart(document.getElementById('chartUmsatz'),{type:'line',data:{labels:DATA.umsatz.jahre,datasets:[{data:DATA.umsatz.werte,borderColor:chartColors.accent,backgroundColor:chartColors.accentBg,fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:chartColors.accent,borderWidth:2.5}]},options:{...baseOpts}});
+  new Chart(document.getElementById('chartBeschaeftigte'),{type:'bar',data:{labels:DATA.beschaeftigte.jahre,datasets:[{data:DATA.beschaeftigte.werte,backgroundColor:chartColors.blueBg,borderColor:chartColors.blue,borderWidth:1.5,borderRadius:6}]},options:{...baseOpts}});
+  const top10=DATA.ranking.slice(0,10), topSum=top10.reduce((a,r)=>a+r.umsatz,0), sonstige=Math.max(0,DATA.totalMarket-topSum);
+  const palette=['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
+  new Chart(document.getElementById('chartShare'),{type:'doughnut',data:{labels:[...top10.map(r=>r.name),'Übriger Markt'],datasets:[{data:[...top10.map(r=>r.umsatz),sonstige],backgroundColor:[...palette.slice(0,top10.length),'rgba(255,255,255,0.06)'],borderColor:'#060611',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${deFmt(c.parsed)} Mio € (${deFmt(c.parsed/DATA.totalMarket*100,1)}%)`}}}}});
+  document.getElementById('shareTop10').textContent=deFmt(topSum/DATA.totalMarket*100,1)+'%';
+  new Chart(document.getElementById('chartWachstum'),{type:'line',data:{labels:DATA.wachstumTop25.jahre,datasets:[{data:DATA.wachstumTop25.werte,borderColor:chartColors.amber,backgroundColor:chartColors.amberBg,fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:chartColors.amber,borderWidth:2.5}]},options:{...baseOpts,scales:{...baseOpts.scales,y:{...baseOpts.scales.y,ticks:{...baseOpts.scales.y.ticks,callback:v=>v+'%'}}}}});
 }
 
 // ═══ RANKING ═══
-const SORT_KEY = { umsatz: 'umsatz', wachstum: '_wachstum', mitarbeiter: '_mit', prod: '_prod' };
-
+const SORT_KEY={umsatz:'umsatz',wachstum:'_wachstum',mitarbeiter:'_mit',prod:'_prod'};
 function sortedRanking(){
-  let arr = DATA.ranking.map((r, i) => ({ r, idx: i }));
-  if (rankQuery) {
-    const q = rankQuery.toLowerCase();
-    arr = arr.filter(o => o.r.name.toLowerCase().includes(q));
-  }
-  const key = SORT_KEY[rankSort];
-  arr.sort((a, b) => b.r[key] - a.r[key]);
-  return arr;
+  let arr=DATA.ranking.map((r,i)=>({r,idx:i}));
+  if(rankQuery){const q=rankQuery.toLowerCase(); arr=arr.filter(o=>o.r.name.toLowerCase().includes(q));}
+  const key=SORT_KEY[rankSort]; arr.sort((a,b)=>b.r[key]-a.r[key]); return arr;
 }
-
-function renderRanking() {
-  const container = document.getElementById('rankList');
-  const arr = sortedRanking();
-  let html = '<div class="card-title">' + (rankQuery ? `Treffer (${arr.length})` : 'Vollständiges Ranking') + '</div>';
-  if (!arr.length) { container.innerHTML = html + '<div class="rank-empty">Kein Unternehmen gefunden.</div>'; return; }
-  arr.forEach((o, pos) => {
-    const r = o.r;
-    const cls = pos < 3 ? `r${pos+1}` : 'r5';
-    const on = compareSel.includes(o.idx);
-    html += `<div class="rank-item" data-idx="${o.idx}">
-      <div class="rank-num ${cls}">${pos+1}</div>
-      <div class="rank-info">
-        <div class="rank-name">${r.name}</div>
-        <div class="rank-detail">${deFmt(r._mit)} MA · ${r.wachstum} · ${deFmt(r._prod, 1)} T€/MA</div>
-      </div>
+function renderRanking(){
+  const c=document.getElementById('rankList'), arr=sortedRanking();
+  let html='<div class="card-title">'+(rankQuery?`Treffer (${arr.length})`:'Vollständiges Ranking')+'</div>';
+  if(!arr.length){c.innerHTML=html+'<div class="rank-empty">Kein Unternehmen gefunden.</div>';return;}
+  arr.forEach((o,pos)=>{const r=o.r, cls=pos<3?`r${pos+1}`:'r5', on=compareSel.includes(o.idx);
+    html+=`<div class="rank-item" data-idx="${o.idx}"><div class="rank-num ${cls}">${pos+1}</div>
+      <div class="rank-info"><div class="rank-name">${r.name}</div><div class="rank-detail">${deFmt(r._mit)} MA · ${r.wachstum} · ${deFmt(r._prod,1)} T€/MA</div></div>
       <div class="rank-umsatz">${deFmt(r.umsatz)} Mio</div>
-      <button class="rank-cmp ${on ? 'on' : ''}" data-cmp="${o.idx}" aria-label="Zum Vergleich hinzufügen">
-        <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-      </button>
-    </div>`;
-  });
-  container.innerHTML = html;
-  container.querySelectorAll('.rank-item').forEach(el => el.addEventListener('click', () => openDetail(+el.dataset.idx)));
-  container.querySelectorAll('.rank-cmp').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleCompare(+btn.dataset.cmp); }));
+      <button class="rank-cmp ${on?'on':''}" data-cmp="${o.idx}" aria-label="Vergleich"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></button></div>`;});
+  c.innerHTML=html;
+  c.querySelectorAll('.rank-item').forEach(el=>el.addEventListener('click',()=>openDetail(+el.dataset.idx)));
+  c.querySelectorAll('.rank-cmp').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();toggleCompare(+b.dataset.cmp);}));
 }
 
 // ═══ COMPARE ═══
-function toggleCompare(idx){
-  const at = compareSel.indexOf(idx);
-  if (at > -1) compareSel.splice(at, 1);
-  else if (compareSel.length < 3) compareSel.push(idx);
-  renderRanking(); renderVergleich(); updateCmpBar();
-}
-function updateCmpBar(){
-  const bar = document.getElementById('cmpBar');
-  const onRanking = document.getElementById('sec-ranking').classList.contains('active');
-  document.getElementById('cmpCount').textContent = compareSel.length;
-  bar.classList.toggle('show', compareSel.length >= 2 && onRanking);
-}
+function toggleCompare(idx){const at=compareSel.indexOf(idx); if(at>-1)compareSel.splice(at,1); else if(compareSel.length<3)compareSel.push(idx); renderRanking();renderVergleich();updateCmpBar();}
+function updateCmpBar(){const bar=document.getElementById('cmpBar'); const onR=document.getElementById('sec-ranking').classList.contains('active'); document.getElementById('cmpCount').textContent=compareSel.length; bar.classList.toggle('show',compareSel.length>=2&&onR);}
 function renderVergleich(){
-  const chipWrap = document.getElementById('cmpChips');
-  chipWrap.innerHTML = '';
-  DATA.ranking.forEach((r, i) => {
-    const on = compareSel.includes(i);
-    const btn = document.createElement('button');
-    btn.className = 'chip' + (on ? ' on' : '') + ((!on && compareSel.length >= 3) ? ' dis' : '');
-    btn.textContent = r.name;
-    btn.addEventListener('click', () => toggleCompare(i));
-    chipWrap.appendChild(btn);
-  });
-  const body = document.getElementById('cmpBody');
-  if (compareSel.length < 2) {
-    body.innerHTML = '<div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.6">Wähle oben oder im Ranking <strong style="color:var(--text)">2–3 Unternehmen</strong> aus, um Umsatz, Mitarbeiter, Wachstum und Produktivität direkt gegenüberzustellen.</p></div></div>';
-    if (radarChart) { radarChart.destroy(); radarChart = null; }
-    return;
-  }
-  const sel = compareSel.map(i => DATA.ranking[i]);
-  const metrics = [
-    { key: 'umsatz',   label: 'Umsatz',        get: r => r.umsatz,    fmt: v => deFmt(v) + ' Mio' },
-    { key: 'mit',      label: 'Mitarbeiter',   get: r => r._mit,      fmt: v => deFmt(v) },
-    { key: 'wachstum', label: 'Wachstum',      get: r => r._wachstum, fmt: v => fmtPct(v) },
-    { key: 'prod',     label: 'Produktivität', get: r => r._prod,     fmt: v => deFmt(v, 1) + ' T€' }
-  ];
-  const maxAll = metrics.map(m => Math.max(...DATA.ranking.map(m.get)));
-  let bars = '';
-  metrics.forEach(m => {
-    const maxSel = Math.max(...sel.map(m.get), 0);
-    bars += `<div class="cmp-metric"><div class="cmp-metric-label">${m.label}</div>`;
-    sel.forEach((r, k) => {
-      const v = m.get(r);
-      const w = maxSel > 0 ? Math.max(2, v / maxSel * 100) : 0;
-      bars += `<div class="cmp-bar-row">
-        <div class="cmp-bar-name" style="color:${COMPARE_COLORS[k]}">${r.name}</div>
-        <div class="cmp-track"><div class="cmp-fill" style="width:${w}%;background:${COMPARE_COLORS[k]}"></div></div>
-        <div class="cmp-val">${m.fmt(v)}</div></div>`;
-    });
-    bars += `</div>`;
-  });
-  body.innerHTML = `
-    <div class="card">
-      <div class="card-title">Stärkenprofil (relativ zum Branchenmaximum)</div>
-      <div class="chart-wrap" style="height:280px"><canvas id="chartRadar"></canvas></div>
-    </div>
-    <div class="card"><div class="card-title">Kennzahlen im Direktvergleich</div>${bars}</div>`;
-  if (radarChart) { radarChart.destroy(); radarChart = null; }
-  if (typeof Chart === 'undefined') return;
-  radarChart = new Chart(document.getElementById('chartRadar'), {
-    type: 'radar',
-    data: { labels: metrics.map(m => m.label), datasets: sel.map((r, k) => ({
-      label: r.name,
-      data: metrics.map((m, j) => maxAll[j] ? +(m.get(r) / maxAll[j] * 100).toFixed(1) : 0),
-      borderColor: COMPARE_COLORS[k], backgroundColor: hexA(COMPARE_COLORS[k], 0.15),
-      pointBackgroundColor: COMPARE_COLORS[k], borderWidth: 2, pointRadius: 3 })) },
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: chartColors.tick, font: { family: 'Sora', size: 11 }, boxWidth: 12 } } },
-      scales: { r: { angleLines: { color: chartColors.grid }, grid: { color: chartColors.grid },
-        pointLabels: { color: chartColors.tick, font: { family: 'Sora', size: 11 } },
-        ticks: { display: false, backdropColor: 'transparent' }, suggestedMin: 0, suggestedMax: 100 } } }
-  });
+  const chipWrap=document.getElementById('cmpChips'); chipWrap.innerHTML='';
+  DATA.ranking.forEach((r,i)=>{const on=compareSel.includes(i); const btn=document.createElement('button'); btn.className='chip'+(on?' on':'')+((!on&&compareSel.length>=3)?' dis':''); btn.textContent=r.name; btn.addEventListener('click',()=>toggleCompare(i)); chipWrap.appendChild(btn);});
+  const body=document.getElementById('cmpBody');
+  if(compareSel.length<2){body.innerHTML='<div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.6">Wähle oben oder im Ranking <strong style="color:var(--text)">2–3 Unternehmen</strong> aus, um Umsatz, Mitarbeiter, Wachstum und Produktivität gegenüberzustellen.</p></div></div>'; if(radarChart){radarChart.destroy();radarChart=null;} return;}
+  const sel=compareSel.map(i=>DATA.ranking[i]);
+  const metrics=[{label:'Umsatz',get:r=>r.umsatz,fmt:v=>deFmt(v)+' Mio'},{label:'Mitarbeiter',get:r=>r._mit,fmt:v=>deFmt(v)},{label:'Wachstum',get:r=>r._wachstum,fmt:v=>fmtPct(v)},{label:'Produktivität',get:r=>r._prod,fmt:v=>deFmt(v,1)+' T€'}];
+  const maxAll=metrics.map(m=>Math.max(...DATA.ranking.map(m.get)));
+  let bars='';
+  metrics.forEach(m=>{const maxSel=Math.max(...sel.map(m.get),0); bars+=`<div class="cmp-metric"><div class="cmp-metric-label">${m.label}</div>`;
+    sel.forEach((r,k)=>{const v=m.get(r), w=maxSel>0?Math.max(2,v/maxSel*100):0; bars+=`<div class="cmp-bar-row"><div class="cmp-bar-name" style="color:${COMPARE_COLORS[k]}">${r.name}</div><div class="cmp-track"><div class="cmp-fill" style="width:${w}%;background:${COMPARE_COLORS[k]}"></div></div><div class="cmp-val">${m.fmt(v)}</div></div>`;}); bars+=`</div>`;});
+  body.innerHTML=`<div class="card"><div class="card-title">Stärkenprofil (relativ zum Branchenmaximum)</div><div class="chart-wrap" style="height:280px"><canvas id="chartRadar"></canvas></div></div><div class="card"><div class="card-title">Kennzahlen im Direktvergleich</div>${bars}</div>`;
+  if(radarChart){radarChart.destroy();radarChart=null;} if(typeof Chart==='undefined')return;
+  radarChart=new Chart(document.getElementById('chartRadar'),{type:'radar',data:{labels:metrics.map(m=>m.label),datasets:sel.map((r,k)=>({label:r.name,data:metrics.map((m,j)=>maxAll[j]?+(m.get(r)/maxAll[j]*100).toFixed(1):0),borderColor:COMPARE_COLORS[k],backgroundColor:hexA(COMPARE_COLORS[k],0.15),pointBackgroundColor:COMPARE_COLORS[k],borderWidth:2,pointRadius:3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:chartColors.tick,font:{family:'Sora',size:11},boxWidth:12}}},scales:{r:{angleLines:{color:chartColors.grid},grid:{color:chartColors.grid},pointLabels:{color:chartColors.tick,font:{family:'Sora',size:11}},ticks:{display:false,backdropColor:'transparent'},suggestedMin:0,suggestedMax:100}}}});
 }
 
-// ═══ DETAIL SHEET ═══
+// ═══ DETAIL ═══
 function openDetail(idx){
-  const r = DATA.ranking[idx];
-  const umsatzRank = [...DATA.ranking].sort((a, b) => b.umsatz - a.umsatz).indexOf(r) + 1;
-  document.getElementById('detailRank').textContent = `Rang #${umsatzRank} nach Umsatz`;
-  document.getElementById('detailName').textContent = r.name;
-  const rows = [
-    ['Umsatz (Deutschland)', deFmt(r.umsatz) + ' Mio €'],
-    ['Mitarbeiter', deFmt(r._mit)],
-    ['Wachstum ggü. Vorjahr', r.wachstum],
-    ['Produktivität', deFmt(r._prod, 1) + ' T€ / MA'],
-    ['Marktanteil', deFmt(r._share, 1) + ' %']
-  ];
-  document.getElementById('detailRows').innerHTML = rows.map(([l, v]) =>
-    `<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`).join('');
-  const leader = DATA.ranking.reduce((m, x) => Math.max(m, x.umsatz), 0);
-  const pct = leader ? (r.umsatz / leader * 100) : 0;
-  document.getElementById('detailBarPct').textContent = deFmt(pct, 0) + '%';
-  document.getElementById('sheetBackdrop').classList.add('show');
-  document.getElementById('detailSheet').classList.add('show');
-  requestAnimationFrame(() => { document.getElementById('detailBarFill').style.width = pct + '%'; });
+  const r=DATA.ranking[idx], umsatzRank=[...DATA.ranking].sort((a,b)=>b.umsatz-a.umsatz).indexOf(r)+1;
+  document.getElementById('detailRank').textContent=`Rang #${umsatzRank} nach Umsatz`;
+  document.getElementById('detailName').textContent=r.name;
+  const rows=[['Umsatz (Deutschland)',deFmt(r.umsatz)+' Mio €'],['Mitarbeiter',deFmt(r._mit)],['Wachstum ggü. Vorjahr',r.wachstum],['Produktivität',deFmt(r._prod,1)+' T€ / MA'],['Marktanteil',deFmt(r._share,1)+' %']];
+  document.getElementById('detailRows').innerHTML=rows.map(([l,v])=>`<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`).join('');
+  const leader=DATA.ranking.reduce((m,x)=>Math.max(m,x.umsatz),0), pct=leader?r.umsatz/leader*100:0;
+  document.getElementById('detailBarPct').textContent=deFmt(pct,0)+'%';
+  document.getElementById('sheetBackdrop').classList.add('show'); document.getElementById('detailSheet').classList.add('show');
+  requestAnimationFrame(()=>{document.getElementById('detailBarFill').style.width=pct+'%';});
 }
-function closeDetail(){
-  document.getElementById('sheetBackdrop').classList.remove('show');
-  document.getElementById('detailSheet').classList.remove('show');
-  document.getElementById('detailBarFill').style.width = '0';
-}
+function closeDetail(){document.getElementById('sheetBackdrop').classList.remove('show');document.getElementById('detailSheet').classList.remove('show');document.getElementById('detailBarFill').style.width='0';}
 
 // ═══ NEWS ═══
-function renderNews() {
-  const container = document.getElementById('newsList');
-  let html = '<div class="card-title">Branchen-News</div>';
-  DATA.news.forEach(n => {
-    html += `<div class="news-item"><div class="news-date">${n.date}</div>
-      <div class="news-title">${n.title}</div><div class="news-desc">${n.desc}</div></div>`;
-  });
-  container.innerHTML = html;
-}
+function renderNews(){document.getElementById('newsList').innerHTML='<div class="card-title">Branchen-News</div>'+DATA.news.map(n=>`<div class="news-item"><div class="news-date">${n.date}</div><div class="news-title">${n.title}</div><div class="news-desc">${n.desc}</div></div>`).join('');}
 
-// ═══ NAVIGATION ═══
-function navigateTo(target){
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.target === target));
-  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === target));
-  window.scrollTo(0, 0);
-  updateCmpBar();
-}
-document.querySelectorAll('.nav-item').forEach(btn => btn.addEventListener('click', () => navigateTo(btn.dataset.target)));
+// ═══ NAV + SUBTABS ═══
+function navigateTo(target){document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.target===target)); document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===target)); window.scrollTo(0,0); updateCmpBar();}
+document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>navigateTo(btn.dataset.target)));
+document.querySelectorAll('.subtabs').forEach(tabs=>tabs.addEventListener('click',e=>{const seg=e.target.closest('.seg'); if(!seg)return; const g=tabs.dataset.group; tabs.querySelectorAll('.seg').forEach(s=>s.classList.toggle('active',s===seg)); document.querySelectorAll('.subpanel[data-group="'+g+'"]').forEach(p=>p.style.display=p.dataset.sub===seg.dataset.sub?'block':'none');}));
 
 // ═══ RANKING CONTROLS ═══
-document.getElementById('rankSort').addEventListener('click', e => {
-  const seg = e.target.closest('.seg'); if (!seg) return;
-  rankSort = seg.dataset.sort;
-  document.querySelectorAll('#rankSort .seg').forEach(s => s.classList.toggle('active', s === seg));
-  renderRanking();
-});
-const searchInput = document.getElementById('rankSearch');
-const clearBtn = document.getElementById('rankClear');
-searchInput.addEventListener('input', () => {
-  rankQuery = searchInput.value.trim();
-  clearBtn.classList.toggle('show', rankQuery.length > 0);
-  renderRanking();
-});
-clearBtn.addEventListener('click', () => { searchInput.value = ''; rankQuery = ''; clearBtn.classList.remove('show'); renderRanking(); searchInput.focus(); });
-document.getElementById('cmpBar').addEventListener('click', () => navigateTo('sec-vergleich'));
-document.getElementById('sheetBackdrop').addEventListener('click', closeDetail);
+document.getElementById('rankSort').addEventListener('click',e=>{const seg=e.target.closest('.seg'); if(!seg)return; rankSort=seg.dataset.sort; document.querySelectorAll('#rankSort .seg').forEach(s=>s.classList.toggle('active',s===seg)); renderRanking();});
+const searchInput=document.getElementById('rankSearch'), clearBtn=document.getElementById('rankClear');
+searchInput.addEventListener('input',()=>{rankQuery=searchInput.value.trim(); clearBtn.classList.toggle('show',rankQuery.length>0); renderRanking();});
+clearBtn.addEventListener('click',()=>{searchInput.value='';rankQuery='';clearBtn.classList.remove('show');renderRanking();searchInput.focus();});
+document.getElementById('cmpBar').addEventListener('click',()=>navigateTo('sec-vergleich'));
+document.getElementById('sheetBackdrop').addEventListener('click',closeDetail);
 
-// ═══ ACCORDION (Recht) ═══
-document.querySelectorAll('.acc-head').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
+// ═══ ACCORDION ═══
+document.querySelectorAll('.acc-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
 
-// ═══ TOOLS ═══
-document.getElementById('toolTabs').addEventListener('click', e => {
-  const seg = e.target.closest('.seg'); if (!seg) return;
-  document.querySelectorAll('#toolTabs .seg').forEach(s => s.classList.toggle('active', s === seg));
-  document.querySelectorAll('.tool-panel').forEach(p => p.style.display = 'none');
-  document.getElementById('tool-' + seg.dataset.tool).style.display = 'block';
-});
-
-// --- Tool 1: Qualifikations-Finder ---
-const QUALI = [
-  { v:'objektschutz', label:'Objekt- / Werkschutz', type:'unterrichtung', text:'Für allgemeinen Objekt- und Werkschutz genügt die 40-stündige Unterrichtung bei der IHK.' },
-  { v:'pfoertner', label:'Pförtner- / Empfangsdienst', type:'unterrichtung', text:'Empfangs- und Pförtnerdienste erfordern nur die Unterrichtung.' },
-  { v:'revier', label:'Separat- / Revierwachdienst', type:'unterrichtung', text:'Revier- und Streifendienst (nicht im öffentlichen Verkehrsraum) ist mit Unterrichtung möglich.' },
-  { v:'gwt', label:'Geld- und Werttransport', type:'unterrichtung', text:'GWT erfordert nach § 34a keine Sachkundeprüfung – aber hohe Zuverlässigkeit und Schulung. Unterrichtung genügt formal.' },
-  { v:'event', label:'Veranstaltungsschutz (mitwirkend)', type:'unterrichtung', text:'Mitwirkende Kräfte bei Veranstaltungen benötigen die Unterrichtung. Achtung: leitende Funktion bei zugangsgeschützten Großveranstaltungen erfordert Sachkunde.' },
-  { v:'tuersteher', label:'Türsteher (Diskothek / Einlass)', type:'sachkunde', text:'Bewachung im Einlassbereich gastgewerblicher Diskotheken erfordert die Sachkundeprüfung § 34a.' },
-  { v:'laden', label:'Ladendetektiv (Schutz vor Ladendieben)', type:'sachkunde', text:'Der Schutz vor Ladendieben ist eine sachkundepflichtige Tätigkeit.' },
-  { v:'city', label:'City-Streife / öffentlicher Verkehrsraum', type:'sachkunde', text:'Kontrollgänge im öffentlichen Verkehrsraum bzw. in Bereichen mit öffentlichem Verkehr erfordern die Sachkundeprüfung.' },
-  { v:'asyl', label:'Leitung: Flüchtlings-/Asylunterkunft', type:'sachkunde', text:'Die Bewachung von Aufnahme-/Gemeinschaftsunterkünften in leitender Funktion erfordert Sachkunde.' },
-  { v:'grossevent', label:'Leitung: zugangsgeschützte Großveranstaltung', type:'sachkunde', text:'Leitende Tätigkeit bei zugangsgeschützten Großveranstaltungen erfordert die Sachkundeprüfung.' },
-  { v:'selbst', label:'Selbstständig / Gewerbeerlaubnis', type:'sachkunde', text:'Wer selbstständig ein Bewachungsgewerbe führt, braucht die § 34a-Erlaubnis und muss die Sachkundeprüfung nachweisen.' }
+// ═══ TOOL: Qualifikations-Finder ═══
+const QUALI=[
+  {v:'objektschutz',label:'Objekt- / Werkschutz',type:'unterrichtung',text:'Für allgemeinen Objekt- und Werkschutz genügt die 40-stündige Unterrichtung bei der IHK.'},
+  {v:'pfoertner',label:'Pförtner- / Empfangsdienst',type:'unterrichtung',text:'Empfangs- und Pförtnerdienste erfordern nur die Unterrichtung.'},
+  {v:'revier',label:'Separat- / Revierwachdienst',type:'unterrichtung',text:'Revier- und Streifendienst (nicht im öffentlichen Verkehrsraum) ist mit Unterrichtung möglich.'},
+  {v:'gwt',label:'Geld- und Werttransport',type:'unterrichtung',text:'GWT erfordert nach § 34a keine Sachkundeprüfung – aber hohe Zuverlässigkeit und Schulung. Unterrichtung genügt formal.'},
+  {v:'event',label:'Veranstaltungsschutz (mitwirkend)',type:'unterrichtung',text:'Mitwirkende Kräfte benötigen die Unterrichtung. Achtung: leitende Funktion bei zugangsgeschützten Großveranstaltungen erfordert Sachkunde.'},
+  {v:'tuersteher',label:'Türsteher (Diskothek / Einlass)',type:'sachkunde',text:'Bewachung im Einlassbereich gastgewerblicher Diskotheken erfordert die Sachkundeprüfung § 34a.'},
+  {v:'laden',label:'Ladendetektiv (Schutz vor Ladendieben)',type:'sachkunde',text:'Der Schutz vor Ladendieben ist eine sachkundepflichtige Tätigkeit.'},
+  {v:'city',label:'City-Streife / öffentlicher Verkehrsraum',type:'sachkunde',text:'Kontrollgänge im öffentlichen Verkehrsraum erfordern die Sachkundeprüfung.'},
+  {v:'asyl',label:'Leitung: Flüchtlings-/Asylunterkunft',type:'sachkunde',text:'Die Bewachung von Aufnahme-/Gemeinschaftsunterkünften in leitender Funktion erfordert Sachkunde.'},
+  {v:'grossevent',label:'Leitung: zugangsgeschützte Großveranstaltung',type:'sachkunde',text:'Leitende Tätigkeit bei zugangsgeschützten Großveranstaltungen erfordert die Sachkundeprüfung.'},
+  {v:'selbst',label:'Selbstständig / Gewerbeerlaubnis',type:'sachkunde',text:'Wer selbstständig ein Bewachungsgewerbe führt, braucht die § 34a-Erlaubnis und muss die Sachkundeprüfung nachweisen.'}
 ];
-(function initFinder(){
-  const sel = document.getElementById('finderSelect');
-  QUALI.forEach(q => { const o = document.createElement('option'); o.value = q.v; o.textContent = q.label; sel.appendChild(o); });
-  function render(){
-    const q = QUALI.find(x => x.v === sel.value) || QUALI[0];
-    const badge = q.type === 'sachkunde' ? 'Sachkundeprüfung § 34a' : 'Unterrichtung 40 Std.';
-    document.getElementById('finderResult').innerHTML =
-      `<span class="finder-badge ${q.type}">${badge}</span><p>${q.text}</p>`;
-  }
-  sel.addEventListener('change', render);
-  render();
-})();
+(function(){const sel=document.getElementById('finderSelect'); QUALI.forEach(q=>{const o=document.createElement('option');o.value=q.v;o.textContent=q.label;sel.appendChild(o);});
+  function render(){const q=QUALI.find(x=>x.v===sel.value)||QUALI[0]; const badge=q.type==='sachkunde'?'Sachkundeprüfung § 34a':'Unterrichtung 40 Std.'; document.getElementById('finderResult').innerHTML=`<span class="finder-badge ${q.type}">${badge}</span><p>${q.text}</p>`;}
+  sel.addEventListener('change',render); render();})();
 
-// --- Tool 2: §34a-Quiz ---
-const QUIZ = [
-  { sg:'Recht der öff. Sicherheit', q:'Worauf stützt sich die vorläufige Festnahme durch eine Sicherheitskraft (Jedermannsrecht)?',
-    opts:['§ 127 Abs. 1 StPO','§ 32 StGB (Notwehr)','§ 823 BGB','§ 34a GewO'], correct:0,
-    expl:'Das Jedermann-Festnahmerecht ergibt sich aus § 127 Abs. 1 StPO – zulässig bei frischer Tat, wenn der Täter fluchtverdächtig ist oder seine Identität nicht festgestellt werden kann.' },
-  { sg:'Strafrecht', q:'Notwehr (§ 32 StGB) setzt voraus, dass der Angriff …',
-    opts:['gegenwärtig und rechtswidrig ist','bereits beendet ist','nur verbal erfolgt','geringfügig ist'], correct:0,
-    expl:'Notwehr ist die Verteidigung, die erforderlich ist, um einen gegenwärtigen, rechtswidrigen Angriff abzuwehren.' },
-  { sg:'BGB', q:'Als Objektschützer übt der Mitarbeiter das Hausrecht des Auftraggebers aus. Rechtlich ist er meist …',
-    opts:['Besitzdiener (§ 855 BGB)','Eigentümer','unmittelbarer Besitzer','Eigenbesitzer'], correct:0,
-    expl:'Der Sicherheitsmitarbeiter ist Besitzdiener nach § 855 BGB – er übt die Sachherrschaft weisungsgebunden für den Besitzer aus.' },
-  { sg:'Datenschutz', q:'Eine Videoüberwachung öffentlich zugänglicher Bereiche muss …',
-    opts:['durch Hinweisschild kenntlich gemacht werden','heimlich erfolgen','nur nachts laufen','nicht dokumentiert werden'], correct:0,
-    expl:'Nach DSGVO/BDSG ist die Beobachtung erkennbar zu machen; Zweck und Verantwortlicher müssen ersichtlich sein.' },
-  { sg:'Waffenrecht', q:'Reizstoffsprühgeräte (Pfefferspray) dürfen ohne Erlaubnis geführt werden, wenn sie …',
-    opts:['ein amtliches Prüfzeichen zur Tierabwehr tragen','über 50 ml Inhalt haben','als Verteidigungsspray deklariert sind','selbst gemischt sind'], correct:0,
-    expl:'Tierabwehrsprays mit amtlichem Prüfzeichen gelten waffenrechtlich nicht als Waffe und dürfen ab 18 geführt werden.' },
-  { sg:'Unfallverhütung', q:'Die Unfallverhütungsvorschrift für Wach- und Sicherungsdienste ist die …',
-    opts:['DGUV Vorschrift 23','DGUV Vorschrift 1','DIN 77200','ISO 9001'], correct:0,
-    expl:'Die UVV „Wach- und Sicherungsdienste" ist die DGUV Vorschrift 23 (früher BGV C7 / VBG 68).' },
-  { sg:'Strafprozessrecht', q:'Nach einer vorläufigen Festnahme muss die Sicherheitskraft die Person …',
-    opts:['unverzüglich der Polizei übergeben','selbst vernehmen','durchsuchen und bestrafen','über Nacht festhalten'], correct:0,
-    expl:'Es besteht kein Recht zur Bestrafung – die Person ist unverzüglich der Polizei zu übergeben.' },
-  { sg:'Gewerberecht', q:'Wer ein Bewachungsunternehmen selbstständig führen will, benötigt …',
-    opts:['eine Erlaubnis nach § 34a GewO inkl. Sachkundeprüfung','nur ein Gewerbe nach § 14 GewO','einen Waffenschein','nur die 40-Std.-Unterrichtung'], correct:0,
-    expl:'Selbstständige brauchen die § 34a-Erlaubnis und müssen die Sachkundeprüfung nachweisen – die Unterrichtung genügt hier nicht.' },
-  { sg:'Strafrecht', q:'Der rechtfertigende Notstand ist geregelt in …',
-    opts:['§ 34 StGB','§ 127 StPO','§ 859 BGB','§ 32 StGB'], correct:0,
-    expl:'§ 34 StGB erlaubt eine Handlung, wenn dadurch ein wesentlich höherwertiges Rechtsgut aus gegenwärtiger Gefahr gerettet wird.' },
-  { sg:'BGB', q:'Die Selbsthilfe des Besitzers (Besitzwehr und Besitzkehr) findet sich in …',
-    opts:['§ 859 BGB','§ 226 BGB','§ 34a GewO','§ 240 StGB'], correct:0,
-    expl:'§ 859 BGB regelt die Selbsthilfe des Besitzers – relevant z. B. bei der Durchsetzung des Hausrechts.' }
+// ═══ TOOL: Quiz ═══
+const QUIZ=[
+  {cat:'Strafrecht',q:'Worauf stützt sich die vorläufige Festnahme durch eine Sicherheitskraft (Jedermannsrecht)?',opts:['§ 127 Abs. 1 StPO','§ 32 StGB (Notwehr)','§ 823 BGB','§ 34a GewO'],correct:0,expl:'§ 127 Abs. 1 StPO – zulässig bei frischer Tat, wenn der Täter fluchtverdächtig ist oder seine Identität nicht festgestellt werden kann.'},
+  {cat:'Strafrecht',q:'Notwehr (§ 32 StGB) setzt voraus, dass der Angriff …',opts:['gegenwärtig und rechtswidrig ist','bereits beendet ist','nur verbal erfolgt','geringfügig ist'],correct:0,expl:'Notwehr ist die erforderliche Verteidigung gegen einen gegenwärtigen, rechtswidrigen Angriff.'},
+  {cat:'BGB',q:'Als Objektschützer übt der Mitarbeiter das Hausrecht aus. Rechtlich ist er meist …',opts:['Besitzdiener (§ 855 BGB)','Eigentümer','unmittelbarer Besitzer','Eigenbesitzer'],correct:0,expl:'Besitzdiener nach § 855 BGB – er übt die Sachherrschaft weisungsgebunden für den Besitzer aus.'},
+  {cat:'Datenschutz',q:'Eine Videoüberwachung öffentlich zugänglicher Bereiche muss …',opts:['durch Hinweisschild kenntlich gemacht werden','heimlich erfolgen','nur nachts laufen','nicht dokumentiert werden'],correct:0,expl:'Nach DSGVO/BDSG ist die Beobachtung erkennbar zu machen; Zweck und Verantwortlicher müssen ersichtlich sein.'},
+  {cat:'Waffenrecht',q:'Reizstoffsprühgeräte (Pfefferspray) dürfen ohne Erlaubnis geführt werden, wenn sie …',opts:['ein amtliches Prüfzeichen zur Tierabwehr tragen','über 50 ml Inhalt haben','als Verteidigungsspray deklariert sind','selbst gemischt sind'],correct:0,expl:'Tierabwehrsprays mit amtlichem Prüfzeichen gelten waffenrechtlich nicht als Waffe und dürfen ab 18 geführt werden.'},
+  {cat:'DGUV V 23',q:'Die Unfallverhütungsvorschrift für Wach- und Sicherungsdienste ist die …',opts:['DGUV Vorschrift 23','DGUV Vorschrift 1','DIN 77200','ISO 9001'],correct:0,expl:'Die UVV „Wach- und Sicherungsdienste" ist die DGUV Vorschrift 23 (früher BGV C7 / VBG 68).'},
+  {cat:'Strafrecht',q:'Nach einer vorläufigen Festnahme muss die Sicherheitskraft die Person …',opts:['unverzüglich der Polizei übergeben','selbst vernehmen','durchsuchen und bestrafen','über Nacht festhalten'],correct:0,expl:'Kein Recht zur Bestrafung – die Person ist unverzüglich der Polizei zu übergeben.'},
+  {cat:'Gewerberecht',q:'Wer ein Bewachungsunternehmen selbstständig führen will, benötigt …',opts:['eine Erlaubnis nach § 34a GewO inkl. Sachkundeprüfung','nur ein Gewerbe nach § 14 GewO','einen Waffenschein','nur die 40-Std.-Unterrichtung'],correct:0,expl:'Selbstständige brauchen die § 34a-Erlaubnis und müssen die Sachkundeprüfung nachweisen.'},
+  {cat:'Strafrecht',q:'Der rechtfertigende Notstand ist geregelt in …',opts:['§ 34 StGB','§ 127 StPO','§ 859 BGB','§ 32 StGB'],correct:0,expl:'§ 34 StGB erlaubt eine Handlung, wenn ein wesentlich höherwertiges Rechtsgut aus gegenwärtiger Gefahr gerettet wird.'},
+  {cat:'BGB',q:'Die Selbsthilfe des Besitzers (Besitzwehr und Besitzkehr) findet sich in …',opts:['§ 859 BGB','§ 226 BGB','§ 34a GewO','§ 240 StGB'],correct:0,expl:'§ 859 BGB regelt die Selbsthilfe des Besitzers – relevant bei der Durchsetzung des Hausrechts.'},
+  {cat:'Gewerberecht',q:'Welche Stelle führt das Bewacherregister (BWR)?',opts:['Statistisches Bundesamt','Bundeskriminalamt','die örtliche IHK','das Gewerbeamt'],correct:0,expl:'Das Bewacherregister wird beim Statistischen Bundesamt geführt; Behörden und Gewerbetreibende greifen darauf zu.'},
+  {cat:'Öff. Sicherheit',q:'Private Sicherheitskräfte verfügen gegenüber Bürgern grundsätzlich über …',opts:['nur die Jedermannsrechte','hoheitliche Polizeibefugnisse','ein Festnahmemonopol','das Gewaltmonopol'],correct:0,expl:'Sicherheitskräfte haben keine hoheitlichen Befugnisse – sie stützen sich auf Jedermannsrechte und das Hausrecht.'},
+  {cat:'BGB',q:'Die „verbotene Eigenmacht" ist geregelt in …',opts:['§ 858 BGB','§ 859 BGB','§ 903 BGB','§ 123 StGB'],correct:0,expl:'§ 858 BGB: widerrechtliche Störung/Entziehung des Besitzes ohne Willen des Besitzers.'},
+  {cat:'Strafrecht',q:'Eine Notwehrhandlung ist nicht (mehr) gerechtfertigt, wenn der Angriff …',opts:['bereits beendet ist','gegenwärtig ist','rechtswidrig ist','unmittelbar bevorsteht'],correct:0,expl:'Notwehr ist nur gegen einen gegenwärtigen Angriff zulässig. Ist er beendet, liegt keine Notwehrlage mehr vor.'},
+  {cat:'Strafrecht',q:'Diebstahl (§ 242 StGB) setzt voraus:',opts:['Wegnahme einer fremden beweglichen Sache in Zueignungsabsicht','Beschädigung einer Sache','Anwendung von Gewalt','Betreten eines Grundstücks'],correct:0,expl:'§ 242 StGB: Wegnahme einer fremden beweglichen Sache in der Absicht rechtswidriger Zueignung.'},
+  {cat:'Waffenrecht',q:'Anscheinswaffen (täuschend echte Spielzeugwaffen) dürfen in der Öffentlichkeit …',opts:['nicht geführt werden (§ 42a WaffG)','frei geführt werden','nur nachts geführt werden','ab 16 geführt werden'],correct:0,expl:'§ 42a WaffG verbietet das Führen von Anscheinswaffen und bestimmten Messern in der Öffentlichkeit.'},
+  {cat:'DGUV V 23',q:'Welche Schusswaffen sind bei Wach- und Sicherungsaufgaben nach DGUV V 23 unzulässig?',opts:['Schreck- und Gas-Schusswaffen','Signalwaffen für Seenot','keine','alle Schusswaffen generell'],correct:0,expl:'Nach § 18 DGUV V 23 ist das Bereithalten und Führen von Schreck-/Gas-Schusswaffen bei Wach-/Sicherungsaufgaben unzulässig.'},
+  {cat:'DGUV V 23',q:'Als Wachhund dürfen eingesetzt werden …',opts:['nur geprüfte Hunde mit ausgebildeten Hundeführern','alle Hunde ab 1 Jahr','nur Schäferhunde','Hunde ohne Führer'],correct:0,expl:'Die DGUV V 23 lässt nur geprüfte Hunde mit ausgebildeten Hundeführern zu.'},
+  {cat:'DGUV V 23',q:'Das Mindestalter für Wach- und Sicherungstätigkeiten beträgt …',opts:['18 Jahre','16 Jahre','21 Jahre','25 Jahre'],correct:0,expl:'Versicherte müssen mindestens 18 Jahre alt und geeignet sein.'},
+  {cat:'Deeskalation',q:'Oberstes Ziel der Deeskalation ist …',opts:['einen Konflikt ohne Gewalt zu entschärfen','den Gegner zu besiegen','sofort zuzuschlagen','den Konflikt zu ignorieren'],correct:0,expl:'Deeskalation zielt darauf ab, Konflikte durch Kommunikation gewaltfrei zu lösen.'},
+  {cat:'Deeskalation',q:'Aktives Zuhören bedeutet …',opts:['Aufmerksamkeit signalisieren, nachfragen und spiegeln','wegzuhören','nur selbst zu reden','Anweisungen zu brüllen'],correct:0,expl:'Aktives Zuhören schafft Vertrauen und entschärft Spannungen – ein Kernwerkzeug der Deeskalation.'},
+  {cat:'Strafrecht',q:'Wer unbefugt in befriedetes Besitztum eindringt und trotz Aufforderung nicht geht, begeht …',opts:['Hausfriedensbruch (§ 123 StGB)','Diebstahl','Nötigung','Sachbeschädigung'],correct:0,expl:'§ 123 StGB: widerrechtliches Eindringen oder Verbleiben in befriedetem Besitztum/Räumen.'},
+  {cat:'Datenschutz',q:'Videoaufnahmen sind grundsätzlich zu löschen, sobald …',opts:['der Zweck der Speicherung erreicht/entfallen ist','ein Jahr vergangen ist','der Speicher voll ist','die Polizei es erlaubt'],correct:0,expl:'Grundsatz der Speicherbegrenzung (DSGVO): Daten löschen, wenn der Zweck erreicht ist (oft nach 48–72 Std.).'},
+  {cat:'Gewerberecht',q:'Die aktuelle Bewachungsverordnung (BewachV) gilt seit …',opts:['1. Juni 2019','1. Januar 2003','1. Juni 2009','1. Januar 2023'],correct:0,expl:'Die neugefasste BewachV trat am 1. Juni 2019 in Kraft.'}
 ];
-let quizI = 0, quizScore = 0, quizAnswered = false;
+let quizCat='Alle', quizI=0, quizScore=0, quizAnswered=false;
+function quizPool(){return quizCat==='Alle'?QUIZ:QUIZ.filter(q=>q.cat===quizCat);}
+(function initQuizCat(){const sel=document.getElementById('quizCat'); const cats=['Alle',...[...new Set(QUIZ.map(q=>q.cat))]];
+  sel.innerHTML=cats.map(c=>`<option value="${c}">${c==='Alle'?'Alle Themen':c}</option>`).join('');
+  sel.addEventListener('change',()=>{quizCat=sel.value;quizI=0;quizScore=0;quizAnswered=false;renderQuiz();});})();
 function renderQuiz(){
-  const c = document.getElementById('quizContent');
-  document.getElementById('quizBarFill').style.width = (quizI / QUIZ.length * 100) + '%';
-  if (quizI >= QUIZ.length){
-    document.getElementById('quizBarFill').style.width = '100%';
-    const pct = Math.round(quizScore / QUIZ.length * 100);
-    const verdict = pct >= 80 ? 'Stark! Prüfungsreif. 💪' : pct >= 50 ? 'Solide – noch etwas üben.' : 'Da geht mehr – dranbleiben!';
-    c.innerHTML = `<div class="quiz-result">
-      <div class="quiz-score">${quizScore}<small>/${QUIZ.length}</small></div>
-      <div class="quiz-verdict">${verdict} (${pct} %)</div>
-      <button class="btn" id="quizRestart">Nochmal starten</button></div>`;
-    document.getElementById('quizRestart').addEventListener('click', () => { quizI = 0; quizScore = 0; quizAnswered = false; renderQuiz(); });
-    return;
-  }
-  const item = QUIZ[quizI];
-  quizAnswered = false;
-  c.innerHTML = `<div class="quiz-meta">Frage ${quizI+1} / ${QUIZ.length} · ${item.sg}</div>
-    <div class="quiz-q">${item.q}</div>
-    <div id="quizOpts">${item.opts.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}</div>
-    <div id="quizFooter"></div>`;
-  c.querySelectorAll('.quiz-opt').forEach(btn => btn.addEventListener('click', () => answerQuiz(+btn.dataset.i)));
+  const pool=quizPool(), c=document.getElementById('quizContent');
+  document.getElementById('quizBarFill').style.width=(quizI/pool.length*100)+'%';
+  if(quizI>=pool.length){document.getElementById('quizBarFill').style.width='100%';
+    const pct=Math.round(quizScore/pool.length*100), verdict=pct>=80?'Stark! Prüfungsreif. 💪':pct>=50?'Solide – noch etwas üben.':'Da geht mehr – dranbleiben!';
+    c.innerHTML=`<div class="quiz-result"><div class="quiz-score">${quizScore}<small>/${pool.length}</small></div><div class="quiz-verdict">${verdict} (${pct} %)</div><button class="btn" id="quizRestart">Nochmal starten</button></div>`;
+    document.getElementById('quizRestart').addEventListener('click',()=>{quizI=0;quizScore=0;quizAnswered=false;renderQuiz();}); return;}
+  const item=pool[quizI]; quizAnswered=false;
+  c.innerHTML=`<div class="quiz-meta">Frage ${quizI+1} / ${pool.length} · ${item.cat}</div><div class="quiz-q">${item.q}</div><div id="quizOpts">${item.opts.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}</div><div id="quizFooter"></div>`;
+  c.querySelectorAll('.quiz-opt').forEach(b=>b.addEventListener('click',()=>answerQuiz(+b.dataset.i)));
 }
 function answerQuiz(i){
-  if (quizAnswered) return;
-  quizAnswered = true;
-  const item = QUIZ[quizI];
-  const opts = document.querySelectorAll('#quizOpts .quiz-opt');
-  opts.forEach((b, k) => {
-    b.classList.add('locked');
-    if (k === item.correct) b.classList.add('correct');
-    else if (k === i) b.classList.add('wrong');
-  });
-  if (i === item.correct) quizScore++;
-  const last = quizI === QUIZ.length - 1;
-  document.getElementById('quizFooter').innerHTML =
-    `<div class="quiz-expl"><strong>${i === item.correct ? '✓ Richtig. ' : '✗ Leider falsch. '}</strong>${item.expl}</div>
-     <button class="btn" id="quizNext">${last ? 'Ergebnis anzeigen' : 'Nächste Frage'}</button>`;
-  document.getElementById('quizNext').addEventListener('click', () => { quizI++; renderQuiz(); });
+  if(quizAnswered)return; quizAnswered=true; const pool=quizPool(), item=pool[quizI];
+  document.querySelectorAll('#quizOpts .quiz-opt').forEach((b,k)=>{b.classList.add('locked'); if(k===item.correct)b.classList.add('correct'); else if(k===i)b.classList.add('wrong');});
+  if(i===item.correct)quizScore++;
+  const last=quizI===pool.length-1;
+  document.getElementById('quizFooter').innerHTML=`<div class="quiz-expl"><strong>${i===item.correct?'✓ Richtig. ':'✗ Leider falsch. '}</strong>${item.expl}</div><button class="btn" id="quizNext">${last?'Ergebnis anzeigen':'Nächste Frage'}</button>`;
+  document.getElementById('quizNext').addEventListener('click',()=>{quizI++;renderQuiz();});
 }
 renderQuiz();
 
-// --- Tool 3: Versicherungs-Check ---
-const INS = [
-  { name:'Personenschäden', min:1000000 },
-  { name:'Sachschäden', min:250000 },
-  { name:'reine Vermögensschäden', min:12500 },
-  { name:'Abhandenkommen bewachter Sachen', min:15000 }
+// ═══ TOOL: Lernkarten ═══
+const FLASHCARDS=[
+  {cat:'Strafrecht',q:'Notwehr (§ 32 StGB)?',a:'Die Verteidigung, die erforderlich ist, um einen gegenwärtigen, rechtswidrigen Angriff von sich oder einem anderen abzuwenden.'},
+  {cat:'Strafrecht',q:'Rechtfertigender Notstand (§ 34 StGB)?',a:'Handlung zur Abwehr einer gegenwärtigen Gefahr, wenn das geschützte Interesse das beeinträchtigte wesentlich überwiegt.'},
+  {cat:'Strafrecht',q:'Vorläufige Festnahme (§ 127 StPO)?',a:'Jeder darf bei frischer Tat festnehmen, wenn der Täter fluchtverdächtig ist oder seine Identität nicht festgestellt werden kann. Übergabe an die Polizei!'},
+  {cat:'BGB',q:'Besitzdiener (§ 855 BGB)?',a:'Wer die tatsächliche Sachherrschaft für einen anderen weisungsgebunden ausübt – z. B. der Objektschützer für den Auftraggeber.'},
+  {cat:'BGB',q:'Verbotene Eigenmacht (§ 858 BGB)?',a:'Widerrechtliche Störung oder Entziehung des Besitzes ohne den Willen des Besitzers.'},
+  {cat:'BGB',q:'Besitzwehr & Besitzkehr (§ 859 BGB)?',a:'Selbsthilferecht des Besitzers: Abwehr verbotener Eigenmacht und Wiederbeschaffung frisch entzogenen Besitzes.'},
+  {cat:'BGB',q:'Hausrecht?',a:'Recht des Eigentümers/Besitzers zu bestimmen, wer sich auf dem Grundstück/in Räumen aufhält – Grundlage für Platzverweis und Hausverbot.'},
+  {cat:'Strafrecht',q:'Hausfriedensbruch (§ 123 StGB)?',a:'Widerrechtliches Eindringen oder Verbleiben in befriedetem Besitztum/Räumen trotz Aufforderung zu gehen.'},
+  {cat:'Strafrecht',q:'Diebstahl (§ 242 StGB)?',a:'Wegnahme einer fremden beweglichen Sache in der Absicht rechtswidriger Zueignung.'},
+  {cat:'Strafrecht',q:'Nötigung (§ 240 StGB)?',a:'Jemanden mit Gewalt oder durch Drohung mit einem empfindlichen Übel zu einer Handlung, Duldung oder Unterlassung zwingen.'},
+  {cat:'DGUV V 23',q:'Was ist die DGUV Vorschrift 23?',a:'Unfallverhütungsvorschrift „Wach- und Sicherungsdienste" – Arbeitsschutz im Sicherheitsgewerbe (früher BGV C7).'},
+  {cat:'DGUV V 23',q:'Schreck-/Gas-Schusswaffen im Dienst?',a:'Bei Wach- und Sicherungsaufgaben nach § 18 DGUV V 23 unzulässig.'},
+  {cat:'Gewerberecht',q:'Bewacherregister (BWR)?',a:'Bundesweites Online-Register beim Statistischen Bundesamt; jede Wachperson erhält eine Bewacher-ID.'},
+  {cat:'Gewerberecht',q:'§ 34a GewO?',a:'Erlaubnispflicht für das Bewachungsgewerbe – Grundlage für Unterrichtung und Sachkundeprüfung.'},
+  {cat:'Waffenrecht',q:'Anscheinswaffen (§ 42a WaffG)?',a:'Führen in der Öffentlichkeit verboten – z. B. täuschend echte Spielzeugwaffen und bestimmte Messer.'},
+  {cat:'Deeskalation',q:'Deeskalation?',a:'Konfliktentschärfung durch Kommunikation: ruhig bleiben, aktiv zuhören, Distanz wahren, Ich-Botschaften, keine Provokation.'},
+  {cat:'Öff. Sicherheit',q:'Jedermannsrechte?',a:'Rechte, die jedem zustehen: Notwehr (§ 32 StGB), Festnahme (§ 127 StPO), Selbsthilfe (§ 859 BGB). Sicherheitskräfte haben keine Sonderrechte.'}
 ];
-(function initInsurance(){
-  const wrap = document.getElementById('insRows');
-  wrap.innerHTML = INS.map((x,i) => `<div class="ins-row">
-    <div class="ins-info"><div class="ins-name">${x.name}</div><div class="ins-min">min. ${deFmt(x.min)} €</div></div>
-    <input type="number" inputmode="numeric" data-i="${i}" placeholder="0" value="${x.min}">
-    <div class="ins-flag" data-flag="${i}">✅</div></div>`).join('');
-  function check(){
-    let allOk = true;
-    INS.forEach((x,i) => {
-      const val = parseFloat(wrap.querySelector(`input[data-i="${i}"]`).value) || 0;
-      const ok = val >= x.min;
-      if (!ok) allOk = false;
-      wrap.querySelector(`[data-flag="${i}"]`).textContent = ok ? '✅' : '❌';
-    });
-    const s = document.getElementById('insSummary');
-    s.className = 'ins-summary ' + (allOk ? 'ok' : 'bad');
-    s.textContent = allOk ? '✓ Alle gesetzlichen Mindestsummen erfüllt' : '✗ Mindestens eine Deckungssumme zu niedrig';
-  }
-  wrap.querySelectorAll('input').forEach(inp => inp.addEventListener('input', check));
-  check();
-})();
+let fcI=0;
+function renderFlash(){const c=FLASHCARDS[fcI]; document.getElementById('flashWrap').classList.remove('flipped'); document.getElementById('flashCat').textContent=c.cat; document.getElementById('flashQ').textContent=c.q; document.getElementById('flashA').textContent=c.a; document.getElementById('flashCount').textContent=(fcI+1)+' / '+FLASHCARDS.length;}
+document.getElementById('flashWrap').addEventListener('click',function(){this.classList.toggle('flipped');});
+document.getElementById('flashPrev').addEventListener('click',()=>{fcI=(fcI-1+FLASHCARDS.length)%FLASHCARDS.length;renderFlash();});
+document.getElementById('flashNext').addEventListener('click',()=>{fcI=(fcI+1)%FLASHCARDS.length;renderFlash();});
+renderFlash();
 
-// --- Tool 4: Lohn- & Schichtrechner ---
-(function initLohn(){
-  const ids = ['lohnStunde','lohnStunden','lohnNacht','lohnSonntag','lohnFeiertag'];
-  const SURCHARGE = { nacht:0.25, sonntag:0.50, feiertag:1.25 };
-  function val(id){ return parseFloat(document.getElementById(id).value) || 0; }
-  function calc(){
-    const rate = val('lohnStunde'), hours = val('lohnStunden');
-    const nacht = val('lohnNacht'), sonntag = val('lohnSonntag'), feiertag = val('lohnFeiertag');
-    const grund = rate * hours;
-    const zN = rate * SURCHARGE.nacht * nacht;
-    const zS = rate * SURCHARGE.sonntag * sonntag;
-    const zF = rate * SURCHARGE.feiertag * feiertag;
-    const brutto = grund + zN + zS + zF;
-    document.getElementById('lohnBrutto').textContent = deFmt(brutto, 2) + ' €';
-    const rows = [['Grundlohn', grund]];
-    if (zN > 0) rows.push(['+ Nachtzuschlag (25 %)', zN]);
-    if (zS > 0) rows.push(['+ Sonntagszuschlag (50 %)', zS]);
-    if (zF > 0) rows.push(['+ Feiertagszuschlag (125 %)', zF]);
-    rows.push(['Brutto gesamt', brutto]);
-    document.getElementById('lohnBreak').innerHTML = rows.map(([l,v]) =>
-      `<div class="row"><span>${l}</span><span>${deFmt(v, 2)} €</span></div>`).join('');
-  }
-  ids.forEach(id => document.getElementById(id).addEventListener('input', calc));
-  calc();
-})();
+// ═══ TOOL: Glossar ═══
+const GLOSSAR=[
+  {ref:'§ 32 StGB',title:'Notwehr',cat:'Strafrecht',text:'Erforderliche Verteidigung gegen einen gegenwärtigen, rechtswidrigen Angriff.'},
+  {ref:'§ 33 StGB',title:'Notwehrüberschreitung',cat:'Strafrecht',text:'Überschreitung der Notwehr aus Verwirrung, Furcht oder Schrecken bleibt straflos.'},
+  {ref:'§ 34 StGB',title:'Rechtfertigender Notstand',cat:'Strafrecht',text:'Rettung eines wesentlich höherwertigen Rechtsguts aus gegenwärtiger Gefahr.'},
+  {ref:'§ 35 StGB',title:'Entschuldigender Notstand',cat:'Strafrecht',text:'Gefahr für Leib/Leben/Freiheit (auch Angehöriger) – entschuldigt, rechtfertigt aber nicht.'},
+  {ref:'§ 127 StPO',title:'Vorläufige Festnahme',cat:'Strafrecht',text:'Jedermann-Festnahmerecht bei frischer Tat; Übergabe an die Polizei.'},
+  {ref:'§ 123 StGB',title:'Hausfriedensbruch',cat:'Strafrecht',text:'Widerrechtliches Eindringen/Verbleiben in befriedetem Besitztum.'},
+  {ref:'§ 223 StGB',title:'Körperverletzung',cat:'Strafrecht',text:'Körperliche Misshandlung oder Gesundheitsschädigung einer Person.'},
+  {ref:'§ 240 StGB',title:'Nötigung',cat:'Strafrecht',text:'Zwang zu Handlung/Duldung/Unterlassung durch Gewalt oder Drohung.'},
+  {ref:'§ 242 StGB',title:'Diebstahl',cat:'Strafrecht',text:'Wegnahme einer fremden beweglichen Sache in Zueignungsabsicht.'},
+  {ref:'§ 303 StGB',title:'Sachbeschädigung',cat:'Strafrecht',text:'Rechtswidriges Beschädigen oder Zerstören einer fremden Sache.'},
+  {ref:'§ 185 StGB',title:'Beleidigung',cat:'Strafrecht',text:'Angriff auf die Ehre einer Person durch Kundgabe von Missachtung.'},
+  {ref:'§ 855 BGB',title:'Besitzdiener',cat:'BGB',text:'Weisungsgebundene Ausübung der Sachherrschaft für einen anderen.'},
+  {ref:'§ 858 BGB',title:'Verbotene Eigenmacht',cat:'BGB',text:'Widerrechtliche Störung/Entziehung des Besitzes ohne Willen des Besitzers.'},
+  {ref:'§ 859 BGB',title:'Selbsthilfe des Besitzers',cat:'BGB',text:'Besitzwehr (Abwehr) und Besitzkehr (Wiederbeschaffung) gegen verbotene Eigenmacht.'},
+  {ref:'§ 903 BGB',title:'Eigentum',cat:'BGB',text:'Der Eigentümer kann mit der Sache nach Belieben verfahren und andere ausschließen.'},
+  {ref:'§ 823 BGB',title:'Schadensersatzpflicht',cat:'BGB',text:'Wer widerrechtlich ein Rechtsgut verletzt, ist zum Schadensersatz verpflichtet.'},
+  {ref:'§ 227 BGB',title:'Notwehr (zivilrechtlich)',cat:'BGB',text:'Zivilrechtliche Notwehr – eine in Notwehr begangene Handlung ist nicht widerrechtlich.'},
+  {ref:'§ 34a GewO',title:'Bewachungsgewerbe',cat:'Gewerberecht',text:'Erlaubnispflicht; Grundlage für Unterrichtung, Sachkunde und Bewacherregister.'},
+  {ref:'§ 14 GewO',title:'Gewerbeanzeige',cat:'Gewerberecht',text:'Pflicht zur Anzeige der Aufnahme eines stehenden Gewerbes beim Gewerbeamt.'},
+  {ref:'§ 4 WaffG',title:'Waffenrechtliche Erlaubnis',cat:'Waffenrecht',text:'Umgang mit Waffen/Munition setzt grundsätzlich Bedürfnis, Sachkunde und Zuverlässigkeit voraus.'},
+  {ref:'§ 42a WaffG',title:'Führungsverbot',cat:'Waffenrecht',text:'Verbot, Anscheinswaffen und bestimmte Messer in der Öffentlichkeit zu führen.'},
+  {ref:'DGUV V 23',title:'UVV Wach- und Sicherungsdienste',cat:'Arbeitsschutz',text:'Unfallverhütungsvorschrift für das Sicherheitsgewerbe (früher BGV C7).'},
+  {ref:'Art. 13 GG',title:'Unverletzlichkeit der Wohnung',cat:'Grundgesetz',text:'Die Wohnung ist grundrechtlich besonders geschützt.'},
+  {ref:'Art. 6 DSGVO',title:'Rechtmäßigkeit der Verarbeitung',cat:'Datenschutz',text:'Personenbezogene Daten nur mit Rechtsgrundlage (z. B. Einwilligung, berechtigtes Interesse).'},
+  {ref:'§ 4 BDSG',title:'Videoüberwachung',cat:'Datenschutz',text:'Beobachtung öffentlich zugänglicher Räume mit optisch-elektronischen Einrichtungen – kenntlich machen.'}
+];
+let glossQuery='';
+function renderGloss(){
+  const list=document.getElementById('glossList'); const q=glossQuery.toLowerCase();
+  const items=GLOSSAR.filter(g=>!q||(g.ref+' '+g.title+' '+g.text+' '+g.cat).toLowerCase().includes(q));
+  if(!items.length){list.innerHTML='<div class="rank-empty">Kein Eintrag gefunden.</div>';return;}
+  list.innerHTML=items.map(g=>`<div class="gloss-item"><div class="gloss-top"><span class="gloss-ref">${g.ref}</span><span class="gloss-cat">${g.cat}</span></div><div class="gloss-title">${g.title}</div><div class="gloss-text">${g.text}</div></div>`).join('');
+}
+(function(){const gi=document.getElementById('glossSearch'), gc=document.getElementById('glossClear');
+  gi.addEventListener('input',()=>{glossQuery=gi.value.trim(); gc.classList.toggle('show',glossQuery.length>0); renderGloss();});
+  gc.addEventListener('click',()=>{gi.value='';glossQuery='';gc.classList.remove('show');renderGloss();gi.focus();}); renderGloss();})();
+
+// ═══ TOOL: Versicherungs-Check ═══
+const INS=[{name:'Personenschäden',min:1000000},{name:'Sachschäden',min:250000},{name:'reine Vermögensschäden',min:12500},{name:'Abhandenkommen bewachter Sachen',min:15000}];
+(function(){const wrap=document.getElementById('insRows');
+  wrap.innerHTML=INS.map((x,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">${x.name}</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px">min. ${deFmt(x.min)} €</div></div><input type="number" inputmode="numeric" data-i="${i}" value="${x.min}" style="width:118px;flex-shrink:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;text-align:right"><div style="width:22px;text-align:center;font-size:15px;flex-shrink:0" data-flag="${i}">✅</div></div>`).join('');
+  function check(){let allOk=true; INS.forEach((x,i)=>{const v=parseFloat(wrap.querySelector(`input[data-i="${i}"]`).value)||0, ok=v>=x.min; if(!ok)allOk=false; wrap.querySelector(`[data-flag="${i}"]`).textContent=ok?'✅':'❌';});
+    const s=document.getElementById('insSummary'); s.style.cssText='margin-top:14px;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:14px;'+(allOk?'background:var(--accent-dim);color:var(--accent)':'background:var(--red-dim);color:var(--red)'); s.textContent=allOk?'✓ Alle gesetzlichen Mindestsummen erfüllt':'✗ Mindestens eine Deckungssumme zu niedrig';}
+  wrap.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',check)); check();})();
+
+// ═══ TOOL: Lohnrechner ═══
+(function(){const ids=['lohnStunde','lohnStunden','lohnNacht','lohnSonntag','lohnFeiertag'], S={nacht:0.25,sonntag:0.50,feiertag:1.25};
+  const val=id=>parseFloat(document.getElementById(id).value)||0;
+  function calc(){const rate=val('lohnStunde'),h=val('lohnStunden'),n=val('lohnNacht'),so=val('lohnSonntag'),f=val('lohnFeiertag');
+    const grund=rate*h, zN=rate*S.nacht*n, zS=rate*S.sonntag*so, zF=rate*S.feiertag*f, brutto=grund+zN+zS+zF;
+    document.getElementById('lohnBrutto').textContent=deFmt(brutto,2)+' €';
+    const rows=[['Grundlohn',grund]]; if(zN>0)rows.push(['+ Nachtzuschlag (25 %)',zN]); if(zS>0)rows.push(['+ Sonntagszuschlag (50 %)',zS]); if(zF>0)rows.push(['+ Feiertagszuschlag (125 %)',zF]); rows.push(['Brutto gesamt',brutto]);
+    document.getElementById('lohnBreak').innerHTML=rows.map(([l,v],k)=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);${k===rows.length-1?'font-weight:700;color:var(--text);border-bottom:none':''}"><span>${l}</span><span style="font-family:'JetBrains Mono',monospace">${deFmt(v,2)} €</span></div>`).join('');}
+  ids.forEach(id=>document.getElementById(id).addEventListener('input',calc)); calc();})();
+
+// ═══ TOOL: Checklisten ═══
+const CHECKLISTS={
+  dienstantritt:{title:'Dienstantritt / Schichtbeginn',items:['Dienstausweis & Ausrüstung prüfen','Dienstanweisung / Objektmappe lesen','Übergabe vom Vorgänger entgegennehmen','Schlüssel, Funk & Telefon prüfen','Erste-Hilfe-Mittel & Notrufnummern bereit','Streifen-/Kontrollplan checken','Besonderheiten & Auflagen notieren']},
+  streife:{title:'Streifen- / Kontrollgang',items:['Vorgegebene Route einhalten','Türen, Fenster & Tore kontrollieren','Beleuchtung & Fluchtwege prüfen','Auffälligkeiten mit Zeit & Ort dokumentieren','Brandschutz: keine Gefahrenquellen','Kontrollpunkte (Wächterkontrolle) erfassen','Vorkommnisse unverzüglich melden']},
+  uebergabe:{title:'Schlüssel- / Objektübergabe',items:['Schlüssel auf Vollständigkeit zählen','Objektzustand prüfen','Offene Vorgänge übergeben','Eintrag ins Wachbuch','Übergabe quittieren lassen']},
+  notfall:{title:'Notfall / Zwischenfall',items:['Eigenschutz geht vor','Notruf 110/112 absetzen (Wo? Was? Wie viele? Welche? Warten!)','Erste Hilfe leisten','Bereich sichern / absperren','Zeugen & Beweise sichern','Leitstelle / Vorgesetzten informieren','Dokumentation / Bericht erstellen']}
+};
+const CHECK_STATE={};
+(function(){const sel=document.getElementById('checkSelect'), keys=Object.keys(CHECKLISTS);
+  sel.innerHTML=keys.map(k=>`<option value="${k}">${CHECKLISTS[k].title}</option>`).join('');
+  function render(){const key=sel.value, list=CHECKLISTS[key], wrap=document.getElementById('chkList');
+    wrap.innerHTML=list.items.map((it,i)=>{const done=CHECK_STATE[key+':'+i]; return `<div class="chk-item ${done?'done':''}" data-i="${i}"><div class="chk-box"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><div class="chk-label">${it}</div></div>`;}).join('');
+    wrap.querySelectorAll('.chk-item').forEach(el=>el.addEventListener('click',()=>{const i=el.dataset.i, k=key+':'+i; CHECK_STATE[k]=!CHECK_STATE[k]; render();}));
+    const total=list.items.length, done=list.items.filter((_,i)=>CHECK_STATE[key+':'+i]).length;
+    document.getElementById('chkFill').style.width=(done/total*100)+'%';
+    document.getElementById('chkCount').textContent=done+' / '+total+' erledigt';}
+  sel.addEventListener('change',render);
+  document.getElementById('chkReset').addEventListener('click',()=>{const key=sel.value; CHECKLISTS[key].items.forEach((_,i)=>delete CHECK_STATE[key+':'+i]); render();});
+  render();})();
 
 // ═══ INIT ═══
 loadData();
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>
 </html>

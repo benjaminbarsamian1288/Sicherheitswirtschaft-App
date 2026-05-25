@@ -24,13 +24,13 @@
   --radius:16px;
 }
 html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;scroll-behavior:smooth}
-body{padding-bottom:80px}
+body{padding-bottom:84px}
 
 /* Nav */
 .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,17,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 8px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;font-weight:400}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:9.5px;font-weight:400;flex:1;min-width:0}
 .nav-item.active{color:var(--accent)}
-.nav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-item svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 /* Sections */
 .section{display:none;padding:16px;padding-top:env(safe-area-inset-top,16px);animation:fadeUp .4s ease}
@@ -141,6 +141,80 @@ body{padding-bottom:80px}
 
 .source-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic}
 
+/* Accordion (Recht) */
+.acc-item{border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;background:var(--surface)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;cursor:pointer;font-weight:600;font-size:14px}
+.acc-head .chev{transition:transform .25s;color:var(--text-dim);flex-shrink:0;width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2}
+.acc-item.open .chev{transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 16px}
+.acc-item.open .acc-body{max-height:2200px;padding-bottom:16px}
+.acc-body p{font-size:13px;color:var(--text-dim);line-height:1.65;margin-bottom:8px}
+.acc-body ul{margin:6px 0 10px 18px}
+.acc-body li{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:5px}
+.acc-body strong{color:var(--text);font-weight:600}
+.lawref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);padding:1px 7px;border-radius:6px}
+.pill{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.pill.green{background:var(--accent-dim);color:var(--accent)}
+.pill.blue{background:var(--blue-dim);color:var(--blue)}
+.pill.amber{background:var(--amber-dim);color:var(--amber)}
+
+/* Generic form / buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 18px;border-radius:12px;border:none;background:var(--accent);color:#04130f;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s}
+.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn:disabled{opacity:.35;cursor:default}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px}
+.field input,.field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:15px;outline:none;appearance:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field .hint{font-size:11px;color:var(--text-dim);margin-top:5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Finder */
+.finder-result{margin-top:16px;padding:18px;border-radius:14px;background:var(--surface2);border:1px solid var(--border)}
+.finder-badge{display:inline-block;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:12px}
+.finder-badge.unterrichtung{background:var(--blue-dim);color:var(--blue)}
+.finder-badge.sachkunde{background:var(--accent-dim);color:var(--accent)}
+.finder-result p{font-size:13px;color:var(--text-dim);line-height:1.6}
+
+/* Quiz */
+.quiz-bar{height:6px;border-radius:3px;background:var(--surface2);overflow:hidden;margin-bottom:14px}
+.quiz-bar-fill{height:100%;background:var(--accent);transition:width .35s;width:0}
+.quiz-meta{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
+.quiz-q{font-size:16px;font-weight:600;line-height:1.45;margin-bottom:16px}
+.quiz-opt{display:block;width:100%;text-align:left;padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-size:14px;line-height:1.4;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.quiz-opt:active{transform:scale(.99)}
+.quiz-opt.correct{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+.quiz-opt.wrong{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.quiz-opt.locked{pointer-events:none}
+.quiz-expl{font-size:13px;color:var(--text-dim);line-height:1.6;background:var(--surface2);border-radius:10px;padding:13px;margin-bottom:14px}
+.quiz-result{text-align:center;padding:14px 0 4px}
+.quiz-score{font-size:52px;font-weight:800;color:var(--accent);letter-spacing:-2px;line-height:1}
+.quiz-score small{font-size:22px;color:var(--text-dim);font-weight:600}
+.quiz-verdict{font-size:15px;font-weight:600;margin:10px 0 18px}
+
+/* Insurance check */
+.ins-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.ins-row:last-of-type{border-bottom:none}
+.ins-info{flex:1;min-width:0}
+.ins-name{font-size:13px;font-weight:500}
+.ins-min{font-size:11px;color:var(--text-dim);margin-top:2px}
+.ins-row input{width:118px;flex-shrink:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;text-align:right}
+.ins-row input:focus{border-color:var(--accent)}
+.ins-flag{width:22px;text-align:center;font-size:15px;flex-shrink:0}
+.ins-summary{margin-top:14px;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:14px}
+.ins-summary.ok{background:var(--accent-dim);color:var(--accent)}
+.ins-summary.bad{background:var(--red-dim);color:var(--red)}
+
+/* Calculator */
+.calc-result{margin-top:8px;padding:20px;border-radius:14px;background:var(--accent-dim);border:1px solid rgba(0,212,170,.3);text-align:center}
+.calc-result .big{font-size:36px;font-weight:800;color:var(--accent);letter-spacing:-1.5px;font-family:'Sora',sans-serif}
+.calc-result .sub{font-size:12px;color:var(--text-dim);margin-top:6px}
+.calc-break{margin-top:14px}
+.calc-break .row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border)}
+.calc-break .row:last-child{border-bottom:none;font-weight:700;color:var(--text)}
+.calc-break .row span:last-child{font-family:'JetBrains Mono',monospace}
+
 /* Bottom sheet */
 .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
 .sheet-backdrop.show{opacity:1;pointer-events:auto}
@@ -182,7 +256,7 @@ body{padding-bottom:80px}
     </div>
     <div class="kpi amber">
       <div class="kpi-label">Top 25 Umsatz 2024</div>
-      <div class="kpi-value" data-count="5.4" data-dec="1" data-suffix=" Mrd€">5,4 Mrd€</div>
+      <div class="kpi-value" data-count="5.399" data-dec="2" data-suffix=" Mrd€">5,40 Mrd€</div>
       <div class="kpi-change up">↑ +7,5% Wachstum</div>
     </div>
     <div class="kpi red">
@@ -211,6 +285,29 @@ body{padding-bottom:80px}
       <div class="doughnut-center"><span id="shareTop10">–</span><small>Top 10 Anteil</small></div>
     </div>
     <div class="source-note">Basis: Dienstleistungsmarkt ~13,4 Mrd. € (2023). Tippe in „Ranking" auf eine Firma für Details.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Wachstumstreiber</div>
+    <div class="tags">
+      <span class="tag green">KI-Videoüberwachung</span>
+      <span class="tag blue">Robotik &amp; Drohnen</span>
+      <span class="tag amber">Zutrittskontrolle</span>
+      <span class="tag green">KRITIS-Schutz</span>
+      <span class="tag blue">Cybersecurity</span>
+      <span class="tag amber">Sicherheitsdienstleistungsgesetz</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Wachstum Top 25 (in %)</div>
+    <div class="chart-wrap"><canvas id="chartWachstum"></canvas></div>
+    <div class="source-note">Quelle: Lünendonk-Listen 2021–2025</div>
+  </div>
+
+  <div class="card" id="newsList">
+    <div class="card-title">Branchen-News</div>
+    <!-- Filled by JS -->
   </div>
 </div>
 
@@ -257,35 +354,167 @@ body{padding-bottom:80px}
   <div id="cmpBody"><!-- Filled by JS --></div>
 </div>
 
-<!-- ═══ TRENDS ═══ -->
-<div class="section" id="sec-trends">
+<!-- ═══ RECHT / BEWACHV ═══ -->
+<div class="section" id="sec-recht">
   <div class="header">
-    <div class="header-label">Branchentrends</div>
-    <div class="header-title">Entwicklungen &amp; News</div>
-    <div class="header-sub">Aktuelle Trends in der Sicherheitswirtschaft</div>
+    <div class="header-label">§ 34a GewO · BewachV</div>
+    <div class="header-title">Bewacherverordnung</div>
+    <div class="header-sub">Rechtsrahmen für das Bewachungsgewerbe in Deutschland</div>
   </div>
 
   <div class="card">
-    <div class="card-title">Wachstumstreiber</div>
-    <div class="tags">
-      <span class="tag green">KI-Videoüberwachung</span>
-      <span class="tag blue">Robotik &amp; Drohnen</span>
-      <span class="tag amber">Zutrittskontrolle</span>
-      <span class="tag green">KRITIS-Schutz</span>
-      <span class="tag blue">Cybersecurity</span>
-      <span class="tag amber">SiGG Gesetzgebung</span>
+    <div class="info-block">
+      <p style="font-size:13px;color:var(--text-dim);line-height:1.65">Die <strong style="color:var(--text)">Verordnung über das Bewachungsgewerbe (BewachV)</strong> konkretisiert seit dem 1. Juni 2019 die Anforderungen des <span class="lawref">§ 34a GewO</span>. Sie regelt Qualifikation, Zuverlässigkeit, Versicherung, Dokumentation, Kennzeichnung und die Eintragung im Bewacherregister. Tippe die Punkte an.</p>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">Wachstum Top 25 (in %)</div>
-    <div class="chart-wrap"><canvas id="chartWachstum"></canvas></div>
-    <div class="source-note">Quelle: Lünendonk-Listen 2021–2025</div>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head">Unterrichtung (40 Stunden)
+        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="acc-body">
+        <p><span class="pill blue">Grundqualifikation</span></p>
+        <p>Für die meisten Bewachungstätigkeiten genügt die <strong>40-stündige Unterrichtung</strong> bei der IHK. Sie weist nach, dass die Person mit den rechtlichen und fachlichen Grundlagen vertraut ist.</p>
+        <p><strong>Typische Tätigkeiten:</strong> Objekt- und Werkschutz, Pförtner- und Empfangsdienst, Separat- und Revierwachdienst, Veranstaltungsschutz (mitwirkend), Geld- und Werttransport.</p>
+        <p>Die Teilnahme wird mit einer Unterrichtungsbescheinigung der IHK belegt – eine Prüfung gibt es hier nicht.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head">Sachkundeprüfung § 34a
+        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="acc-body">
+        <p><span class="pill green">Erweiterte Qualifikation</span></p>
+        <p>Für bestimmte Tätigkeiten ist die bestandene <strong>Sachkundeprüfung nach § 34a GewO</strong> zwingend vorgeschrieben:</p>
+        <ul>
+          <li>Kontrollgänge im <strong>öffentlichen Verkehrsraum</strong> oder in Hausrechtsbereichen mit tatsächlich öffentlichem Verkehr (City-Streife)</li>
+          <li><strong>Schutz vor Ladendieben</strong> (Ladendetektiv)</li>
+          <li>Bewachung im <strong>Einlassbereich</strong> gastgewerblicher Diskotheken (Türsteher)</li>
+          <li>Bewachung von <strong>Flüchtlings-/Asylunterkünften</strong> in leitender Funktion</li>
+          <li>Bewachung <strong>zugangsgeschützter Großveranstaltungen</strong> in leitender Funktion</li>
+          <li>Selbstständige <strong>Gewerbetreibende</strong> (Inhaber der § 34a-Erlaubnis)</li>
+        </ul>
+        <p><strong>Prüfung:</strong> schriftlicher Teil (Multiple Choice, ca. 72 Fragen, 120 Min.) und mündlicher Teil (ca. 15 Min.) vor der IHK. Beide Teile müssen bestanden werden.</p>
+        <p><strong>5 Sachgebiete:</strong> Recht der öffentlichen Sicherheit/Ordnung &amp; Gewerbe-/Datenschutzrecht, BGB, Straf- &amp; Verfahrensrecht + Umgang mit Waffen, Unfallverhütungsvorschrift (DGUV V 23), Umgang mit Menschen/Deeskalation, Grundzüge der Sicherheitstechnik.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head">Zuverlässigkeit &amp; Bewacherregister
+        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="acc-body">
+        <p>Vor dem Einsatz prüft die Behörde die <strong>Zuverlässigkeit</strong> – u. a. über Führungszeugnis und Auskunft aus dem Gewerbezentralregister. Bei sachkundepflichtigen Tätigkeiten erfolgt zusätzlich eine <strong>Regelanfrage beim Verfassungsschutz</strong>.</p>
+        <p>Jede Wachperson und jedes Unternehmen wird im <strong>Bewacherregister (BWR)</strong> erfasst und erhält eine eindeutige <strong>Bewacher-ID</strong>. Arbeitgeber müssen Beschäftigte vor dem ersten Einsatz registrieren.</p>
+        <p>Das Register wird vom Statistischen Bundesamt geführt; Behörden und Gewerbetreibende greifen online darauf zu.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head">Haftpflichtversicherung (§ 14 BewachV)
+        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="acc-body">
+        <p>Jeder Gewerbetreibende muss eine Haftpflichtversicherung mit gesetzlichen <strong>Mindestversicherungssummen je Schadensereignis</strong> nachweisen:</p>
+        <ul>
+          <li>Personenschäden: <strong>1.000.000 €</strong></li>
+          <li>Sachschäden: <strong>250.000 €</strong></li>
+          <li>reine Vermögensschäden: <strong>12.500 €</strong></li>
+          <li>Abhandenkommen bewachter Sachen: <strong>15.000 €</strong></li>
+        </ul>
+        <p>Prüfe deine Police im Tab <strong>Tools → Versicherungs-Check</strong>.</p>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-head">Dienstausweis &amp; Kennzeichnung
+        <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="acc-body">
+        <p>Wachpersonen müssen bei der Arbeit einen <strong>Dienstausweis</strong> mit Namen bzw. Kennnummer, Lichtbild und Bewacher-ID mitführen und auf Verlangen vorzeigen.</p>
+        <p>Bei bestimmten Tätigkeiten (z. B. im öffentlichen Verkehrsraum, leitende Einsätze) besteht eine <strong>Kennzeichnungspflicht</strong> – sichtbares Schild mit Name oder Kennnummer und Firma.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="card" id="newsList">
-    <div class="card-title">Branchen-News</div>
-    <!-- Filled by JS -->
+  <div class="source-note">Quellen: BewachV 2019 (gesetze-im-internet.de), § 34a GewO, IHK. Stand 2026 · Keine Rechtsberatung.</div>
+</div>
+
+<!-- ═══ TOOLS ═══ -->
+<div class="section" id="sec-tools">
+  <div class="header">
+    <div class="header-label">Interaktiv</div>
+    <div class="header-title">Tools</div>
+    <div class="header-sub">Praktische Werkzeuge rund um § 34a &amp; BewachV</div>
+  </div>
+
+  <div class="segmented" id="toolTabs">
+    <button class="seg active" data-tool="finder">Quali-Finder</button>
+    <button class="seg" data-tool="quiz">§34a-Quiz</button>
+    <button class="seg" data-tool="ins">Versicherung</button>
+    <button class="seg" data-tool="lohn">Lohnrechner</button>
+  </div>
+
+  <!-- Tool: Qualifikations-Finder -->
+  <div class="tool-panel" id="tool-finder">
+    <div class="card">
+      <div class="card-title">Welche Qualifikation brauche ich?</div>
+      <div class="field">
+        <label>Geplante Tätigkeit</label>
+        <select id="finderSelect"></select>
+      </div>
+      <div class="finder-result" id="finderResult"></div>
+    </div>
+  </div>
+
+  <!-- Tool: Quiz -->
+  <div class="tool-panel" id="tool-quiz" style="display:none">
+    <div class="card" id="quizCard">
+      <div class="quiz-bar"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <!-- Tool: Versicherungs-Check -->
+  <div class="tool-panel" id="tool-ins" style="display:none">
+    <div class="card">
+      <div class="card-title">Versicherungs-Check (§ 14 BewachV)</div>
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;line-height:1.5">Trage die Deckungssummen deiner Police ein – der Check vergleicht sie mit den gesetzlichen Mindestsummen.</p>
+      <div id="insRows"></div>
+      <div class="ins-summary" id="insSummary"></div>
+    </div>
+  </div>
+
+  <!-- Tool: Lohnrechner -->
+  <div class="tool-panel" id="tool-lohn" style="display:none">
+    <div class="card">
+      <div class="card-title">Lohn- &amp; Schichtrechner</div>
+      <div class="field">
+        <label>Stundenlohn (brutto)</label>
+        <input type="number" id="lohnStunde" inputmode="decimal" value="15.50" step="0.10" min="0">
+      </div>
+      <div class="field">
+        <label>Bezahlte Stunden / Monat</label>
+        <input type="number" id="lohnStunden" inputmode="decimal" value="173" step="1" min="0">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>davon Nacht (Std.)</label>
+          <input type="number" id="lohnNacht" inputmode="decimal" value="0" step="1" min="0">
+        </div>
+        <div class="field">
+          <label>davon Sonntag (Std.)</label>
+          <input type="number" id="lohnSonntag" inputmode="decimal" value="0" step="1" min="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>davon Feiertag (Std.)</label>
+        <input type="number" id="lohnFeiertag" inputmode="decimal" value="0" step="1" min="0">
+      </div>
+      <div class="calc-result">
+        <div class="big" id="lohnBrutto">–</div>
+        <div class="sub">geschätztes Brutto / Monat (inkl. Zuschläge)</div>
+      </div>
+      <div class="calc-break" id="lohnBreak"></div>
+      <div class="source-note">Steuerfreie Zuschlagssätze nach § 3b EStG: Nacht 25 %, Sonntag 50 %, Feiertag 125 %. Schätzung ohne Steuer/Sozialabgaben.</div>
+    </div>
   </div>
 </div>
 
@@ -303,7 +532,7 @@ body{padding-bottom:80px}
     </div>
     <div class="info-block">
       <h3>Marktvolumen</h3>
-      <p>Die gesamte Sicherheitsbranche (Dienstleistungen + Technik) erwirtschaftete zuletzt geschätzt über 18 Mrd. Euro. Allein der Dienstleistungsbereich liegt bei ca. 13,4 Mrd. Euro (2023). Die Top 25 Unternehmen repräsentieren ~40% des Marktes.</p>
+      <p>Die gesamte Sicherheitsbranche (Dienstleistungen + Technik) erwirtschaftete zuletzt geschätzt über 18 Mrd. Euro. Allein der Dienstleistungsbereich liegt bei ca. 13,4 Mrd. Euro (2023). Die Top 25 Unternehmen erwirtschafteten 2024 rund 5,4 Mrd. € (~40% des Marktes).</p>
     </div>
     <div class="info-block">
       <h3>Aufgabengebiete</h3>
@@ -311,7 +540,7 @@ body{padding-bottom:80px}
     </div>
     <div class="info-block">
       <h3>Quellen &amp; Links</h3>
-      <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a></p>
+      <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a> · <a href="https://www.gesetze-im-internet.de/bewachv_2019/" target="_blank" rel="noopener">BewachV</a></p>
     </div>
   </div>
 
@@ -353,9 +582,13 @@ body{padding-bottom:80px}
     <svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.2 5.2a3 3 0 006.4 0z"/><path d="M19 7l-2.2 5.2a3 3 0 006.4 0z"/></svg>
     Vergleich
   </button>
-  <button class="nav-item" data-target="sec-trends">
-    <svg viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-    Trends
+  <button class="nav-item" data-target="sec-recht">
+    <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 8.5C8 19.5 5 16 5 12V6z"/></svg>
+    Recht
+  </button>
+  <button class="nav-item" data-target="sec-tools">
+    <svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+    Tools
   </button>
   <button class="nav-item" data-target="sec-info">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
@@ -391,11 +624,11 @@ const DATA = {
     werte: [3.2, 7.3, 10.5, 7.9, 7.5]
   },
   news: [
-    {date:'Okt 2025', title:'Lünendonk-Liste 2025 veröffentlicht', desc:'Top 25 erwirtschaften 5,4 Mrd. € — Digitalisierung & Robotik im Fokus.'},
+    {date:'Okt 2025', title:'Lünendonk-Liste 2025: +7,5 % Wachstum', desc:'Die Top 25 erwirtschaften 5.398,6 Mio. € (~40 % des Marktes). Securitas führt mit 1.210 Mio. €, Kötter wächst durch die Wako-Übernahme um 18,6 % auf 722 Mio. €.'},
+    {date:'Okt 2025', title:'Sicherheitsdienstleister werden digital', desc:'Robotik, KI und berufsbegleitende Qualifizierung prägen die Branche – so begegnen die Anbieter dem Fachkräftemangel.'},
     {date:'Feb 2025', title:'BDSW fordert bessere Rahmenbedingungen', desc:'Rund 290.000 Beschäftigte in der Branche. Forderung nach höherem Stellenwert.'},
     {date:'Sep 2024', title:'Security Essen 2024', desc:'Weltgrößte Sicherheitsmesse mit Fokus auf KI, Drohnen und Zutrittskontrolle.'},
-    {date:'Mai 2024', title:'Umsatz 2023: 13,4 Mrd. Euro', desc:'+12,6% Wachstum. Beschäftigung steigt auf 284.500 trotz Fachkräftemangel.'},
-    {date:'Jul 2024', title:'Lünendonk-Liste 2024', desc:'23 von 25 Top-Unternehmen sind BDSW-Mitglieder. Top 10 wachsen um 12,6%.'}
+    {date:'Mai 2024', title:'Umsatz 2023: 13,4 Mrd. Euro', desc:'+12,6% Wachstum. Beschäftigung steigt auf 284.500 trotz Fachkräftemangel.'}
   ]
 };
 
@@ -404,7 +637,6 @@ let rankSort = 'umsatz';
 let rankQuery = '';
 let compareSel = [];
 let radarChart = null;
-let shareChart = null;
 
 // ═══ HELPERS ═══
 const COMPARE_COLORS = ['#00d4aa', '#5b9cf6', '#f5a623'];
@@ -478,32 +710,19 @@ const baseOpts = {
 };
 
 function initCharts() {
-  // Umsatz
   new Chart(document.getElementById('chartUmsatz'), {
     type: 'line',
-    data: {
-      labels: DATA.umsatz.jahre,
-      datasets: [{
-        data: DATA.umsatz.werte,
-        borderColor: chartColors.accent, backgroundColor: chartColors.accentBg,
-        fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: chartColors.accent,
-        borderWidth: 2.5
-      }]
-    },
+    data: { labels: DATA.umsatz.jahre, datasets: [{
+      data: DATA.umsatz.werte, borderColor: chartColors.accent, backgroundColor: chartColors.accentBg,
+      fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: chartColors.accent, borderWidth: 2.5 }] },
     options: { ...baseOpts }
   });
 
-  // Beschäftigte
   new Chart(document.getElementById('chartBeschaeftigte'), {
     type: 'bar',
-    data: {
-      labels: DATA.beschaeftigte.jahre,
-      datasets: [{
-        data: DATA.beschaeftigte.werte,
-        backgroundColor: chartColors.blueBg, borderColor: chartColors.blue,
-        borderWidth: 1.5, borderRadius: 6
-      }]
-    },
+    data: { labels: DATA.beschaeftigte.jahre, datasets: [{
+      data: DATA.beschaeftigte.werte, backgroundColor: chartColors.blueBg, borderColor: chartColors.blue,
+      borderWidth: 1.5, borderRadius: 6 }] },
     options: { ...baseOpts }
   });
 
@@ -514,43 +733,23 @@ function initCharts() {
   const palette = ['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
   new Chart(document.getElementById('chartShare'), {
     type: 'doughnut',
-    data: {
-      labels: [...top10.map(r => r.name), 'Übriger Markt'],
-      datasets: [{
-        data: [...top10.map(r => r.umsatz), sonstige],
-        backgroundColor: [...palette.slice(0, top10.length), 'rgba(255,255,255,0.06)'],
-        borderColor: '#060611', borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false, cutout: '68%',
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: c => `${c.label}: ${deFmt(c.parsed)} Mio € (${deFmt(c.parsed / DATA.totalMarket * 100, 1)}%)` } }
-      }
-    }
+    data: { labels: [...top10.map(r => r.name), 'Übriger Markt'], datasets: [{
+      data: [...top10.map(r => r.umsatz), sonstige],
+      backgroundColor: [...palette.slice(0, top10.length), 'rgba(255,255,255,0.06)'],
+      borderColor: '#060611', borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '68%',
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: c => `${c.label}: ${deFmt(c.parsed)} Mio € (${deFmt(c.parsed / DATA.totalMarket * 100, 1)}%)` } } } }
   });
   document.getElementById('shareTop10').textContent = deFmt(topSum / DATA.totalMarket * 100, 1) + '%';
 
-  // Wachstum
   new Chart(document.getElementById('chartWachstum'), {
     type: 'line',
-    data: {
-      labels: DATA.wachstumTop25.jahre,
-      datasets: [{
-        data: DATA.wachstumTop25.werte,
-        borderColor: chartColors.amber, backgroundColor: chartColors.amberBg,
-        fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: chartColors.amber,
-        borderWidth: 2.5
-      }]
-    },
-    options: {
-      ...baseOpts,
-      scales: {
-        ...baseOpts.scales,
-        y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks, callback: v => v + '%' } }
-      }
-    }
+    data: { labels: DATA.wachstumTop25.jahre, datasets: [{
+      data: DATA.wachstumTop25.werte, borderColor: chartColors.amber, backgroundColor: chartColors.amberBg,
+      fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: chartColors.amber, borderWidth: 2.5 }] },
+    options: { ...baseOpts, scales: { ...baseOpts.scales,
+      y: { ...baseOpts.scales.y, ticks: { ...baseOpts.scales.y.ticks, callback: v => v + '%' } } } }
   });
 }
 
@@ -572,11 +771,7 @@ function renderRanking() {
   const container = document.getElementById('rankList');
   const arr = sortedRanking();
   let html = '<div class="card-title">' + (rankQuery ? `Treffer (${arr.length})` : 'Vollständiges Ranking') + '</div>';
-  if (!arr.length) {
-    html += '<div class="rank-empty">Kein Unternehmen gefunden.</div>';
-    container.innerHTML = html;
-    return;
-  }
+  if (!arr.length) { container.innerHTML = html + '<div class="rank-empty">Kein Unternehmen gefunden.</div>'; return; }
   arr.forEach((o, pos) => {
     const r = o.r;
     const cls = pos < 3 ? `r${pos+1}` : 'r5';
@@ -594,16 +789,8 @@ function renderRanking() {
     </div>`;
   });
   container.innerHTML = html;
-
-  container.querySelectorAll('.rank-item').forEach(el => {
-    el.addEventListener('click', () => openDetail(+el.dataset.idx));
-  });
-  container.querySelectorAll('.rank-cmp').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      toggleCompare(+btn.dataset.cmp);
-    });
-  });
+  container.querySelectorAll('.rank-item').forEach(el => el.addEventListener('click', () => openDetail(+el.dataset.idx)));
+  container.querySelectorAll('.rank-cmp').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); toggleCompare(+btn.dataset.cmp); }));
 }
 
 // ═══ COMPARE ═══
@@ -611,18 +798,14 @@ function toggleCompare(idx){
   const at = compareSel.indexOf(idx);
   if (at > -1) compareSel.splice(at, 1);
   else if (compareSel.length < 3) compareSel.push(idx);
-  renderRanking();
-  renderVergleich();
-  updateCmpBar();
+  renderRanking(); renderVergleich(); updateCmpBar();
 }
-
 function updateCmpBar(){
   const bar = document.getElementById('cmpBar');
   const onRanking = document.getElementById('sec-ranking').classList.contains('active');
   document.getElementById('cmpCount').textContent = compareSel.length;
   bar.classList.toggle('show', compareSel.length >= 2 && onRanking);
 }
-
 function renderVergleich(){
   const chipWrap = document.getElementById('cmpChips');
   chipWrap.innerHTML = '';
@@ -634,23 +817,20 @@ function renderVergleich(){
     btn.addEventListener('click', () => toggleCompare(i));
     chipWrap.appendChild(btn);
   });
-
   const body = document.getElementById('cmpBody');
   if (compareSel.length < 2) {
-    body.innerHTML = '<div class="card"><div class="info-block"><p>Wähle oben oder im Ranking <strong>2–3 Unternehmen</strong> aus, um Umsatz, Mitarbeiter, Wachstum und Produktivität direkt gegenüberzustellen.</p></div></div>';
+    body.innerHTML = '<div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.6">Wähle oben oder im Ranking <strong style="color:var(--text)">2–3 Unternehmen</strong> aus, um Umsatz, Mitarbeiter, Wachstum und Produktivität direkt gegenüberzustellen.</p></div></div>';
     if (radarChart) { radarChart.destroy(); radarChart = null; }
     return;
   }
-
   const sel = compareSel.map(i => DATA.ranking[i]);
   const metrics = [
-    { key: 'umsatz',    label: 'Umsatz',        get: r => r.umsatz,    fmt: v => deFmt(v) + ' Mio' },
-    { key: 'mit',       label: 'Mitarbeiter',   get: r => r._mit,      fmt: v => deFmt(v) },
-    { key: 'wachstum',  label: 'Wachstum',      get: r => r._wachstum, fmt: v => fmtPct(v) },
-    { key: 'prod',      label: 'Produktivität', get: r => r._prod,     fmt: v => deFmt(v, 1) + ' T€' }
+    { key: 'umsatz',   label: 'Umsatz',        get: r => r.umsatz,    fmt: v => deFmt(v) + ' Mio' },
+    { key: 'mit',      label: 'Mitarbeiter',   get: r => r._mit,      fmt: v => deFmt(v) },
+    { key: 'wachstum', label: 'Wachstum',      get: r => r._wachstum, fmt: v => fmtPct(v) },
+    { key: 'prod',     label: 'Produktivität', get: r => r._prod,     fmt: v => deFmt(v, 1) + ' T€' }
   ];
   const maxAll = metrics.map(m => Math.max(...DATA.ranking.map(m.get)));
-
   let bars = '';
   metrics.forEach(m => {
     const maxSel = Math.max(...sel.map(m.get), 0);
@@ -661,49 +841,30 @@ function renderVergleich(){
       bars += `<div class="cmp-bar-row">
         <div class="cmp-bar-name" style="color:${COMPARE_COLORS[k]}">${r.name}</div>
         <div class="cmp-track"><div class="cmp-fill" style="width:${w}%;background:${COMPARE_COLORS[k]}"></div></div>
-        <div class="cmp-val">${m.fmt(v)}</div>
-      </div>`;
+        <div class="cmp-val">${m.fmt(v)}</div></div>`;
     });
     bars += `</div>`;
   });
-
   body.innerHTML = `
     <div class="card">
       <div class="card-title">Stärkenprofil (relativ zum Branchenmaximum)</div>
       <div class="chart-wrap" style="height:280px"><canvas id="chartRadar"></canvas></div>
     </div>
-    <div class="card">
-      <div class="card-title">Kennzahlen im Direktvergleich</div>
-      ${bars}
-    </div>`;
-
+    <div class="card"><div class="card-title">Kennzahlen im Direktvergleich</div>${bars}</div>`;
   if (radarChart) { radarChart.destroy(); radarChart = null; }
   if (typeof Chart === 'undefined') return;
   radarChart = new Chart(document.getElementById('chartRadar'), {
     type: 'radar',
-    data: {
-      labels: metrics.map(m => m.label),
-      datasets: sel.map((r, k) => ({
-        label: r.name,
-        data: metrics.map((m, j) => maxAll[j] ? +(m.get(r) / maxAll[j] * 100).toFixed(1) : 0),
-        borderColor: COMPARE_COLORS[k],
-        backgroundColor: hexA(COMPARE_COLORS[k], 0.15),
-        pointBackgroundColor: COMPARE_COLORS[k],
-        borderWidth: 2, pointRadius: 3
-      }))
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
+    data: { labels: metrics.map(m => m.label), datasets: sel.map((r, k) => ({
+      label: r.name,
+      data: metrics.map((m, j) => maxAll[j] ? +(m.get(r) / maxAll[j] * 100).toFixed(1) : 0),
+      borderColor: COMPARE_COLORS[k], backgroundColor: hexA(COMPARE_COLORS[k], 0.15),
+      pointBackgroundColor: COMPARE_COLORS[k], borderWidth: 2, pointRadius: 3 })) },
+    options: { responsive: true, maintainAspectRatio: false,
       plugins: { legend: { labels: { color: chartColors.tick, font: { family: 'Sora', size: 11 }, boxWidth: 12 } } },
-      scales: {
-        r: {
-          angleLines: { color: chartColors.grid }, grid: { color: chartColors.grid },
-          pointLabels: { color: chartColors.tick, font: { family: 'Sora', size: 11 } },
-          ticks: { display: false, backdropColor: 'transparent' },
-          suggestedMin: 0, suggestedMax: 100
-        }
-      }
-    }
+      scales: { r: { angleLines: { color: chartColors.grid }, grid: { color: chartColors.grid },
+        pointLabels: { color: chartColors.tick, font: { family: 'Sora', size: 11 } },
+        ticks: { display: false, backdropColor: 'transparent' }, suggestedMin: 0, suggestedMax: 100 } } }
   });
 }
 
@@ -721,8 +882,7 @@ function openDetail(idx){
     ['Marktanteil', deFmt(r._share, 1) + ' %']
   ];
   document.getElementById('detailRows').innerHTML = rows.map(([l, v]) =>
-    `<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`
-  ).join('');
+    `<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`).join('');
   const leader = DATA.ranking.reduce((m, x) => Math.max(m, x.umsatz), 0);
   const pct = leader ? (r.umsatz / leader * 100) : 0;
   document.getElementById('detailBarPct').textContent = deFmt(pct, 0) + '%';
@@ -730,7 +890,6 @@ function openDetail(idx){
   document.getElementById('detailSheet').classList.add('show');
   requestAnimationFrame(() => { document.getElementById('detailBarFill').style.width = pct + '%'; });
 }
-
 function closeDetail(){
   document.getElementById('sheetBackdrop').classList.remove('show');
   document.getElementById('detailSheet').classList.remove('show');
@@ -742,11 +901,8 @@ function renderNews() {
   const container = document.getElementById('newsList');
   let html = '<div class="card-title">Branchen-News</div>';
   DATA.news.forEach(n => {
-    html += `<div class="news-item">
-      <div class="news-date">${n.date}</div>
-      <div class="news-title">${n.title}</div>
-      <div class="news-desc">${n.desc}</div>
-    </div>`;
+    html += `<div class="news-item"><div class="news-date">${n.date}</div>
+      <div class="news-title">${n.title}</div><div class="news-desc">${n.desc}</div></div>`;
   });
   container.innerHTML = html;
 }
@@ -758,19 +914,15 @@ function navigateTo(target){
   window.scrollTo(0, 0);
   updateCmpBar();
 }
-document.querySelectorAll('.nav-item').forEach(btn => {
-  btn.addEventListener('click', () => navigateTo(btn.dataset.target));
-});
+document.querySelectorAll('.nav-item').forEach(btn => btn.addEventListener('click', () => navigateTo(btn.dataset.target)));
 
-// ═══ CONTROLS ═══
+// ═══ RANKING CONTROLS ═══
 document.getElementById('rankSort').addEventListener('click', e => {
-  const seg = e.target.closest('.seg');
-  if (!seg) return;
+  const seg = e.target.closest('.seg'); if (!seg) return;
   rankSort = seg.dataset.sort;
   document.querySelectorAll('#rankSort .seg').forEach(s => s.classList.toggle('active', s === seg));
   renderRanking();
 });
-
 const searchInput = document.getElementById('rankSearch');
 const clearBtn = document.getElementById('rankClear');
 searchInput.addEventListener('input', () => {
@@ -778,20 +930,181 @@ searchInput.addEventListener('input', () => {
   clearBtn.classList.toggle('show', rankQuery.length > 0);
   renderRanking();
 });
-clearBtn.addEventListener('click', () => {
-  searchInput.value = ''; rankQuery = ''; clearBtn.classList.remove('show'); renderRanking(); searchInput.focus();
-});
-
+clearBtn.addEventListener('click', () => { searchInput.value = ''; rankQuery = ''; clearBtn.classList.remove('show'); renderRanking(); searchInput.focus(); });
 document.getElementById('cmpBar').addEventListener('click', () => navigateTo('sec-vergleich'));
 document.getElementById('sheetBackdrop').addEventListener('click', closeDetail);
 
+// ═══ ACCORDION (Recht) ═══
+document.querySelectorAll('.acc-head').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
+
+// ═══ TOOLS ═══
+document.getElementById('toolTabs').addEventListener('click', e => {
+  const seg = e.target.closest('.seg'); if (!seg) return;
+  document.querySelectorAll('#toolTabs .seg').forEach(s => s.classList.toggle('active', s === seg));
+  document.querySelectorAll('.tool-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('tool-' + seg.dataset.tool).style.display = 'block';
+});
+
+// --- Tool 1: Qualifikations-Finder ---
+const QUALI = [
+  { v:'objektschutz', label:'Objekt- / Werkschutz', type:'unterrichtung', text:'Für allgemeinen Objekt- und Werkschutz genügt die 40-stündige Unterrichtung bei der IHK.' },
+  { v:'pfoertner', label:'Pförtner- / Empfangsdienst', type:'unterrichtung', text:'Empfangs- und Pförtnerdienste erfordern nur die Unterrichtung.' },
+  { v:'revier', label:'Separat- / Revierwachdienst', type:'unterrichtung', text:'Revier- und Streifendienst (nicht im öffentlichen Verkehrsraum) ist mit Unterrichtung möglich.' },
+  { v:'gwt', label:'Geld- und Werttransport', type:'unterrichtung', text:'GWT erfordert nach § 34a keine Sachkundeprüfung – aber hohe Zuverlässigkeit und Schulung. Unterrichtung genügt formal.' },
+  { v:'event', label:'Veranstaltungsschutz (mitwirkend)', type:'unterrichtung', text:'Mitwirkende Kräfte bei Veranstaltungen benötigen die Unterrichtung. Achtung: leitende Funktion bei zugangsgeschützten Großveranstaltungen erfordert Sachkunde.' },
+  { v:'tuersteher', label:'Türsteher (Diskothek / Einlass)', type:'sachkunde', text:'Bewachung im Einlassbereich gastgewerblicher Diskotheken erfordert die Sachkundeprüfung § 34a.' },
+  { v:'laden', label:'Ladendetektiv (Schutz vor Ladendieben)', type:'sachkunde', text:'Der Schutz vor Ladendieben ist eine sachkundepflichtige Tätigkeit.' },
+  { v:'city', label:'City-Streife / öffentlicher Verkehrsraum', type:'sachkunde', text:'Kontrollgänge im öffentlichen Verkehrsraum bzw. in Bereichen mit öffentlichem Verkehr erfordern die Sachkundeprüfung.' },
+  { v:'asyl', label:'Leitung: Flüchtlings-/Asylunterkunft', type:'sachkunde', text:'Die Bewachung von Aufnahme-/Gemeinschaftsunterkünften in leitender Funktion erfordert Sachkunde.' },
+  { v:'grossevent', label:'Leitung: zugangsgeschützte Großveranstaltung', type:'sachkunde', text:'Leitende Tätigkeit bei zugangsgeschützten Großveranstaltungen erfordert die Sachkundeprüfung.' },
+  { v:'selbst', label:'Selbstständig / Gewerbeerlaubnis', type:'sachkunde', text:'Wer selbstständig ein Bewachungsgewerbe führt, braucht die § 34a-Erlaubnis und muss die Sachkundeprüfung nachweisen.' }
+];
+(function initFinder(){
+  const sel = document.getElementById('finderSelect');
+  QUALI.forEach(q => { const o = document.createElement('option'); o.value = q.v; o.textContent = q.label; sel.appendChild(o); });
+  function render(){
+    const q = QUALI.find(x => x.v === sel.value) || QUALI[0];
+    const badge = q.type === 'sachkunde' ? 'Sachkundeprüfung § 34a' : 'Unterrichtung 40 Std.';
+    document.getElementById('finderResult').innerHTML =
+      `<span class="finder-badge ${q.type}">${badge}</span><p>${q.text}</p>`;
+  }
+  sel.addEventListener('change', render);
+  render();
+})();
+
+// --- Tool 2: §34a-Quiz ---
+const QUIZ = [
+  { sg:'Recht der öff. Sicherheit', q:'Worauf stützt sich die vorläufige Festnahme durch eine Sicherheitskraft (Jedermannsrecht)?',
+    opts:['§ 127 Abs. 1 StPO','§ 32 StGB (Notwehr)','§ 823 BGB','§ 34a GewO'], correct:0,
+    expl:'Das Jedermann-Festnahmerecht ergibt sich aus § 127 Abs. 1 StPO – zulässig bei frischer Tat, wenn der Täter fluchtverdächtig ist oder seine Identität nicht festgestellt werden kann.' },
+  { sg:'Strafrecht', q:'Notwehr (§ 32 StGB) setzt voraus, dass der Angriff …',
+    opts:['gegenwärtig und rechtswidrig ist','bereits beendet ist','nur verbal erfolgt','geringfügig ist'], correct:0,
+    expl:'Notwehr ist die Verteidigung, die erforderlich ist, um einen gegenwärtigen, rechtswidrigen Angriff abzuwehren.' },
+  { sg:'BGB', q:'Als Objektschützer übt der Mitarbeiter das Hausrecht des Auftraggebers aus. Rechtlich ist er meist …',
+    opts:['Besitzdiener (§ 855 BGB)','Eigentümer','unmittelbarer Besitzer','Eigenbesitzer'], correct:0,
+    expl:'Der Sicherheitsmitarbeiter ist Besitzdiener nach § 855 BGB – er übt die Sachherrschaft weisungsgebunden für den Besitzer aus.' },
+  { sg:'Datenschutz', q:'Eine Videoüberwachung öffentlich zugänglicher Bereiche muss …',
+    opts:['durch Hinweisschild kenntlich gemacht werden','heimlich erfolgen','nur nachts laufen','nicht dokumentiert werden'], correct:0,
+    expl:'Nach DSGVO/BDSG ist die Beobachtung erkennbar zu machen; Zweck und Verantwortlicher müssen ersichtlich sein.' },
+  { sg:'Waffenrecht', q:'Reizstoffsprühgeräte (Pfefferspray) dürfen ohne Erlaubnis geführt werden, wenn sie …',
+    opts:['ein amtliches Prüfzeichen zur Tierabwehr tragen','über 50 ml Inhalt haben','als Verteidigungsspray deklariert sind','selbst gemischt sind'], correct:0,
+    expl:'Tierabwehrsprays mit amtlichem Prüfzeichen gelten waffenrechtlich nicht als Waffe und dürfen ab 18 geführt werden.' },
+  { sg:'Unfallverhütung', q:'Die Unfallverhütungsvorschrift für Wach- und Sicherungsdienste ist die …',
+    opts:['DGUV Vorschrift 23','DGUV Vorschrift 1','DIN 77200','ISO 9001'], correct:0,
+    expl:'Die UVV „Wach- und Sicherungsdienste" ist die DGUV Vorschrift 23 (früher BGV C7 / VBG 68).' },
+  { sg:'Strafprozessrecht', q:'Nach einer vorläufigen Festnahme muss die Sicherheitskraft die Person …',
+    opts:['unverzüglich der Polizei übergeben','selbst vernehmen','durchsuchen und bestrafen','über Nacht festhalten'], correct:0,
+    expl:'Es besteht kein Recht zur Bestrafung – die Person ist unverzüglich der Polizei zu übergeben.' },
+  { sg:'Gewerberecht', q:'Wer ein Bewachungsunternehmen selbstständig führen will, benötigt …',
+    opts:['eine Erlaubnis nach § 34a GewO inkl. Sachkundeprüfung','nur ein Gewerbe nach § 14 GewO','einen Waffenschein','nur die 40-Std.-Unterrichtung'], correct:0,
+    expl:'Selbstständige brauchen die § 34a-Erlaubnis und müssen die Sachkundeprüfung nachweisen – die Unterrichtung genügt hier nicht.' },
+  { sg:'Strafrecht', q:'Der rechtfertigende Notstand ist geregelt in …',
+    opts:['§ 34 StGB','§ 127 StPO','§ 859 BGB','§ 32 StGB'], correct:0,
+    expl:'§ 34 StGB erlaubt eine Handlung, wenn dadurch ein wesentlich höherwertiges Rechtsgut aus gegenwärtiger Gefahr gerettet wird.' },
+  { sg:'BGB', q:'Die Selbsthilfe des Besitzers (Besitzwehr und Besitzkehr) findet sich in …',
+    opts:['§ 859 BGB','§ 226 BGB','§ 34a GewO','§ 240 StGB'], correct:0,
+    expl:'§ 859 BGB regelt die Selbsthilfe des Besitzers – relevant z. B. bei der Durchsetzung des Hausrechts.' }
+];
+let quizI = 0, quizScore = 0, quizAnswered = false;
+function renderQuiz(){
+  const c = document.getElementById('quizContent');
+  document.getElementById('quizBarFill').style.width = (quizI / QUIZ.length * 100) + '%';
+  if (quizI >= QUIZ.length){
+    document.getElementById('quizBarFill').style.width = '100%';
+    const pct = Math.round(quizScore / QUIZ.length * 100);
+    const verdict = pct >= 80 ? 'Stark! Prüfungsreif. 💪' : pct >= 50 ? 'Solide – noch etwas üben.' : 'Da geht mehr – dranbleiben!';
+    c.innerHTML = `<div class="quiz-result">
+      <div class="quiz-score">${quizScore}<small>/${QUIZ.length}</small></div>
+      <div class="quiz-verdict">${verdict} (${pct} %)</div>
+      <button class="btn" id="quizRestart">Nochmal starten</button></div>`;
+    document.getElementById('quizRestart').addEventListener('click', () => { quizI = 0; quizScore = 0; quizAnswered = false; renderQuiz(); });
+    return;
+  }
+  const item = QUIZ[quizI];
+  quizAnswered = false;
+  c.innerHTML = `<div class="quiz-meta">Frage ${quizI+1} / ${QUIZ.length} · ${item.sg}</div>
+    <div class="quiz-q">${item.q}</div>
+    <div id="quizOpts">${item.opts.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}</div>
+    <div id="quizFooter"></div>`;
+  c.querySelectorAll('.quiz-opt').forEach(btn => btn.addEventListener('click', () => answerQuiz(+btn.dataset.i)));
+}
+function answerQuiz(i){
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const item = QUIZ[quizI];
+  const opts = document.querySelectorAll('#quizOpts .quiz-opt');
+  opts.forEach((b, k) => {
+    b.classList.add('locked');
+    if (k === item.correct) b.classList.add('correct');
+    else if (k === i) b.classList.add('wrong');
+  });
+  if (i === item.correct) quizScore++;
+  const last = quizI === QUIZ.length - 1;
+  document.getElementById('quizFooter').innerHTML =
+    `<div class="quiz-expl"><strong>${i === item.correct ? '✓ Richtig. ' : '✗ Leider falsch. '}</strong>${item.expl}</div>
+     <button class="btn" id="quizNext">${last ? 'Ergebnis anzeigen' : 'Nächste Frage'}</button>`;
+  document.getElementById('quizNext').addEventListener('click', () => { quizI++; renderQuiz(); });
+}
+renderQuiz();
+
+// --- Tool 3: Versicherungs-Check ---
+const INS = [
+  { name:'Personenschäden', min:1000000 },
+  { name:'Sachschäden', min:250000 },
+  { name:'reine Vermögensschäden', min:12500 },
+  { name:'Abhandenkommen bewachter Sachen', min:15000 }
+];
+(function initInsurance(){
+  const wrap = document.getElementById('insRows');
+  wrap.innerHTML = INS.map((x,i) => `<div class="ins-row">
+    <div class="ins-info"><div class="ins-name">${x.name}</div><div class="ins-min">min. ${deFmt(x.min)} €</div></div>
+    <input type="number" inputmode="numeric" data-i="${i}" placeholder="0" value="${x.min}">
+    <div class="ins-flag" data-flag="${i}">✅</div></div>`).join('');
+  function check(){
+    let allOk = true;
+    INS.forEach((x,i) => {
+      const val = parseFloat(wrap.querySelector(`input[data-i="${i}"]`).value) || 0;
+      const ok = val >= x.min;
+      if (!ok) allOk = false;
+      wrap.querySelector(`[data-flag="${i}"]`).textContent = ok ? '✅' : '❌';
+    });
+    const s = document.getElementById('insSummary');
+    s.className = 'ins-summary ' + (allOk ? 'ok' : 'bad');
+    s.textContent = allOk ? '✓ Alle gesetzlichen Mindestsummen erfüllt' : '✗ Mindestens eine Deckungssumme zu niedrig';
+  }
+  wrap.querySelectorAll('input').forEach(inp => inp.addEventListener('input', check));
+  check();
+})();
+
+// --- Tool 4: Lohn- & Schichtrechner ---
+(function initLohn(){
+  const ids = ['lohnStunde','lohnStunden','lohnNacht','lohnSonntag','lohnFeiertag'];
+  const SURCHARGE = { nacht:0.25, sonntag:0.50, feiertag:1.25 };
+  function val(id){ return parseFloat(document.getElementById(id).value) || 0; }
+  function calc(){
+    const rate = val('lohnStunde'), hours = val('lohnStunden');
+    const nacht = val('lohnNacht'), sonntag = val('lohnSonntag'), feiertag = val('lohnFeiertag');
+    const grund = rate * hours;
+    const zN = rate * SURCHARGE.nacht * nacht;
+    const zS = rate * SURCHARGE.sonntag * sonntag;
+    const zF = rate * SURCHARGE.feiertag * feiertag;
+    const brutto = grund + zN + zS + zF;
+    document.getElementById('lohnBrutto').textContent = deFmt(brutto, 2) + ' €';
+    const rows = [['Grundlohn', grund]];
+    if (zN > 0) rows.push(['+ Nachtzuschlag (25 %)', zN]);
+    if (zS > 0) rows.push(['+ Sonntagszuschlag (50 %)', zS]);
+    if (zF > 0) rows.push(['+ Feiertagszuschlag (125 %)', zF]);
+    rows.push(['Brutto gesamt', brutto]);
+    document.getElementById('lohnBreak').innerHTML = rows.map(([l,v]) =>
+      `<div class="row"><span>${l}</span><span>${deFmt(v, 2)} €</span></div>`).join('');
+  }
+  ids.forEach(id => document.getElementById(id).addEventListener('input', calc));
+  calc();
+})();
+
 // ═══ INIT ═══
 loadData();
-
-// ═══ SERVICE WORKER ═══
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
-}
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 </script>
 </body>
 </html>

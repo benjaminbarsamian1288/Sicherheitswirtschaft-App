@@ -224,6 +224,40 @@ body{padding-bottom:84px}
 .chk-label{font-size:14px;line-height:1.4}
 .chk-item.done .chk-label{color:var(--text-dim);text-decoration:line-through}
 
+/* Wachbuch */
+.wb-live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.wb-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:wbPulse 1.6s infinite}
+@keyframes wbPulse{0%,100%{opacity:1}50%{opacity:.2}}
+.wb-timer{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--accent);line-height:1}
+.wb-shift-meta{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.6}
+.field textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:15px;outline:none;resize:vertical;min-height:88px}
+.field textarea:focus{border-color:var(--accent)}
+.wb-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wb-quick button{padding:13px 10px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;line-height:1.3}
+.wb-quick button:active{background:var(--accent-dim);border-color:rgba(0,212,170,.4);color:var(--accent)}
+.wb-entry{position:relative;padding:12px 0 12px 14px;border-bottom:1px solid var(--border)}
+.wb-entry:last-child{border-bottom:none}
+.wb-entry::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:2px;background:var(--blue)}
+.wb-entry.sev-wichtig::before{background:var(--amber)}
+.wb-entry.sev-kritisch::before{background:var(--red)}
+.wb-entry.storniert .wb-text{text-decoration:line-through;opacity:.45}
+.wb-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wb-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:600}
+.wb-seq{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)}
+.wb-cat{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:6px;background:var(--surface2);color:var(--text-dim)}
+.wb-storno-btn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:7px;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;cursor:pointer;padding:3px 8px}
+.wb-text{font-size:14px;line-height:1.55;margin-top:6px;word-wrap:break-word}
+.wb-meta{font-size:11px;color:var(--text-dim);margin-top:5px}
+.wb-day{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:600;margin:20px 4px 8px}
+.wb-day:first-child{margin-top:0}
+.wb-empty{padding:28px 0;text-align:center;color:var(--text-dim);font-size:13px;line-height:1.6}
+.wb-integrity{margin-top:12px;padding:13px;border-radius:12px;text-align:center;font-weight:600;font-size:13px;display:none}
+.wb-integrity.ok{display:block;background:var(--accent-dim);color:var(--accent)}
+.wb-integrity.bad{display:block;background:var(--red-dim);color:var(--red)}
+.wb-catchips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
+.wb-catchips::-webkit-scrollbar{display:none}
+.wb-catchips .chip{flex-shrink:0}
+
 /* Bottom sheet */
 .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
 .sheet-backdrop.show{opacity:1;pointer-events:auto}
@@ -290,6 +324,71 @@ body{padding-bottom:84px}
       <p>Der BDSW vertritt die Interessen der Sicherheitswirtschaft. Die Branche (Dienstleistungen + Technik) liegt bei über 18 Mrd. €; allein der Dienstleistungsbereich bei ca. 13,4 Mrd. € (2023). Die Top 25 erwirtschafteten 2024 rund 5,4 Mrd. € (~40 % des Marktes).</p></div>
     <div class="info-block"><h3>Quellen &amp; Links</h3>
       <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a> · <a href="https://www.gesetze-im-internet.de/bewachv_2019/" target="_blank" rel="noopener">BewachV</a> · <a href="https://publikationen.dguv.de" target="_blank" rel="noopener">DGUV V 23</a></p></div>
+  </div>
+</div>
+
+<!-- ═══ WACHBUCH ═══ -->
+<div class="section" id="sec-wachbuch">
+  <div class="header"><div class="header-label">Digitales Dienstbuch</div>
+    <div class="header-title">Wachbuch</div>
+    <div class="header-sub">Revisionssicheres Schicht- &amp; Ereignisprotokoll</div></div>
+  <div class="segmented subtabs" data-group="wachbuch">
+    <button class="seg active" data-sub="dienst">Dienst</button>
+    <button class="seg" data-sub="log">Logbuch</button>
+    <button class="seg" data-sub="stat">Auswertung</button></div>
+
+  <!-- Dienst -->
+  <div class="subpanel" data-group="wachbuch" data-sub="dienst">
+    <div class="card" id="wbShiftCard"></div>
+    <div class="card"><div class="card-title">Schnell-Eintrag</div>
+      <div class="wb-quick">
+        <button data-quick="kontrollgang">🚶 Kontrollgang o. B.</button>
+        <button data-quick="ruhig">✅ Alles ruhig</button>
+        <button data-quick="uebergabe">🔑 Übergabe erfolgt</button>
+        <button data-quick="streife">🔦 Streife begonnen</button>
+      </div></div>
+    <div class="card"><div class="card-title">Neuer Eintrag</div>
+      <div class="grid2">
+        <div class="field"><label>Kategorie</label><select id="wbCat"></select></div>
+        <div class="field"><label>Stufe</label><select id="wbSev">
+          <option value="info">Info</option><option value="wichtig">Wichtig</option><option value="kritisch">Kritisch</option></select></div>
+      </div>
+      <div class="field"><label>Ort / Bereich (optional)</label><input type="text" id="wbOrt" placeholder="z. B. Tor 3, Halle B, Empfang" autocomplete="off"></div>
+      <div class="field"><label>Ereignis / Feststellung</label><textarea id="wbText" placeholder="Was ist passiert? Wer war beteiligt? Welche Maßnahmen wurden getroffen?"></textarea></div>
+      <button class="btn" id="wbAdd">In Wachbuch eintragen</button>
+      <div class="source-note">Einträge werden fortlaufend nummeriert und mit Prüfsumme verkettet. Löschen ist nicht möglich – nur Stornieren mit Begründung (revisionssicher).</div></div>
+  </div>
+
+  <!-- Logbuch -->
+  <div class="subpanel" data-group="wachbuch" data-sub="log" style="display:none">
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="wbSearch" placeholder="Einträge durchsuchen…" autocomplete="off">
+      <button class="clear" id="wbClear" aria-label="Suche löschen">✕</button></div>
+    <div class="wb-catchips" id="wbCatChips"></div>
+    <div class="card" id="wbLogList"></div>
+  </div>
+
+  <!-- Auswertung -->
+  <div class="subpanel" data-group="wachbuch" data-sub="stat" style="display:none">
+    <div class="kpi-grid">
+      <div class="kpi accent"><div class="kpi-label">Einträge gesamt</div><div class="kpi-value" id="wbKpiTotal">0</div></div>
+      <div class="kpi blue"><div class="kpi-label">Einträge heute</div><div class="kpi-value" id="wbKpiToday">0</div></div>
+      <div class="kpi amber"><div class="kpi-label">Kontrollgänge</div><div class="kpi-value" id="wbKpiRounds">0</div></div>
+      <div class="kpi red"><div class="kpi-label">Kritische Ereignisse</div><div class="kpi-value" id="wbKpiCrit">0</div></div>
+    </div>
+    <div class="card"><div class="card-title">Einträge nach Kategorie</div>
+      <div class="chart-wrap" style="height:240px"><canvas id="wbChart"></canvas></div>
+      <div class="wb-empty" id="wbChartEmpty" style="display:none">Noch keine Einträge vorhanden.</div></div>
+    <div class="card"><div class="card-title">Integritätsprüfung</div>
+      <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:12px">Jeder Eintrag ist über eine Prüfsummen-Kette mit seinem Vorgänger verbunden. Nachträgliche Manipulationen werden so erkannt.</p>
+      <button class="btn secondary" id="wbVerify">Kette jetzt prüfen</button>
+      <div class="wb-integrity" id="wbIntegrity"></div></div>
+    <div class="card"><div class="card-title">Export</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn secondary" id="wbExportCsv">CSV-Export</button>
+        <button class="btn secondary" id="wbPrint">Druckansicht</button></div>
+      <div class="source-note">CSV für Excel / Auswertung · Druckansicht für die Ablage im Objektordner. Alle Daten bleiben lokal auf diesem Gerät.</div></div>
   </div>
 </div>
 
@@ -498,6 +597,7 @@ body{padding-bottom:84px}
 
 <nav class="nav">
   <button class="nav-item active" data-target="sec-dashboard"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>Dashboard</button>
+  <button class="nav-item" data-target="sec-wachbuch"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 006.5 22H20v-5"/><path d="M9 7h6M9 11h4"/></svg>Wachbuch</button>
   <button class="nav-item" data-target="sec-ranking"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Ranking</button>
   <button class="nav-item" data-target="sec-vergleich"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.2 5.2a3 3 0 006.4 0z"/><path d="M19 7l-2.2 5.2a3 3 0 006.4 0z"/></svg>Vergleich</button>
   <button class="nav-item" data-target="sec-recht"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 8.5C8 19.5 5 16 5 12V6z"/></svg>Recht</button>
@@ -820,6 +920,175 @@ const CHECK_STATE={};
   sel.addEventListener('change',render);
   document.getElementById('chkReset').addEventListener('click',()=>{const key=sel.value; CHECKLISTS[key].items.forEach((_,i)=>delete CHECK_STATE[key+':'+i]); render();});
   render();})();
+
+// ═══ WACHBUCH ═══
+const WB_CATS=[
+  {v:'Kontrollgang',icon:'🚶'},{v:'Vorkommnis',icon:'⚠️'},{v:'Übergabe',icon:'🔑'},
+  {v:'Besucher',icon:'🧍'},{v:'Alarm',icon:'🚨'},{v:'Technik/Mangel',icon:'🔧'},
+  {v:'Info',icon:'ℹ️'},{v:'Dienstbeginn',icon:'▶️'},{v:'Dienstende',icon:'⏹'},{v:'Storno',icon:'✖️'}
+];
+const WB_FORM_CATS=['Kontrollgang','Vorkommnis','Übergabe','Besucher','Alarm','Technik/Mangel','Info'];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const wbDfDay=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+const wbDfTime=new Intl.DateTimeFormat('de-DE',{hour:'2-digit',minute:'2-digit'});
+let wbEntries=[],wbShift=null,wbQuery='',wbCatFilter='Alle',wbChartInst=null;
+try{wbEntries=JSON.parse(localStorage.getItem('wb_entries'))||[];}catch(e){}
+try{wbShift=JSON.parse(localStorage.getItem('wb_shift'))||null;}catch(e){}
+function wbSave(){localStorage.setItem('wb_entries',JSON.stringify(wbEntries)); if(wbShift)localStorage.setItem('wb_shift',JSON.stringify(wbShift)); else localStorage.removeItem('wb_shift');}
+function wbHash(str){let h=0x811c9dc5; for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0;} return h.toString(16).padStart(8,'0');}
+function wbChainStr(e){return [e.prev,e.seq,e.ts,e.cat,e.sev,e.text,e.ort||'',e.autor||'',e.objekt||''].join('|');}
+function wbAddEntry(cat,text,sev='info',ort=''){
+  const prev=wbEntries.length?wbEntries[wbEntries.length-1].hash:'GENESIS';
+  const e={seq:wbEntries.length+1,ts:new Date().toISOString(),cat,sev,text:text.trim(),ort:ort.trim(),
+    autor:wbShift?wbShift.name:(localStorage.getItem('wb_name')||''),objekt:wbShift?wbShift.objekt:'',prev};
+  e.hash=wbHash(wbChainStr(e)); wbEntries.push(e); wbSave(); renderWB(); return e;
+}
+function wbFmtDur(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60);return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')+':'+String(Math.floor(ms/1000)%60).padStart(2,'0');}
+
+// Dienststatus
+function renderShiftCard(){
+  const c=document.getElementById('wbShiftCard');
+  if(wbShift){
+    c.innerHTML=`<div class="wb-live"><span class="wb-dot"></span>Dienst läuft</div>
+      <div class="wb-timer" id="wbTimer">00:00:00</div>
+      <div class="wb-shift-meta"><strong style="color:var(--text)">${esc(wbShift.name)}</strong> · Objekt: ${esc(wbShift.objekt||'–')}<br>Dienstantritt ${wbDfTime.format(new Date(wbShift.start))} Uhr</div>
+      <div style="margin-top:16px"><button class="btn secondary" id="wbEnd">Dienst beenden</button></div>`;
+    document.getElementById('wbEnd').addEventListener('click',()=>{
+      const dur=wbFmtDur(Date.now()-new Date(wbShift.start).getTime());
+      const s=wbShift; wbShift=null; localStorage.removeItem('wb_shift');
+      const prev=wbEntries.length?wbEntries[wbEntries.length-1].hash:'GENESIS';
+      const e={seq:wbEntries.length+1,ts:new Date().toISOString(),cat:'Dienstende',sev:'info',
+        text:`Dienstende ${s.name} – Dienstdauer ${dur}`,ort:'',autor:s.name,objekt:s.objekt,prev};
+      e.hash=wbHash(wbChainStr(e)); wbEntries.push(e); wbSave(); renderWB();
+    });
+    wbTick();
+  }else{
+    c.innerHTML=`<div class="card-title">Dienstantritt</div>
+      <div class="field"><label>Name der Wachperson</label><input type="text" id="wbName" placeholder="Vor- und Nachname" autocomplete="off" value="${esc(localStorage.getItem('wb_name')||'')}"></div>
+      <div class="field"><label>Objekt / Einsatzort</label><input type="text" id="wbObj" placeholder="z. B. Werkschutz Halle Nord" autocomplete="off" value="${esc(localStorage.getItem('wb_obj')||'')}"></div>
+      <button class="btn" id="wbStart">Dienst beginnen</button>`;
+    document.getElementById('wbStart').addEventListener('click',()=>{
+      const name=document.getElementById('wbName').value.trim(), obj=document.getElementById('wbObj').value.trim();
+      if(!name){alert('Bitte den Namen der Wachperson eingeben.');return;}
+      localStorage.setItem('wb_name',name); localStorage.setItem('wb_obj',obj);
+      wbShift={name,objekt:obj,start:new Date().toISOString()}; wbSave();
+      wbAddEntry('Dienstbeginn',`Dienstantritt ${name}${obj?' – Objekt '+obj:''}`);
+    });
+  }
+}
+function wbTick(){const el=document.getElementById('wbTimer'); if(el&&wbShift)el.textContent=wbFmtDur(Date.now()-new Date(wbShift.start).getTime());}
+setInterval(wbTick,1000);
+
+// Formular + Schnell-Einträge
+(function(){const sel=document.getElementById('wbCat');
+  sel.innerHTML=WB_FORM_CATS.map(c=>`<option value="${c}">${c}</option>`).join('');
+  document.getElementById('wbAdd').addEventListener('click',()=>{
+    const text=document.getElementById('wbText').value.trim();
+    if(!text){alert('Bitte das Ereignis beschreiben.');return;}
+    wbAddEntry(sel.value,text,document.getElementById('wbSev').value,document.getElementById('wbOrt').value);
+    document.getElementById('wbText').value=''; document.getElementById('wbOrt').value='';
+    document.getElementById('wbSev').value='info';
+  });
+  const QUICK={kontrollgang:['Kontrollgang','Kontrollgang durchgeführt – ohne besondere Vorkommnisse.'],
+    ruhig:['Info','Lagemeldung: alles ruhig, keine besonderen Vorkommnisse.'],
+    uebergabe:['Übergabe','Schlüssel- und Objektübergabe erfolgt, Bestand vollständig.'],
+    streife:['Kontrollgang','Streifengang begonnen, Route planmäßig.']};
+  document.querySelectorAll('.wb-quick button').forEach(b=>b.addEventListener('click',()=>{const q=QUICK[b.dataset.quick]; wbAddEntry(q[0],q[1]);}));
+})();
+
+// Logbuch
+function renderWbLog(){
+  const chips=document.getElementById('wbCatChips');
+  const usedCats=['Alle',...new Set(wbEntries.map(e=>e.cat))];
+  chips.innerHTML=usedCats.map(c=>`<button class="chip ${wbCatFilter===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+  chips.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{wbCatFilter=b.dataset.cat;renderWbLog();}));
+  const list=document.getElementById('wbLogList'); const q=wbQuery.toLowerCase();
+  let arr=[...wbEntries].reverse();
+  if(wbCatFilter!=='Alle')arr=arr.filter(e=>e.cat===wbCatFilter);
+  if(q)arr=arr.filter(e=>(e.text+' '+e.cat+' '+(e.ort||'')+' '+(e.autor||'')+' '+(e.objekt||'')).toLowerCase().includes(q));
+  if(!arr.length){list.innerHTML='<div class="card-title">Logbuch</div><div class="wb-empty">Noch keine Einträge.<br>Starte einen Dienst oder nutze den Schnell-Eintrag.</div>';return;}
+  let html='<div class="card-title">Logbuch ('+arr.length+')</div>', lastDay='';
+  arr.forEach(e=>{const d=new Date(e.ts), day=wbDfDay.format(d);
+    if(day!==lastDay){html+=`<div class="wb-day">${day}</div>`;lastDay=day;}
+    const ic=(WB_CATS.find(c=>c.v===e.cat)||{}).icon||'';
+    html+=`<div class="wb-entry sev-${e.sev}${e.storniert?' storniert':''}">
+      <div class="wb-head"><span class="wb-time">${wbDfTime.format(d)}</span><span class="wb-seq">#${String(e.seq).padStart(3,'0')}</span><span class="wb-cat">${ic} ${esc(e.cat)}</span>
+      ${!e.storniert&&e.cat!=='Storno'?`<button class="wb-storno-btn" data-seq="${e.seq}">Stornieren</button>`:''}</div>
+      <div class="wb-text">${esc(e.text)}</div>
+      <div class="wb-meta">${e.ort?esc(e.ort)+' · ':''}${e.autor?esc(e.autor):'ohne Namen'}${e.objekt?' · '+esc(e.objekt):''}${e.storniert?' · <span style="color:var(--red)">storniert: '+esc(e.stornoGrund||'')+'</span>':''}</div></div>`;});
+  list.innerHTML=html;
+  list.querySelectorAll('.wb-storno-btn').forEach(b=>b.addEventListener('click',()=>{
+    const grund=prompt('Grund der Stornierung (Pflichtangabe):'); if(!grund||!grund.trim())return;
+    const e=wbEntries.find(x=>x.seq===+b.dataset.seq); if(!e||e.storniert)return;
+    e.storniert=true; e.stornoGrund=grund.trim();
+    wbAddEntry('Storno',`Eintrag #${String(e.seq).padStart(3,'0')} storniert. Grund: ${grund.trim()}`,'wichtig');
+  }));
+}
+(function(){const si=document.getElementById('wbSearch'), sc=document.getElementById('wbClear');
+  si.addEventListener('input',()=>{wbQuery=si.value.trim(); sc.classList.toggle('show',wbQuery.length>0); renderWbLog();});
+  sc.addEventListener('click',()=>{si.value='';wbQuery='';sc.classList.remove('show');renderWbLog();si.focus();});})();
+
+// Auswertung
+function renderWbStats(){
+  const today=new Date().toDateString();
+  document.getElementById('wbKpiTotal').textContent=deFmt(wbEntries.length);
+  document.getElementById('wbKpiToday').textContent=deFmt(wbEntries.filter(e=>new Date(e.ts).toDateString()===today).length);
+  document.getElementById('wbKpiRounds').textContent=deFmt(wbEntries.filter(e=>e.cat==='Kontrollgang'&&!e.storniert).length);
+  document.getElementById('wbKpiCrit').textContent=deFmt(wbEntries.filter(e=>e.sev==='kritisch'&&!e.storniert).length);
+  const cv=document.getElementById('wbChart'), empty=document.getElementById('wbChartEmpty');
+  if(wbChartInst){wbChartInst.destroy();wbChartInst=null;}
+  if(!wbEntries.length||typeof Chart==='undefined'){cv.style.display='none';empty.style.display='block';return;}
+  cv.style.display='block';empty.style.display='none';
+  const counts={}; wbEntries.forEach(e=>{counts[e.cat]=(counts[e.cat]||0)+1;});
+  const labels=Object.keys(counts), palette=['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
+  wbChartInst=new Chart(cv,{type:'doughnut',data:{labels,datasets:[{data:labels.map(l=>counts[l]),backgroundColor:labels.map((_,i)=>palette[i%palette.length]),borderColor:'#060611',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:chartColors.tick,font:{family:'Sora',size:11},boxWidth:11,padding:10}}}}});
+}
+document.getElementById('wbVerify').addEventListener('click',()=>{
+  const box=document.getElementById('wbIntegrity'); box.className='wb-integrity';
+  if(!wbEntries.length){box.classList.add('ok');box.textContent='Keine Einträge – nichts zu prüfen.';return;}
+  let prev='GENESIS';
+  for(const e of wbEntries){
+    if(e.prev!==prev||wbHash(wbChainStr(e))!==e.hash){box.classList.add('bad');box.textContent=`✗ Kette unterbrochen bei Eintrag #${String(e.seq).padStart(3,'0')} – Daten wurden verändert!`;return;}
+    prev=e.hash;
+  }
+  box.classList.add('ok'); box.textContent=`✓ Alle ${wbEntries.length} Einträge unverändert – Kette intakt.`;
+});
+
+// Export
+document.getElementById('wbExportCsv').addEventListener('click',()=>{
+  if(!wbEntries.length){alert('Keine Einträge zum Exportieren.');return;}
+  const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const rows=[['Nr','Datum','Uhrzeit','Kategorie','Stufe','Ereignis','Ort','Wachperson','Objekt','Storniert','Storno-Grund','Prüfsumme']];
+  wbEntries.forEach(e=>{const d=new Date(e.ts);
+    rows.push([e.seq,d.toLocaleDateString('de-DE'),wbDfTime.format(d),e.cat,e.sev,e.text,e.ort||'',e.autor||'',e.objekt||'',e.storniert?'ja':'nein',e.stornoGrund||'',e.hash]);});
+  const csv='\uFEFF'+rows.map(r=>r.map(cell).join(';')).join('\r\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='wachbuch_'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById('wbPrint').addEventListener('click',()=>{
+  if(!wbEntries.length){alert('Keine Einträge zum Drucken.');return;}
+  const w=window.open('','_blank'); if(!w){alert('Pop-up-Blocker verhindert die Druckansicht.');return;}
+  const rows=wbEntries.map(e=>{const d=new Date(e.ts);
+    return `<tr${e.storniert?' class="storno"':''}><td>#${String(e.seq).padStart(3,'0')}</td><td>${d.toLocaleDateString('de-DE')}<br>${wbDfTime.format(d)}</td><td>${esc(e.cat)}<br><small>${esc(e.sev)}</small></td><td>${esc(e.text)}${e.storniert?'<br><small>STORNIERT: '+esc(e.stornoGrund||'')+'</small>':''}</td><td>${esc(e.ort||'–')}</td><td>${esc(e.autor||'–')}<br><small>${esc(e.objekt||'')}</small></td></tr>`;}).join('');
+  w.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Wachbuch</title><style>
+    body{font-family:Arial,sans-serif;font-size:11px;color:#111;margin:24px}
+    h1{font-size:18px;margin:0 0 2px} .sub{color:#555;margin-bottom:14px}
+    table{width:100%;border-collapse:collapse} th,td{border:1px solid #999;padding:5px 7px;text-align:left;vertical-align:top}
+    th{background:#eee;font-size:10px;text-transform:uppercase} small{color:#666} tr.storno td{text-decoration:line-through;color:#999}
+    .foot{margin-top:18px;color:#555;font-size:10px} .sig{margin-top:36px;display:flex;gap:40px}
+    .sig div{flex:1;border-top:1px solid #111;padding-top:4px;font-size:10px}</style></head><body>
+    <h1>Wachbuch / Dienstbuch</h1><div class="sub">Ausdruck vom ${new Date().toLocaleString('de-DE')} · ${wbEntries.length} Einträge · fortlaufend nummeriert, Prüfsummen-verkettet</div>
+    <table><tr><th>Nr</th><th>Datum</th><th>Kategorie</th><th>Ereignis</th><th>Ort</th><th>Wachperson</th></tr>${rows}</table>
+    <div class="foot">Stornierte Einträge bleiben ersichtlich (durchgestrichen). Erstellt mit dem digitalen Wachbuch der SiWi-App.</div>
+    <div class="sig"><div>Datum, Unterschrift Wachperson</div><div>Datum, Unterschrift Einsatzleitung</div></div>
+    </body></html>`);
+  w.document.close(); w.focus(); setTimeout(()=>w.print(),300);
+});
+
+function renderWB(){renderShiftCard();renderWbLog();renderWbStats();}
+renderWB();
 
 // ═══ INIT ═══
 loadData();

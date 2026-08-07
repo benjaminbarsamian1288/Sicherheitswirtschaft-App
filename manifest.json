@@ -1,11 +1,11 @@
 {
-  "name": "Sicherheitswirtschaft Dashboard",
-  "short_name": "SiWi Dashboard",
-  "description": "Aktuelle Kennzahlen der deutschen Sicherheitswirtschaft — BDSW Daten",
+  "name": "B·B PROTECT Wachbuch",
+  "short_name": "BB Wachbuch",
+  "description": "Digitales, revisionssicheres Wachbuch mit Spracherkennung und KI-Assistent — Benjamin Barsamian, Meister für Schutz und Sicherheit",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#060611",
-  "theme_color": "#060611",
+  "background_color": "#08080d",
+  "theme_color": "#08080d",
   "orientation": "portrait",
   "icons": [
     {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},

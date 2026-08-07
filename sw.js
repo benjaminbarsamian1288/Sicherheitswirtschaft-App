@@ -1,5 +1,5 @@
-const CACHE_NAME = 'siwi-dashboard-v5';
-const ASSETS = ['./', './index.html', './manifest.json', './data.json', './icon-192.png', './icon-512.png'];
+const CACHE_NAME = 'bb-protect-wachbuch-v1';
+const ASSETS = ['./', './index.html', './manifest.json', './logo.jpg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
@@ -12,6 +12,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(fetch(e.request).then(r => {
     const clone = r.clone();
     caches.open(CACHE_NAME).then(c => c.put(e.request, clone));

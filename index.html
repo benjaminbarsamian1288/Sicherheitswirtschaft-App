@@ -5,236 +5,122 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#060611">
+<meta name="theme-color" content="#08080d">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Sicherheitswirtschaft Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<title>B·B PROTECT · Wachbuch</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#060611;--surface:rgba(255,255,255,0.035);--surface2:rgba(255,255,255,0.06);
-  --border:rgba(255,255,255,0.07);--text:#eef0f6;--text-dim:rgba(255,255,255,0.4);
-  --accent:#00d4aa;--accent-dim:rgba(0,212,170,0.12);--accent-glow:rgba(0,212,170,0.3);
-  --red:#ff6b6b;--red-dim:rgba(255,107,107,0.12);
-  --blue:#5b9cf6;--blue-dim:rgba(91,156,246,0.12);
-  --amber:#f5a623;--amber-dim:rgba(245,166,35,0.12);
+  --bg:#08080d;--surface:rgba(255,255,255,0.035);--surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.09);--text:#e9ebf2;--text-dim:rgba(233,235,242,0.45);
+  --gold:#d4af37;--gold-dim:rgba(212,175,55,0.13);--gold-glow:rgba(212,175,55,0.35);
+  --silver:#c9cfdb;
+  --red:#ff6b6b;--red-dim:rgba(255,107,107,0.13);
+  --blue:#5b9cf6;--blue-dim:rgba(91,156,246,0.13);
+  --amber:#f5a623;--amber-dim:rgba(245,166,35,0.13);
+  --green:#3ecf8e;--green-dim:rgba(62,207,142,0.13);
   --radius:16px;
 }
 html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;scroll-behavior:smooth}
-body{padding-bottom:84px}
+body{padding-bottom:84px;background-image:radial-gradient(ellipse 90% 40% at 50% -5%,rgba(212,175,55,0.07),transparent)}
+
+/* Brand header */
+.brand{display:flex;align-items:center;gap:14px;padding:6px 0 16px}
+.brand img{width:64px;height:64px;border-radius:16px;border:1px solid var(--border);box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.brand-name{font-family:'Cinzel',serif;font-size:21px;font-weight:700;letter-spacing:2px;color:var(--silver);line-height:1.15}
+.brand-name span{color:var(--gold)}
+.brand-sub{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-dim);margin-top:4px}
 
 /* Nav */
-.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,17,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:9.5px;font-weight:400;flex:1;min-width:0}
-.nav-item.active{color:var(--accent)}
-.nav-item svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,13,0.93);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;font-weight:500;flex:1;min-width:0}
+.nav-item.active{color:var(--gold)}
+.nav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 /* Sections */
-.section{display:none;padding:16px;padding-top:env(safe-area-inset-top,16px);animation:fadeUp .4s ease}
+.section{display:none;padding:16px;padding-top:max(16px,env(safe-area-inset-top));animation:fadeUp .4s ease}
 .section.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-
-/* Header */
-.header{margin-bottom:18px}
-.header-label{font-size:11px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:6px}
-.header-title{font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
+.header{margin-bottom:16px}
+.header-label{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:5px}
+.header-title{font-size:25px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
 .header-sub{font-size:13px;color:var(--text-dim);margin-top:4px;font-weight:300}
 
 /* Cards */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
-.card-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:12px}
+.card-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:12px}
+.source-note{font-size:10.5px;color:var(--text-dim);margin-top:12px;font-style:italic;line-height:1.55}
 
-/* KPI Row */
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
-.kpi-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;font-weight:400}
+.kpi-label{font-size:11px;color:var(--text-dim);margin-bottom:6px}
 .kpi-value{font-size:28px;font-weight:700;letter-spacing:-1px;line-height:1}
-.kpi-change{font-size:11px;margin-top:6px;font-weight:500}
-.kpi-change.up{color:var(--accent)}
-.kpi.accent .kpi-value{color:var(--accent)}
+.kpi.gold .kpi-value{color:var(--gold)}
 .kpi.blue .kpi-value{color:var(--blue)}
 .kpi.amber .kpi-value{color:var(--amber)}
 .kpi.red .kpi-value{color:var(--red)}
 
-/* Chart */
-.chart-wrap{position:relative;width:100%;height:220px;margin-top:8px}
-.chart-wrap canvas{width:100%!important;height:100%!important}
-.doughnut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.doughnut-center span{display:block;font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-1px}
-.doughnut-center small{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px}
-
-/* Search + controls */
-.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:12px}
-.search svg{width:18px;height:18px;stroke:var(--text-dim);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
-.search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Sora',sans-serif;font-size:14px;min-width:0}
-.search input::placeholder{color:var(--text-dim)}
-.search .clear{background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0 4px;display:none}
-.search .clear.show{display:block}
-
-.segmented{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:14px;overflow-x:auto}
-.segmented::-webkit-scrollbar{display:none}
-.seg{flex:1;white-space:nowrap;padding:9px 10px;border-radius:9px;border:none;background:none;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
-.seg.active{background:var(--accent-dim);color:var(--accent)}
-
-/* Ranking */
-.rank-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
-.rank-item:last-child{border-bottom:none}
-.rank-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
-.rank-num.r1{background:var(--accent-dim);color:var(--accent)}
-.rank-num.r2{background:var(--blue-dim);color:var(--blue)}
-.rank-num.r3{background:var(--amber-dim);color:var(--amber)}
-.rank-num.r4,.rank-num.r5{background:var(--surface2);color:var(--text-dim)}
-.rank-info{flex:1;min-width:0}
-.rank-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rank-detail{font-size:11px;color:var(--text-dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rank-umsatz{font-size:15px;font-weight:600;text-align:right;white-space:nowrap;font-family:'JetBrains Mono',monospace}
-.rank-cmp{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;background:none;color:transparent;transition:all .2s;cursor:pointer}
-.rank-cmp.on{background:var(--accent);border-color:var(--accent);color:#04130f}
-.rank-cmp svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
-.rank-empty{padding:24px 0;text-align:center;color:var(--text-dim);font-size:13px}
-
-/* Compare floating bar */
-.cmp-bar{position:fixed;left:16px;right:16px;bottom:84px;background:var(--accent);color:#04130f;border:none;border-radius:14px;padding:15px;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;z-index:90;display:none;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 34px var(--accent-glow);cursor:pointer}
-.cmp-bar.show{display:flex;animation:fadeUp .3s ease}
-
-/* Chips */
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:9px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;transition:all .2s}
-.chip.on{background:var(--accent-dim);border-color:rgba(0,212,170,.4);color:var(--accent)}
-.chip.dis{opacity:.3;pointer-events:none}
-
-/* Compare bars */
-.cmp-metric{margin-bottom:18px}
-.cmp-metric:last-child{margin-bottom:0}
-.cmp-metric-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:10px}
-.cmp-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.cmp-bar-row:last-child{margin-bottom:0}
-.cmp-bar-name{font-size:12px;width:84px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cmp-track{flex:1;height:8px;border-radius:4px;background:var(--surface2);overflow:hidden}
-.cmp-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
-.cmp-val{font-size:12px;font-weight:600;width:78px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
-
-/* News */
-.news-item{padding:14px 0;border-bottom:1px solid var(--border)}
-.news-item:last-child{border-bottom:none}
-.news-date{font-size:11px;color:var(--accent);font-weight:500;font-family:'JetBrains Mono',monospace}
-.news-title{font-size:14px;font-weight:500;margin-top:4px;line-height:1.4}
-.news-desc{font-size:12px;color:var(--text-dim);margin-top:4px;line-height:1.5}
-
-/* Tags */
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.tag{padding:8px 14px;border-radius:20px;font-size:12px;font-weight:500;background:var(--surface2);border:1px solid var(--border)}
-.tag.green{background:var(--accent-dim);border-color:rgba(0,212,170,.15);color:var(--accent)}
-.tag.blue{background:var(--blue-dim);border-color:rgba(91,156,246,.15);color:var(--blue)}
-.tag.amber{background:var(--amber-dim);border-color:rgba(245,166,35,.15);color:var(--amber)}
-
-/* Info */
-.info-block{margin-bottom:18px}
-.info-block:last-child{margin-bottom:0}
-.info-block h3{font-size:15px;font-weight:600;margin-bottom:8px}
-.info-block p{font-size:13px;color:var(--text-dim);line-height:1.6}
-.info-block a{color:var(--accent);text-decoration:none}
-.source-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic;line-height:1.5}
-
-/* Accordion */
-.acc-item{border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;background:var(--surface)}
-.acc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;cursor:pointer;font-weight:600;font-size:14px}
-.acc-head .chev{transition:transform .25s;color:var(--text-dim);flex-shrink:0;width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2}
-.acc-item.open .chev{transform:rotate(180deg)}
-.acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 16px}
-.acc-item.open .acc-body{max-height:2600px;padding-bottom:16px}
-.acc-body p{font-size:13px;color:var(--text-dim);line-height:1.65;margin-bottom:8px}
-.acc-body ul{margin:6px 0 10px 18px}
-.acc-body li{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:5px}
-.acc-body strong{color:var(--text);font-weight:600}
-.lawref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);padding:1px 7px;border-radius:6px}
-.pill{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
-.pill.green{background:var(--accent-dim);color:var(--accent)}
-.pill.blue{background:var(--blue-dim);color:var(--blue)}
-.pill.amber{background:var(--amber-dim);color:var(--amber)}
-
-/* Forms / buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 18px;border-radius:12px;border:none;background:var(--accent);color:#04130f;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s}
-.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.btn:disabled{opacity:.35;cursor:default}
+/* Forms */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 18px;border-radius:12px;border:none;background:linear-gradient(135deg,#d4af37,#b8912a);color:#141005;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s,transform .1s;box-shadow:0 4px 16px rgba(212,175,55,.18)}
+.btn:active{transform:scale(.985)}
+.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn.ki{background:linear-gradient(135deg,#7b5cf0,#5b9cf6);color:#fff}
+.btn:disabled{opacity:.4;cursor:default}
 .field{margin-bottom:14px}
 .field:last-child{margin-bottom:0}
 .field label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:6px}
-.field input,.field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:15px;outline:none;appearance:none}
-.field input:focus,.field select:focus{border-color:var(--accent)}
+.field input,.field select,.field textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:15px;outline:none;appearance:none}
+.field textarea{resize:vertical;min-height:96px;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ta-wrap{position:relative}
+.ta-wrap textarea{padding-right:56px}
 
-/* Finder */
-.finder-result{margin-top:16px;padding:18px;border-radius:14px;background:var(--surface2);border:1px solid var(--border)}
-.finder-badge{display:inline-block;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:12px}
-.finder-badge.unterrichtung{background:var(--blue-dim);color:var(--blue)}
-.finder-badge.sachkunde{background:var(--accent-dim);color:var(--accent)}
-.finder-result p{font-size:13px;color:var(--text-dim);line-height:1.6}
+/* Mic */
+.mic{position:absolute;right:10px;top:10px;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.mic svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.mic.rec{background:var(--red);border-color:var(--red);color:#fff;animation:micPulse 1.2s infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,107,.5)}50%{box-shadow:0 0 0 9px rgba(255,107,107,0)}}
+.rec-hint{display:none;align-items:center;gap:7px;font-size:11.5px;color:var(--red);font-weight:600;margin-top:8px}
+.rec-hint.show{display:flex}
+.rec-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* Quiz */
-.quiz-bar{height:6px;border-radius:3px;background:var(--surface2);overflow:hidden;margin-bottom:14px}
-.quiz-bar-fill{height:100%;background:var(--accent);transition:width .35s;width:0}
-.quiz-meta{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
-.quiz-q{font-size:16px;font-weight:600;line-height:1.45;margin-bottom:16px}
-.quiz-opt{display:block;width:100%;text-align:left;padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-size:14px;line-height:1.4;margin-bottom:10px;cursor:pointer;transition:all .15s}
-.quiz-opt.correct{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
-.quiz-opt.wrong{background:var(--red-dim);border-color:var(--red);color:var(--red)}
-.quiz-opt.locked{pointer-events:none}
-.quiz-expl{font-size:13px;color:var(--text-dim);line-height:1.6;background:var(--surface2);border-radius:10px;padding:13px;margin-bottom:14px}
-.quiz-result{text-align:center;padding:14px 0 4px}
-.quiz-score{font-size:52px;font-weight:800;color:var(--accent);letter-spacing:-2px;line-height:1}
-.quiz-score small{font-size:22px;color:var(--text-dim);font-weight:600}
-.quiz-verdict{font-size:15px;font-weight:600;margin:10px 0 18px}
+/* KI result note */
+.ki-note{display:none;margin-top:10px;padding:11px 13px;border-radius:10px;font-size:12px;line-height:1.5}
+.ki-note.show{display:block}
+.ki-note.ok{background:rgba(123,92,240,.12);color:#b9a5ff;border:1px solid rgba(123,92,240,.3)}
+.ki-note.warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,166,35,.3)}
+.spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* Flashcards */
-.flash{perspective:1400px;height:250px;margin-bottom:16px}
-.flash-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;cursor:pointer}
-.flash.flipped .flash-inner{transform:rotateY(180deg)}
-.flash-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;border:1px solid var(--border);padding:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.flash-front{background:var(--surface)}
-.flash-back{background:var(--accent-dim);border-color:rgba(0,212,170,.3);transform:rotateY(180deg)}
-.flash-cat{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:14px;font-weight:600}
-.flash-q{font-size:19px;font-weight:700;line-height:1.4}
-.flash-a{font-size:14px;color:var(--text);line-height:1.65}
-.flash-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:var(--text-dim)}
-.flash-nav{display:flex;align-items:center;gap:12px}
-.flash-nav .btn{flex:1}
-.flash-count{font-size:13px;color:var(--text-dim);min-width:62px;text-align:center;font-family:'JetBrains Mono',monospace}
-
-/* Glossar */
-.gloss-item{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--surface)}
-.gloss-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.gloss-ref{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:600}
-.gloss-cat{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);background:var(--surface2);padding:2px 8px;border-radius:6px;white-space:nowrap}
-.gloss-title{font-size:14px;font-weight:600;margin:7px 0 6px}
-.gloss-text{font-size:13px;color:var(--text-dim);line-height:1.6}
-
-/* Checklist */
-.chk-progress{height:8px;border-radius:4px;background:var(--surface2);overflow:hidden;margin-bottom:4px}
-.chk-progress-fill{height:100%;background:var(--accent);transition:width .3s;width:0}
-.chk-count{font-size:11px;color:var(--text-dim);margin-bottom:12px}
-.chk-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer}
-.chk-item:last-child{border-bottom:none}
-.chk-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent;transition:all .2s}
-.chk-item.done .chk-box{background:var(--accent);border-color:var(--accent);color:#04130f}
-.chk-box svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
-.chk-label{font-size:14px;line-height:1.4}
-.chk-item.done .chk-label{color:var(--text-dim);text-decoration:line-through}
-
-/* Wachbuch */
-.wb-live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-.wb-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:wbPulse 1.6s infinite}
-@keyframes wbPulse{0%,100%{opacity:1}50%{opacity:.2}}
-.wb-timer{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--accent);line-height:1}
-.wb-shift-meta{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.6}
-.field textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'Sora',sans-serif;font-size:15px;outline:none;resize:vertical;min-height:88px}
-.field textarea:focus{border-color:var(--accent)}
+/* Quick */
 .wb-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .wb-quick button{padding:13px 10px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;line-height:1.3}
-.wb-quick button:active{background:var(--accent-dim);border-color:rgba(0,212,170,.4);color:var(--accent)}
+.wb-quick button:active{background:var(--gold-dim);border-color:var(--gold-glow);color:var(--gold)}
+
+/* Shift */
+.wb-live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.wb-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:blink 1.6s infinite}
+.wb-timer{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;letter-spacing:-1px;color:var(--gold);line-height:1;text-shadow:0 0 24px var(--gold-glow)}
+.wb-shift-meta{font-size:13px;color:var(--text-dim);margin-top:9px;line-height:1.6}
+
+/* Search + chips */
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:12px}
+.search svg{width:18px;height:18px;stroke:var(--text-dim);fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Sora',sans-serif;font-size:14px;min-width:0}
+.search .clear{background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0 4px;display:none}
+.search .clear.show{display:block}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px;margin-bottom:10px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:8px 14px;border-radius:20px;font-size:12.5px;font-weight:500;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;transition:all .2s;font-family:'Sora',sans-serif}
+.chip.on{background:var(--gold-dim);border-color:var(--gold-glow);color:var(--gold)}
+
+/* Log entries */
 .wb-entry{position:relative;padding:12px 0 12px 14px;border-bottom:1px solid var(--border)}
 .wb-entry:last-child{border-bottom:none}
 .wb-entry::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:2px;background:var(--blue)}
@@ -242,7 +128,7 @@ body{padding-bottom:84px}
 .wb-entry.sev-kritisch::before{background:var(--red)}
 .wb-entry.storniert .wb-text{text-decoration:line-through;opacity:.45}
 .wb-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.wb-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:600}
+.wb-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);font-weight:600}
 .wb-seq{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)}
 .wb-cat{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:6px;background:var(--surface2);color:var(--text-dim)}
 .wb-storno-btn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:7px;color:var(--text-dim);font-family:'Sora',sans-serif;font-size:10px;cursor:pointer;padding:3px 8px}
@@ -251,677 +137,151 @@ body{padding-bottom:84px}
 .wb-day{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:600;margin:20px 4px 8px}
 .wb-day:first-child{margin-top:0}
 .wb-empty{padding:28px 0;text-align:center;color:var(--text-dim);font-size:13px;line-height:1.6}
-.wb-integrity{margin-top:12px;padding:13px;border-radius:12px;text-align:center;font-weight:600;font-size:13px;display:none}
-.wb-integrity.ok{display:block;background:var(--accent-dim);color:var(--accent)}
-.wb-integrity.bad{display:block;background:var(--red-dim);color:var(--red)}
-.wb-catchips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
-.wb-catchips::-webkit-scrollbar{display:none}
-.wb-catchips .chip{flex-shrink:0}
 
-/* Bottom sheet */
-.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
-.sheet-backdrop.show{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;background:#0b0b1c;border-top:1px solid var(--border);border-radius:24px 24px 0 0;z-index:201;padding:22px;padding-bottom:max(22px,env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .38s cubic-bezier(.4,0,.2,1);max-height:86vh;overflow-y:auto}
-.sheet.show{transform:translateY(0)}
-.sheet-handle{width:42px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 18px}
-.sheet-rank{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
-.sheet-name{font-size:23px;font-weight:700;margin:4px 0 18px;line-height:1.2}
-.detail-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border)}
-.detail-row:last-child{border-bottom:none}
-.detail-label{font-size:13px;color:var(--text-dim)}
-.detail-value{font-size:16px;font-weight:600;font-family:'JetBrains Mono',monospace}
-.detail-bar{margin-top:18px}
-.detail-bar-head{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);margin-bottom:6px}
-.detail-bar-track{height:10px;border-radius:5px;background:var(--surface2);overflow:hidden}
-.detail-bar-fill{height:100%;background:linear-gradient(135deg,#00d4aa,#00b4d8);border-radius:5px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+/* Stats bars */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-row:last-child{margin-bottom:0}
+.bar-name{font-size:12px;width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:9px;border-radius:5px;background:var(--surface2);overflow:hidden}
+.bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#d4af37,#f0d070);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.bar-val{font-size:12px;font-weight:600;width:30px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+
+.wb-integrity{margin-top:12px;padding:13px;border-radius:12px;text-align:center;font-weight:600;font-size:13px;display:none}
+.wb-integrity.ok{display:block;background:var(--green-dim);color:var(--green)}
+.wb-integrity.bad{display:block;background:var(--red-dim);color:var(--red)}
+
+/* Mehr */
+.info-block{margin-bottom:16px}
+.info-block:last-child{margin-bottom:0}
+.info-block h3{font-size:15px;font-weight:600;margin-bottom:7px}
+.info-block p{font-size:13px;color:var(--text-dim);line-height:1.6}
+.info-block a{color:var(--gold);text-decoration:none}
+.pill{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.pill.gold{background:var(--gold-dim);color:var(--gold)}
+.pill.green{background:var(--green-dim);color:var(--green)}
 </style>
 </head>
 <body>
 
-<!-- ═══ DASHBOARD ═══ -->
-<div class="section active" id="sec-dashboard">
-  <div class="header">
-    <div class="header-label">BDSW · Sicherheitswirtschaft</div>
-    <div class="header-title">Branchendashboard</div>
-    <div class="header-sub">Aktuelle Kennzahlen der deutschen Sicherheitswirtschaft</div>
+<!-- ═══ DIENST ═══ -->
+<div class="section active" id="sec-dienst">
+  <div class="brand">
+    <img src="logo.jpg" alt="B·B Protect Wappen">
+    <div><div class="brand-name">B·B <span>PROTECT</span></div>
+      <div class="brand-sub">Meister für Schutz &amp; Sicherheit</div></div>
   </div>
-  <div class="kpi-grid">
-    <div class="kpi accent"><div class="kpi-label">Branchenumsatz 2023</div>
-      <div class="kpi-value" data-count="13.4" data-dec="1" data-suffix=" Mrd€">13,4 Mrd€</div>
-      <div class="kpi-change up">↑ +12,6% ggü. Vorjahr</div></div>
-    <div class="kpi blue"><div class="kpi-label">Beschäftigte</div>
-      <div class="kpi-value" data-count="284500" data-dec="0">284.500</div>
-      <div class="kpi-change up">↑ +7.500 ggü. 2022</div></div>
-    <div class="kpi amber"><div class="kpi-label">Top 25 Umsatz 2024</div>
-      <div class="kpi-value" data-count="5.399" data-dec="2" data-suffix=" Mrd€">5,40 Mrd€</div>
-      <div class="kpi-change up">↑ +7,5% Wachstum</div></div>
-    <div class="kpi red"><div class="kpi-label">Marktführer 2024</div>
-      <div class="kpi-value" data-count="1.21" data-dec="2" data-suffix=" Mrd€">1,21 Mrd€</div>
-      <div class="kpi-change">Securitas Deutschland</div></div>
-  </div>
-  <div class="card"><div class="card-title">Umsatzentwicklung (in Mrd. €)</div>
-    <div class="chart-wrap"><canvas id="chartUmsatz"></canvas></div>
-    <div class="source-note">Quelle: BDSW, Statistisches Bundesamt</div></div>
-  <div class="card"><div class="card-title">Beschäftigtenentwicklung (in Tsd.)</div>
-    <div class="chart-wrap"><canvas id="chartBeschaeftigte"></canvas></div>
-    <div class="source-note">Quelle: Bundesagentur für Arbeit, BDSW</div></div>
-  <div class="card"><div class="card-title">Marktanteile am Gesamtmarkt</div>
-    <div class="chart-wrap" style="height:240px"><canvas id="chartShare"></canvas>
-      <div class="doughnut-center"><span id="shareTop10">–</span><small>Top 10 Anteil</small></div></div>
-    <div class="source-note">Basis: Dienstleistungsmarkt ~13,4 Mrd. € (2023). Tippe in „Ranking" auf eine Firma für Details.</div></div>
-  <div class="card"><div class="card-title">Wachstumstreiber</div>
-    <div class="tags">
-      <span class="tag green">KI-Videoüberwachung</span><span class="tag blue">Robotik &amp; Drohnen</span>
-      <span class="tag amber">Zutrittskontrolle</span><span class="tag green">KRITIS-Schutz</span>
-      <span class="tag blue">Cybersecurity</span><span class="tag amber">Sicherheitsdienstleistungsgesetz</span>
-    </div></div>
-  <div class="card"><div class="card-title">Wachstum Top 25 (in %)</div>
-    <div class="chart-wrap"><canvas id="chartWachstum"></canvas></div>
-    <div class="source-note">Quelle: Lünendonk-Listen 2021–2025</div></div>
-  <div class="card" id="newsList"><div class="card-title">Branchen-News</div></div>
-  <div class="card">
-    <div class="info-block"><h3>Über die Branche</h3>
-      <p>Der BDSW vertritt die Interessen der Sicherheitswirtschaft. Die Branche (Dienstleistungen + Technik) liegt bei über 18 Mrd. €; allein der Dienstleistungsbereich bei ca. 13,4 Mrd. € (2023). Die Top 25 erwirtschafteten 2024 rund 5,4 Mrd. € (~40 % des Marktes).</p></div>
-    <div class="info-block"><h3>Quellen &amp; Links</h3>
-      <p><a href="https://www.bdsw.de" target="_blank" rel="noopener">bdsw.de</a> · <a href="https://www.luenendonk.de" target="_blank" rel="noopener">luenendonk.de</a> · <a href="https://www.gesetze-im-internet.de/bewachv_2019/" target="_blank" rel="noopener">BewachV</a> · <a href="https://publikationen.dguv.de" target="_blank" rel="noopener">DGUV V 23</a></p></div>
-  </div>
-</div>
-
-<!-- ═══ WACHBUCH ═══ -->
-<div class="section" id="sec-wachbuch">
-  <div class="header"><div class="header-label">Digitales Dienstbuch</div>
-    <div class="header-title">Wachbuch</div>
+  <div class="header"><div class="header-label">Digitales Wachbuch</div>
+    <div class="header-title">Dienst</div>
     <div class="header-sub">Revisionssicheres Schicht- &amp; Ereignisprotokoll</div></div>
-  <div class="segmented subtabs" data-group="wachbuch">
-    <button class="seg active" data-sub="dienst">Dienst</button>
-    <button class="seg" data-sub="log">Logbuch</button>
-    <button class="seg" data-sub="stat">Auswertung</button></div>
 
-  <!-- Dienst -->
-  <div class="subpanel" data-group="wachbuch" data-sub="dienst">
-    <div class="card" id="wbShiftCard"></div>
-    <div class="card"><div class="card-title">Schnell-Eintrag</div>
-      <div class="wb-quick">
-        <button data-quick="kontrollgang">🚶 Kontrollgang o. B.</button>
-        <button data-quick="ruhig">✅ Alles ruhig</button>
-        <button data-quick="uebergabe">🔑 Übergabe erfolgt</button>
-        <button data-quick="streife">🔦 Streife begonnen</button>
-      </div></div>
-    <div class="card"><div class="card-title">Neuer Eintrag</div>
-      <div class="grid2">
-        <div class="field"><label>Kategorie</label><select id="wbCat"></select></div>
-        <div class="field"><label>Stufe</label><select id="wbSev">
-          <option value="info">Info</option><option value="wichtig">Wichtig</option><option value="kritisch">Kritisch</option></select></div>
+  <div class="card" id="wbShiftCard"></div>
+
+  <div class="card"><div class="card-title">Schnell-Eintrag</div>
+    <div class="wb-quick">
+      <button data-quick="kontrollgang">🚶 Kontrollgang o. B.</button>
+      <button data-quick="ruhig">✅ Alles ruhig</button>
+      <button data-quick="uebergabe">🔑 Übergabe erfolgt</button>
+      <button data-quick="streife">🔦 Streife begonnen</button>
+    </div></div>
+
+  <div class="card"><div class="card-title">Neuer Eintrag</div>
+    <div class="field"><label>Ereignis — tippen oder <strong style="color:var(--text)">🎙 diktieren</strong></label>
+      <div class="ta-wrap">
+        <textarea id="wbText" placeholder="Was ist passiert? Wer war beteiligt? Welche Maßnahmen wurden getroffen?"></textarea>
+        <button class="mic" id="micBtn" aria-label="Diktieren"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0"/><path d="M12 17v5M8 22h8"/></svg></button>
       </div>
-      <div class="field"><label>Ort / Bereich (optional)</label><input type="text" id="wbOrt" placeholder="z. B. Tor 3, Halle B, Empfang" autocomplete="off"></div>
-      <div class="field"><label>Ereignis / Feststellung</label><textarea id="wbText" placeholder="Was ist passiert? Wer war beteiligt? Welche Maßnahmen wurden getroffen?"></textarea></div>
-      <button class="btn" id="wbAdd">In Wachbuch eintragen</button>
-      <div class="source-note">Einträge werden fortlaufend nummeriert und mit Prüfsumme verkettet. Löschen ist nicht möglich – nur Stornieren mit Begründung (revisionssicher).</div></div>
-  </div>
-
-  <!-- Logbuch -->
-  <div class="subpanel" data-group="wachbuch" data-sub="log" style="display:none">
-    <div class="search">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="text" id="wbSearch" placeholder="Einträge durchsuchen…" autocomplete="off">
-      <button class="clear" id="wbClear" aria-label="Suche löschen">✕</button></div>
-    <div class="wb-catchips" id="wbCatChips"></div>
-    <div class="card" id="wbLogList"></div>
-  </div>
-
-  <!-- Auswertung -->
-  <div class="subpanel" data-group="wachbuch" data-sub="stat" style="display:none">
-    <div class="kpi-grid">
-      <div class="kpi accent"><div class="kpi-label">Einträge gesamt</div><div class="kpi-value" id="wbKpiTotal">0</div></div>
-      <div class="kpi blue"><div class="kpi-label">Einträge heute</div><div class="kpi-value" id="wbKpiToday">0</div></div>
-      <div class="kpi amber"><div class="kpi-label">Kontrollgänge</div><div class="kpi-value" id="wbKpiRounds">0</div></div>
-      <div class="kpi red"><div class="kpi-label">Kritische Ereignisse</div><div class="kpi-value" id="wbKpiCrit">0</div></div>
+      <div class="rec-hint" id="recHint"><span class="rec-dot"></span>Aufnahme läuft – sprich jetzt. Nochmal tippen zum Stoppen.</div>
     </div>
-    <div class="card"><div class="card-title">Einträge nach Kategorie</div>
-      <div class="chart-wrap" style="height:240px"><canvas id="wbChart"></canvas></div>
-      <div class="wb-empty" id="wbChartEmpty" style="display:none">Noch keine Einträge vorhanden.</div></div>
-    <div class="card"><div class="card-title">Integritätsprüfung</div>
-      <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:12px">Jeder Eintrag ist über eine Prüfsummen-Kette mit seinem Vorgänger verbunden. Nachträgliche Manipulationen werden so erkannt.</p>
-      <button class="btn secondary" id="wbVerify">Kette jetzt prüfen</button>
-      <div class="wb-integrity" id="wbIntegrity"></div></div>
-    <div class="card"><div class="card-title">Export</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <button class="btn secondary" id="wbExportCsv">CSV-Export</button>
-        <button class="btn secondary" id="wbPrint">Druckansicht</button></div>
-      <div class="source-note">CSV für Excel / Auswertung · Druckansicht für die Ablage im Objektordner. Alle Daten bleiben lokal auf diesem Gerät.</div></div>
-  </div>
+    <button class="btn ki" id="kiBtn" style="margin-bottom:14px">✨ Mit KI formulieren &amp; einordnen</button>
+    <div class="ki-note" id="kiNote"></div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="field"><label>Kategorie</label><select id="wbCat"></select></div>
+      <div class="field"><label>Stufe</label><select id="wbSev">
+        <option value="info">Info</option><option value="wichtig">Wichtig</option><option value="kritisch">Kritisch</option></select></div>
+    </div>
+    <div class="field"><label>Ort / Bereich (optional)</label><input type="text" id="wbOrt" placeholder="z. B. Tor 3, Halle B, Empfang" autocomplete="off"></div>
+    <button class="btn" id="wbAdd">In Wachbuch eintragen</button>
+    <div class="source-note">Einträge werden fortlaufend nummeriert und mit Prüfsumme verkettet. Löschen ist nicht möglich – nur Stornieren mit Begründung (revisionssicher).</div></div>
 </div>
 
-<!-- ═══ RANKING ═══ -->
-<div class="section" id="sec-ranking">
-  <div class="header"><div class="header-label">Lünendonk-Liste 2025</div>
-    <div class="header-title">Top Sicherheitsdienstleister</div>
-    <div class="header-sub">Geschäftsjahr 2024 · Umsatz in Deutschland</div></div>
+<!-- ═══ LOGBUCH ═══ -->
+<div class="section" id="sec-log">
+  <div class="header"><div class="header-label">B·B Protect</div>
+    <div class="header-title">Logbuch</div>
+    <div class="header-sub">Alle Einträge, chronologisch &amp; manipulationssicher</div></div>
   <div class="search">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-    <input type="text" id="rankSearch" placeholder="Unternehmen suchen…" autocomplete="off">
-    <button class="clear" id="rankClear" aria-label="Suche löschen">✕</button></div>
-  <div class="segmented" id="rankSort">
-    <button class="seg active" data-sort="umsatz">Umsatz</button>
-    <button class="seg" data-sort="wachstum">Wachstum</button>
-    <button class="seg" data-sort="mitarbeiter">Mitarbeiter</button>
-    <button class="seg" data-sort="prod">Produktivität</button></div>
-  <div class="card" id="rankList"></div>
-  <div class="source-note">Quelle: Lünendonk &amp; Hossenfelder, Oktober 2025 · Produktivität = Umsatz je Mitarbeiter (errechnet)</div>
+    <input type="text" id="wbSearch" placeholder="Einträge durchsuchen…" autocomplete="off">
+    <button class="clear" id="wbClear" aria-label="Suche löschen">✕</button></div>
+  <div class="chips" id="wbCatChips"></div>
+  <div class="card" id="wbLogList"></div>
 </div>
 
-<!-- ═══ VERGLEICH ═══ -->
-<div class="section" id="sec-vergleich">
-  <div class="header"><div class="header-label">Wettbewerbsanalyse</div>
-    <div class="header-title">Unternehmensvergleich</div>
-    <div class="header-sub">Wähle 2–3 Unternehmen für den direkten Vergleich</div></div>
-  <div class="card"><div class="card-title">Auswahl</div><div class="chips" id="cmpChips"></div></div>
-  <div id="cmpBody"></div>
+<!-- ═══ AUSWERTUNG ═══ -->
+<div class="section" id="sec-stat">
+  <div class="header"><div class="header-label">B·B Protect</div>
+    <div class="header-title">Auswertung</div>
+    <div class="header-sub">Kennzahlen, Integrität &amp; Export</div></div>
+  <div class="kpi-grid">
+    <div class="kpi gold"><div class="kpi-label">Einträge gesamt</div><div class="kpi-value" id="wbKpiTotal">0</div></div>
+    <div class="kpi blue"><div class="kpi-label">Einträge heute</div><div class="kpi-value" id="wbKpiToday">0</div></div>
+    <div class="kpi amber"><div class="kpi-label">Kontrollgänge</div><div class="kpi-value" id="wbKpiRounds">0</div></div>
+    <div class="kpi red"><div class="kpi-label">Kritische Ereignisse</div><div class="kpi-value" id="wbKpiCrit">0</div></div>
+  </div>
+  <div class="card"><div class="card-title">Einträge nach Kategorie</div>
+    <div id="wbBars"></div></div>
+  <div class="card"><div class="card-title">Integritätsprüfung</div>
+    <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:12px">Jeder Eintrag ist über eine Prüfsummen-Kette mit seinem Vorgänger verbunden. Nachträgliche Manipulationen werden erkannt.</p>
+    <button class="btn secondary" id="wbVerify">Kette jetzt prüfen</button>
+    <div class="wb-integrity" id="wbIntegrity"></div></div>
+  <div class="card"><div class="card-title">Export</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn secondary" id="wbExportCsv">CSV-Export</button>
+      <button class="btn secondary" id="wbPrint">Druckansicht</button></div>
+    <div class="source-note">CSV für Excel · Druckansicht mit Unterschriftenfeldern für die Ablage. Alle Daten bleiben lokal auf diesem Gerät.</div></div>
 </div>
 
-<!-- ═══ RECHT ═══ -->
-<div class="section" id="sec-recht">
-  <div class="header"><div class="header-label">§ 34a GewO · Vorschriften</div>
-    <div class="header-title">Recht &amp; Vorschriften</div>
-    <div class="header-sub">BewachV, DGUV Vorschrift 23 und Paragraphen-Glossar</div></div>
-  <div class="segmented subtabs" data-group="recht">
-    <button class="seg active" data-sub="bewachv">BewachV</button>
-    <button class="seg" data-sub="dguv">DGUV 23</button>
-    <button class="seg" data-sub="glossar">Glossar</button></div>
+<!-- ═══ MEHR ═══ -->
+<div class="section" id="sec-mehr">
+  <div class="header"><div class="header-label">B·B Protect</div>
+    <div class="header-title">Einstellungen</div>
+    <div class="header-sub">KI, Datensicherung &amp; Info</div></div>
 
-  <!-- BewachV -->
-  <div class="subpanel" data-group="recht" data-sub="bewachv">
-    <div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.65">Die <strong style="color:var(--text)">Verordnung über das Bewachungsgewerbe (BewachV)</strong> konkretisiert seit dem 1. Juni 2019 die Anforderungen des <span class="lawref">§ 34a GewO</span>. Tippe die Punkte an.</p></div></div>
-    <div class="accordion">
-      <div class="acc-item"><div class="acc-head">Unterrichtung (40 Stunden)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p><span class="pill blue">Grundqualifikation</span></p>
-          <p>Für die meisten Bewachungstätigkeiten genügt die <strong>40-stündige Unterrichtung</strong> bei der IHK. Sie weist nach, dass die Person mit den rechtlichen und fachlichen Grundlagen vertraut ist.</p>
-          <p><strong>Typische Tätigkeiten:</strong> Objekt- und Werkschutz, Pförtner-/Empfangsdienst, Separat-/Revierwachdienst, Veranstaltungsschutz (mitwirkend), Geld- und Werttransport.</p>
-          <p>Beleg: Unterrichtungsbescheinigung der IHK – ohne Prüfung.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Sachkundeprüfung § 34a<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p><span class="pill green">Erweiterte Qualifikation</span></p>
-          <p>Für bestimmte Tätigkeiten ist die <strong>bestandene Sachkundeprüfung</strong> zwingend:</p>
-          <ul><li>Kontrollgänge im <strong>öffentlichen Verkehrsraum</strong> (City-Streife)</li>
-            <li><strong>Schutz vor Ladendieben</strong> (Ladendetektiv)</li>
-            <li>Einlassbereich gastgewerblicher <strong>Diskotheken</strong> (Türsteher)</li>
-            <li><strong>Flüchtlings-/Asylunterkünfte</strong> in leitender Funktion</li>
-            <li>zugangsgeschützte <strong>Großveranstaltungen</strong> in leitender Funktion</li>
-            <li>selbstständige <strong>Gewerbetreibende</strong></li></ul>
-          <p><strong>Prüfung:</strong> schriftlich (Multiple Choice, ca. 72 Fragen, 120 Min.) + mündlich (ca. 15 Min.) vor der IHK. Beide Teile müssen bestanden werden.</p>
-          <p><strong>Prüfungsgebiete:</strong> Recht der öffentlichen Sicherheit/Ordnung &amp; Gewerberecht · Datenschutzrecht · BGB · Straf-/Verfahrensrecht · Umgang mit Waffen · Unfallverhütung (DGUV V 23) · Umgang mit Menschen/Deeskalation &amp; Sicherheitstechnik.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Zuverlässigkeit &amp; Bewacherregister<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Vor dem Einsatz prüft die Behörde die <strong>Zuverlässigkeit</strong> (Führungszeugnis, Gewerbezentralregister). Bei sachkundepflichtigen Tätigkeiten zusätzlich <strong>Regelanfrage beim Verfassungsschutz</strong>.</p>
-          <p>Jede Wachperson und jedes Unternehmen wird im <strong>Bewacherregister (BWR)</strong> erfasst und erhält eine <strong>Bewacher-ID</strong>. Das Register wird beim Statistischen Bundesamt geführt.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Haftpflichtversicherung (§ 14 BewachV)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Gesetzliche <strong>Mindestversicherungssummen je Schadensereignis</strong>:</p>
-          <ul><li>Personenschäden: <strong>1.000.000 €</strong></li><li>Sachschäden: <strong>250.000 €</strong></li>
-            <li>reine Vermögensschäden: <strong>12.500 €</strong></li><li>Abhandenkommen bewachter Sachen: <strong>15.000 €</strong></li></ul>
-          <p>Prüfe deine Police unter <strong>Tools → Versicherung</strong>.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Dienstausweis &amp; Kennzeichnung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Wachpersonen müssen einen <strong>Dienstausweis</strong> (Name/Kennnummer, Lichtbild, Bewacher-ID) mitführen und auf Verlangen vorzeigen.</p>
-          <p>Bei bestimmten Tätigkeiten besteht eine <strong>Kennzeichnungspflicht</strong> – sichtbares Schild mit Name oder Kennnummer und Firma.</p></div></div>
-    </div>
+  <div class="card"><div class="card-title">🤖 KI-Assistent (Claude)</div>
+    <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:12px">Mit einem Anthropic API-Key formuliert die echte Claude-KI deine diktierten Notizen zu professionellen Wachbuch-Einträgen und ordnet Kategorie &amp; Stufe automatisch zu. Ohne Key arbeitet der eingebaute Offline-Assistent.</p>
+    <div class="field"><label>Anthropic API-Key</label>
+      <input type="password" id="apiKey" placeholder="sk-ant-…" autocomplete="off"></div>
+    <div id="kiStatus" style="font-size:12px;font-weight:600;margin-top:2px"></div>
+    <div class="source-note">Key erstellen unter <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>. Der Key wird nur lokal auf diesem Gerät gespeichert und direkt an die Claude-API gesendet.</div></div>
+
+  <div class="card"><div class="card-title">🎙 Spracherkennung</div>
+    <p style="font-size:13px;color:var(--text-dim);line-height:1.6" id="speechInfo"></p></div>
+
+  <div class="card"><div class="card-title">💾 Datensicherung</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn secondary" id="wbBackup">Backup (JSON)</button>
+      <button class="btn secondary" id="wbRestoreBtn">Wiederherstellen</button></div>
+    <input type="file" id="wbRestoreFile" accept="application/json" style="display:none">
+    <div class="source-note">Sichert alle Einträge als JSON-Datei. Beim Wiederherstellen werden vorhandene Einträge ersetzt.</div></div>
+
+  <div class="card">
+    <div class="info-block"><h3>Über diese App</h3>
+      <p><strong style="color:var(--text)">B·B PROTECT Wachbuch</strong> – das persönliche digitale Dienstbuch von Benjamin Barsamian, Meister für Schutz und Sicherheit. Revisionssicher, offlinefähig, mit Spracherkennung und KI-Unterstützung.</p></div>
+    <div class="info-block">
+      <span class="pill gold">Revisionssicher</span> <span class="pill green">100 % lokal</span>
+      <p style="margin-top:10px">Version 2.0 · Alle Daten bleiben auf deinem Gerät.</p></div>
   </div>
-
-  <!-- DGUV 23 -->
-  <div class="subpanel" data-group="recht" data-sub="dguv" style="display:none">
-    <div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.65">Die <strong style="color:var(--text)">DGUV Vorschrift 23 „Wach- und Sicherungsdienste"</strong> (früher BGV C7) ist die Unfallverhütungsvorschrift für den Arbeitsschutz im Sicherheitsgewerbe – Prüfungsstoff der Sachkunde.</p></div></div>
-    <div class="accordion">
-      <div class="acc-item"><div class="acc-head">Geltungsbereich &amp; Eignung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Die Vorschrift gilt für <strong>Wach- und Sicherungstätigkeiten</strong> zum Schutz von Personen und Sachwerten.</p>
-          <p>Tätigkeiten dürfen nur von <strong>geeigneten Versicherten</strong> ausgeführt werden, die die erforderliche Befähigung besitzen und nicht offensichtlich ungeeignet sind. <strong>Mindestalter: 18 Jahre.</strong></p></div></div>
-      <div class="acc-item"><div class="acc-head">Dienstanweisung &amp; Unterweisung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Der Unternehmer muss das Verhalten des Personals – einschließlich des <strong>Weitermeldens von Mängeln und besonderen Gefahren</strong> – durch <strong>Dienstanweisungen</strong> regeln.</p>
-          <p>Das Personal ist <strong>vor Aufnahme der Tätigkeit und danach regelmäßig</strong> anhand der Dienstanweisung zu unterweisen.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Wege, Beleuchtung &amp; Alleinarbeit<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Streifen- und Verkehrswege müssen <strong>sicher begehbar und ausreichend beleuchtet</strong> sein. Stolper-, Absturz- und sonstige Gefahrenstellen sind zu sichern.</p>
-          <p>Bei <strong>gefährlicher Alleinarbeit</strong> sind besondere Schutzmaßnahmen (z. B. Meldesysteme, Erreichbarkeit, Notruf) erforderlich.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Wachhunde (§§ 12–17)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Als Wachhund dürfen nur <strong>geprüfte Hunde mit ausgebildeten Hundeführern</strong> eingesetzt werden.</p>
-          <p>Halten, Führen und Transport der Hunde sind geregelt – inkl. sicherer Unterbringung und Schutz vor dem eigenen Hund. Ein Hundeführer führt grundsätzlich nur <strong>einen</strong> Hund.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Schusswaffen (§ 18)<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Mit Schusswaffen dürfen nur Versicherte ausgerüstet werden, die waffenrechtlich <strong>zuverlässig, geeignet, sachkundig und an der Waffe ausgebildet</strong> sind.</p>
-          <p><span class="pill amber">Wichtig</span> Das Bereithalten und Führen von <strong>Schreck- oder Gas-Schusswaffen</strong> ist bei Wach- und Sicherungsaufgaben <strong>unzulässig</strong>.</p></div></div>
-      <div class="acc-item"><div class="acc-head">Erste Hilfe &amp; Schutzausrüstung<svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
-        <div class="acc-body"><p>Es müssen Maßnahmen und Mittel zur <strong>Ersten Hilfe</strong> bereitstehen; die Versicherten sind entsprechend zu unterweisen.</p>
-          <p>Erforderliche <strong>persönliche Schutzausrüstung</strong> (z. B. Witterungsschutz, ggf. Warnkleidung, Schutzweste je nach Gefährdung) ist bereitzustellen und zu benutzen.</p></div></div>
-    </div>
-    <div class="source-note">Quelle: DGUV Vorschrift 23 (UVV Wach- und Sicherungsdienste), bisher BGV C7. Auszug, keine Rechtsberatung.</div>
-  </div>
-
-  <!-- Glossar -->
-  <div class="subpanel" data-group="recht" data-sub="glossar" style="display:none">
-    <div class="search">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="text" id="glossSearch" placeholder="Paragraph oder Begriff suchen…" autocomplete="off">
-      <button class="clear" id="glossClear" aria-label="Suche löschen">✕</button></div>
-    <div id="glossList"></div>
-  </div>
-</div>
-
-<!-- ═══ LERNEN ═══ -->
-<div class="section" id="sec-lernen">
-  <div class="header"><div class="header-label">Prüfungsvorbereitung</div>
-    <div class="header-title">Lernen</div>
-    <div class="header-sub">Quiz, Lernkarten und Dienst-Checklisten</div></div>
-  <div class="segmented subtabs" data-group="lernen">
-    <button class="seg active" data-sub="quiz">Quiz</button>
-    <button class="seg" data-sub="flash">Lernkarten</button>
-    <button class="seg" data-sub="check">Checklisten</button></div>
-
-  <!-- Quiz -->
-  <div class="subpanel" data-group="lernen" data-sub="quiz">
-    <div class="card">
-      <div class="field"><label>Themengebiet</label><select id="quizCat"></select></div>
-      <div class="quiz-bar"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
-      <div id="quizContent"></div>
-    </div>
-  </div>
-
-  <!-- Flashcards -->
-  <div class="subpanel" data-group="lernen" data-sub="flash" style="display:none">
-    <div class="card">
-      <div class="card-title">Lernkarten · tippen zum Umdrehen</div>
-      <div class="flash" id="flashWrap"><div class="flash-inner">
-        <div class="flash-face flash-front"><div class="flash-cat" id="flashCat"></div><div class="flash-q" id="flashQ"></div><div class="flash-hint">tippen für Antwort</div></div>
-        <div class="flash-face flash-back"><div class="flash-a" id="flashA"></div><div class="flash-hint">tippen zum Zurückdrehen</div></div>
-      </div></div>
-      <div class="flash-nav">
-        <button class="btn secondary" id="flashPrev">‹ Zurück</button>
-        <span class="flash-count" id="flashCount"></span>
-        <button class="btn secondary" id="flashNext">Weiter ›</button></div>
-    </div>
-  </div>
-
-  <!-- Checklisten -->
-  <div class="subpanel" data-group="lernen" data-sub="check" style="display:none">
-    <div class="card">
-      <div class="field"><label>Checkliste</label><select id="checkSelect"></select></div>
-      <div class="chk-progress"><div class="chk-progress-fill" id="chkFill"></div></div>
-      <div class="chk-count" id="chkCount"></div>
-      <div id="chkList"></div>
-      <div style="margin-top:14px"><button class="btn secondary" id="chkReset">Zurücksetzen</button></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ TOOLS ═══ -->
-<div class="section" id="sec-tools">
-  <div class="header"><div class="header-label">Interaktiv</div>
-    <div class="header-title">Tools</div>
-    <div class="header-sub">Praktische Werkzeuge rund um § 34a &amp; BewachV</div></div>
-  <div class="segmented subtabs" data-group="tools">
-    <button class="seg active" data-sub="finder">Quali-Finder</button>
-    <button class="seg" data-sub="ins">Versicherung</button>
-    <button class="seg" data-sub="lohn">Lohnrechner</button></div>
-
-  <div class="subpanel" data-group="tools" data-sub="finder">
-    <div class="card"><div class="card-title">Welche Qualifikation brauche ich?</div>
-      <div class="field"><label>Geplante Tätigkeit</label><select id="finderSelect"></select></div>
-      <div class="finder-result" id="finderResult"></div></div>
-  </div>
-
-  <div class="subpanel" data-group="tools" data-sub="ins" style="display:none">
-    <div class="card"><div class="card-title">Versicherungs-Check (§ 14 BewachV)</div>
-      <p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;line-height:1.5">Trage die Deckungssummen deiner Police ein – der Check vergleicht sie mit den gesetzlichen Mindestsummen.</p>
-      <div id="insRows"></div><div class="ins-summary" id="insSummary"></div></div>
-  </div>
-
-  <div class="subpanel" data-group="tools" data-sub="lohn" style="display:none">
-    <div class="card"><div class="card-title">Lohn- &amp; Schichtrechner</div>
-      <div class="field"><label>Stundenlohn (brutto)</label><input type="number" id="lohnStunde" inputmode="decimal" value="15.50" step="0.10" min="0"></div>
-      <div class="field"><label>Bezahlte Stunden / Monat</label><input type="number" id="lohnStunden" inputmode="decimal" value="173" step="1" min="0"></div>
-      <div class="grid2">
-        <div class="field"><label>davon Nacht (Std.)</label><input type="number" id="lohnNacht" inputmode="decimal" value="0" step="1" min="0"></div>
-        <div class="field"><label>davon Sonntag (Std.)</label><input type="number" id="lohnSonntag" inputmode="decimal" value="0" step="1" min="0"></div></div>
-      <div class="field"><label>davon Feiertag (Std.)</label><input type="number" id="lohnFeiertag" inputmode="decimal" value="0" step="1" min="0"></div>
-      <div class="calc-result" style="margin-top:8px;padding:20px;border-radius:14px;background:var(--accent-dim);border:1px solid rgba(0,212,170,.3);text-align:center">
-        <div style="font-size:36px;font-weight:800;color:var(--accent);letter-spacing:-1.5px" id="lohnBrutto">–</div>
-        <div style="font-size:12px;color:var(--text-dim);margin-top:6px">geschätztes Brutto / Monat (inkl. Zuschläge)</div></div>
-      <div id="lohnBreak" style="margin-top:14px"></div>
-      <div class="source-note">Steuerfreie Zuschlagssätze nach § 3b EStG: Nacht 25 %, Sonntag 50 %, Feiertag 125 %. Schätzung ohne Steuer/Sozialabgaben.</div></div>
-  </div>
-</div>
-
-<button class="cmp-bar" id="cmpBar">Vergleichen (<span id="cmpCount">0</span>)</button>
-
-<div class="sheet-backdrop" id="sheetBackdrop"></div>
-<div class="sheet" id="detailSheet">
-  <div class="sheet-handle"></div>
-  <div class="sheet-rank" id="detailRank"></div>
-  <div class="sheet-name" id="detailName"></div>
-  <div id="detailRows"></div>
-  <div class="detail-bar"><div class="detail-bar-head"><span>Umsatz ggü. Marktführer</span><span id="detailBarPct"></span></div>
-    <div class="detail-bar-track"><div class="detail-bar-fill" id="detailBarFill" style="width:0"></div></div></div>
 </div>
 
 <nav class="nav">
-  <button class="nav-item active" data-target="sec-dashboard"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>Dashboard</button>
-  <button class="nav-item" data-target="sec-wachbuch"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 006.5 22H20v-5"/><path d="M9 7h6M9 11h4"/></svg>Wachbuch</button>
-  <button class="nav-item" data-target="sec-ranking"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Ranking</button>
-  <button class="nav-item" data-target="sec-vergleich"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-2.2 5.2a3 3 0 006.4 0z"/><path d="M19 7l-2.2 5.2a3 3 0 006.4 0z"/></svg>Vergleich</button>
-  <button class="nav-item" data-target="sec-recht"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 8.5C8 19.5 5 16 5 12V6z"/></svg>Recht</button>
-  <button class="nav-item" data-target="sec-lernen"><svg viewBox="0 0 24 24"><path d="M3 6h7a2 2 0 012 2v11a2.5 2.5 0 00-2.5-2.5H3zM21 6h-7a2 2 0 00-2 2v11a2.5 2.5 0 012.5-2.5H21z"/></svg>Lernen</button>
-  <button class="nav-item" data-target="sec-tools"><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Tools</button>
+  <button class="nav-item active" data-target="sec-dienst"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 8.5C8 19.5 5 16 5 12V6z"/><path d="M9 12l2 2 4-4"/></svg>Dienst</button>
+  <button class="nav-item" data-target="sec-log"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4a2 2 0 00-2-2H6.5A2.5 2.5 0 004 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 006.5 22H20v-5"/><path d="M9 7h6M9 11h4"/></svg>Logbuch</button>
+  <button class="nav-item" data-target="sec-stat"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Auswertung</button>
+  <button class="nav-item" data-target="sec-mehr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h0a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51h0a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v0a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Mehr</button>
 </nav>
 
 <script>
-// ═══ DATA ═══
-const DATA = {
-  umsatz: { jahre:['2017','2018','2019','2020','2021','2022','2023'], werte:[8.0,8.7,9.2,9.2,9.6,11.1,13.4] },
-  beschaeftigte: { jahre:['2017','2018','2019','2020','2021','2022','2023'], werte:[252,258,263,260,268,277,284.5] },
-  ranking: [
-    {name:'Securitas', umsatz:1210, wachstum:'+4,1%', mitarbeiter:'~21.000'},
-    {name:'Kötter Gruppe', umsatz:722, wachstum:'+18,6%', mitarbeiter:'~15.000'},
-    {name:'Kieler Wach/Sicherheit Nord', umsatz:519, wachstum:'+6,1%', mitarbeiter:'~12.000'},
-    {name:'Nds. Wach- u. Schließges.', umsatz:400, wachstum:'+5,3%', mitarbeiter:'~8.000'},
-    {name:'Wisag Sicherheit', umsatz:293, wachstum:'+8,8%', mitarbeiter:'~6.500'},
-    {name:'Pond Security', umsatz:285, wachstum:'+3,2%', mitarbeiter:'~4.600'},
-    {name:'Klüh Security', umsatz:175, wachstum:'+5,5%', mitarbeiter:'~3.800'},
-    {name:'W.I.S. Sicherheit', umsatz:162, wachstum:'+4,0%', mitarbeiter:'~3.200'},
-    {name:'Stölting Security', umsatz:148, wachstum:'+6,3%', mitarbeiter:'~3.000'},
-    {name:'Dussmann', umsatz:105, wachstum:'+7,1%', mitarbeiter:'~2.200'}
-  ],
-  wachstumTop25: { jahre:['2020','2021','2022','2023','2024'], werte:[3.2,7.3,10.5,7.9,7.5] },
-  news: [
-    {date:'Okt 2025', title:'Lünendonk-Liste 2025: +7,5 % Wachstum', desc:'Die Top 25 erwirtschaften 5.398,6 Mio. € (~40 % des Marktes). Securitas führt mit 1.210 Mio. €, Kötter wächst durch die Wako-Übernahme um 18,6 % auf 722 Mio. €.'},
-    {date:'Okt 2025', title:'Sicherheitsdienstleister werden digital', desc:'Robotik, KI und berufsbegleitende Qualifizierung prägen die Branche – so begegnen die Anbieter dem Fachkräftemangel.'},
-    {date:'Feb 2025', title:'BDSW fordert bessere Rahmenbedingungen', desc:'Rund 290.000 Beschäftigte in der Branche. Forderung nach höherem Stellenwert.'},
-    {date:'Sep 2024', title:'Security Essen 2024', desc:'Weltgrößte Sicherheitsmesse mit Fokus auf KI, Drohnen und Zutrittskontrolle.'},
-    {date:'Mai 2024', title:'Umsatz 2023: 13,4 Mrd. Euro', desc:'+12,6% Wachstum. Beschäftigung steigt auf 284.500 trotz Fachkräftemangel.'}
-  ]
-};
-
-// ═══ STATE ═══
-let rankSort='umsatz', rankQuery='', compareSel=[], radarChart=null;
-
-// ═══ HELPERS ═══
-const COMPARE_COLORS=['#00d4aa','#5b9cf6','#f5a623'];
-const deFmt=(n,dec=0)=>new Intl.NumberFormat('de-DE',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);
-function numVal(v){return typeof v==='number'?v:(parseInt(String(v).replace(/[^0-9]/g,''),10)||0);}
-function pctVal(v){return parseFloat(String(v).replace(',','.').replace(/[^0-9.\-]/g,''))||0;}
-function hexA(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;}
-function fmtPct(v){return (v>=0?'+':'')+deFmt(v,1)+'%';}
-function computeDerived(){
-  const total=DATA.umsatz.werte[DATA.umsatz.werte.length-1]*1000; DATA.totalMarket=total;
-  DATA.ranking.forEach(r=>{r._mit=numVal(r.mitarbeiter);r._wachstum=pctVal(r.wachstum);r._prod=r._mit?r.umsatz*1000/r._mit:0;r._share=total?r.umsatz/total*100:0;});
-}
-async function loadData(){
-  try{const resp=await fetch('./data.json'); if(resp.ok){Object.assign(DATA,await resp.json());}}catch(e){}
-  computeDerived(); renderRanking(); renderVergleich(); renderNews(); animateKPIs();
-  try{initCharts();}catch(e){console.warn('Charts offline?',e);}
-}
-
-// ═══ KPI ═══
-function animateKPIs(){
-  document.querySelectorAll('.kpi-value[data-count]').forEach(el=>{
-    const target=parseFloat(el.dataset.count), dec=+(el.dataset.dec||0), suffix=el.dataset.suffix||'', dur=950, start=performance.now();
-    (function tick(now){const t=Math.min(1,(now-start)/dur), e=1-Math.pow(1-t,3); el.textContent=deFmt(target*e,dec)+suffix; if(t<1)requestAnimationFrame(tick);})(start);
-  });
-}
-
-// ═══ CHARTS ═══
-const chartColors={accent:'#00d4aa',accentBg:'rgba(0,212,170,0.15)',blue:'#5b9cf6',blueBg:'rgba(91,156,246,0.15)',amber:'#f5a623',amberBg:'rgba(245,166,35,0.15)',grid:'rgba(255,255,255,0.06)',tick:'rgba(255,255,255,0.3)'};
-const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:chartColors.grid},ticks:{color:chartColors.tick,font:{family:'Sora',size:11}}},y:{grid:{color:chartColors.grid},ticks:{color:chartColors.tick,font:{family:'Sora',size:11}}}}};
-function initCharts(){
-  new Chart(document.getElementById('chartUmsatz'),{type:'line',data:{labels:DATA.umsatz.jahre,datasets:[{data:DATA.umsatz.werte,borderColor:chartColors.accent,backgroundColor:chartColors.accentBg,fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:chartColors.accent,borderWidth:2.5}]},options:{...baseOpts}});
-  new Chart(document.getElementById('chartBeschaeftigte'),{type:'bar',data:{labels:DATA.beschaeftigte.jahre,datasets:[{data:DATA.beschaeftigte.werte,backgroundColor:chartColors.blueBg,borderColor:chartColors.blue,borderWidth:1.5,borderRadius:6}]},options:{...baseOpts}});
-  const top10=DATA.ranking.slice(0,10), topSum=top10.reduce((a,r)=>a+r.umsatz,0), sonstige=Math.max(0,DATA.totalMarket-topSum);
-  const palette=['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
-  new Chart(document.getElementById('chartShare'),{type:'doughnut',data:{labels:[...top10.map(r=>r.name),'Übriger Markt'],datasets:[{data:[...top10.map(r=>r.umsatz),sonstige],backgroundColor:[...palette.slice(0,top10.length),'rgba(255,255,255,0.06)'],borderColor:'#060611',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${deFmt(c.parsed)} Mio € (${deFmt(c.parsed/DATA.totalMarket*100,1)}%)`}}}}});
-  document.getElementById('shareTop10').textContent=deFmt(topSum/DATA.totalMarket*100,1)+'%';
-  new Chart(document.getElementById('chartWachstum'),{type:'line',data:{labels:DATA.wachstumTop25.jahre,datasets:[{data:DATA.wachstumTop25.werte,borderColor:chartColors.amber,backgroundColor:chartColors.amberBg,fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:chartColors.amber,borderWidth:2.5}]},options:{...baseOpts,scales:{...baseOpts.scales,y:{...baseOpts.scales.y,ticks:{...baseOpts.scales.y.ticks,callback:v=>v+'%'}}}}});
-}
-
-// ═══ RANKING ═══
-const SORT_KEY={umsatz:'umsatz',wachstum:'_wachstum',mitarbeiter:'_mit',prod:'_prod'};
-function sortedRanking(){
-  let arr=DATA.ranking.map((r,i)=>({r,idx:i}));
-  if(rankQuery){const q=rankQuery.toLowerCase(); arr=arr.filter(o=>o.r.name.toLowerCase().includes(q));}
-  const key=SORT_KEY[rankSort]; arr.sort((a,b)=>b.r[key]-a.r[key]); return arr;
-}
-function renderRanking(){
-  const c=document.getElementById('rankList'), arr=sortedRanking();
-  let html='<div class="card-title">'+(rankQuery?`Treffer (${arr.length})`:'Vollständiges Ranking')+'</div>';
-  if(!arr.length){c.innerHTML=html+'<div class="rank-empty">Kein Unternehmen gefunden.</div>';return;}
-  arr.forEach((o,pos)=>{const r=o.r, cls=pos<3?`r${pos+1}`:'r5', on=compareSel.includes(o.idx);
-    html+=`<div class="rank-item" data-idx="${o.idx}"><div class="rank-num ${cls}">${pos+1}</div>
-      <div class="rank-info"><div class="rank-name">${r.name}</div><div class="rank-detail">${deFmt(r._mit)} MA · ${r.wachstum} · ${deFmt(r._prod,1)} T€/MA</div></div>
-      <div class="rank-umsatz">${deFmt(r.umsatz)} Mio</div>
-      <button class="rank-cmp ${on?'on':''}" data-cmp="${o.idx}" aria-label="Vergleich"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></button></div>`;});
-  c.innerHTML=html;
-  c.querySelectorAll('.rank-item').forEach(el=>el.addEventListener('click',()=>openDetail(+el.dataset.idx)));
-  c.querySelectorAll('.rank-cmp').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();toggleCompare(+b.dataset.cmp);}));
-}
-
-// ═══ COMPARE ═══
-function toggleCompare(idx){const at=compareSel.indexOf(idx); if(at>-1)compareSel.splice(at,1); else if(compareSel.length<3)compareSel.push(idx); renderRanking();renderVergleich();updateCmpBar();}
-function updateCmpBar(){const bar=document.getElementById('cmpBar'); const onR=document.getElementById('sec-ranking').classList.contains('active'); document.getElementById('cmpCount').textContent=compareSel.length; bar.classList.toggle('show',compareSel.length>=2&&onR);}
-function renderVergleich(){
-  const chipWrap=document.getElementById('cmpChips'); chipWrap.innerHTML='';
-  DATA.ranking.forEach((r,i)=>{const on=compareSel.includes(i); const btn=document.createElement('button'); btn.className='chip'+(on?' on':'')+((!on&&compareSel.length>=3)?' dis':''); btn.textContent=r.name; btn.addEventListener('click',()=>toggleCompare(i)); chipWrap.appendChild(btn);});
-  const body=document.getElementById('cmpBody');
-  if(compareSel.length<2){body.innerHTML='<div class="card"><div class="info-block"><p style="font-size:13px;color:var(--text-dim);line-height:1.6">Wähle oben oder im Ranking <strong style="color:var(--text)">2–3 Unternehmen</strong> aus, um Umsatz, Mitarbeiter, Wachstum und Produktivität gegenüberzustellen.</p></div></div>'; if(radarChart){radarChart.destroy();radarChart=null;} return;}
-  const sel=compareSel.map(i=>DATA.ranking[i]);
-  const metrics=[{label:'Umsatz',get:r=>r.umsatz,fmt:v=>deFmt(v)+' Mio'},{label:'Mitarbeiter',get:r=>r._mit,fmt:v=>deFmt(v)},{label:'Wachstum',get:r=>r._wachstum,fmt:v=>fmtPct(v)},{label:'Produktivität',get:r=>r._prod,fmt:v=>deFmt(v,1)+' T€'}];
-  const maxAll=metrics.map(m=>Math.max(...DATA.ranking.map(m.get)));
-  let bars='';
-  metrics.forEach(m=>{const maxSel=Math.max(...sel.map(m.get),0); bars+=`<div class="cmp-metric"><div class="cmp-metric-label">${m.label}</div>`;
-    sel.forEach((r,k)=>{const v=m.get(r), w=maxSel>0?Math.max(2,v/maxSel*100):0; bars+=`<div class="cmp-bar-row"><div class="cmp-bar-name" style="color:${COMPARE_COLORS[k]}">${r.name}</div><div class="cmp-track"><div class="cmp-fill" style="width:${w}%;background:${COMPARE_COLORS[k]}"></div></div><div class="cmp-val">${m.fmt(v)}</div></div>`;}); bars+=`</div>`;});
-  body.innerHTML=`<div class="card"><div class="card-title">Stärkenprofil (relativ zum Branchenmaximum)</div><div class="chart-wrap" style="height:280px"><canvas id="chartRadar"></canvas></div></div><div class="card"><div class="card-title">Kennzahlen im Direktvergleich</div>${bars}</div>`;
-  if(radarChart){radarChart.destroy();radarChart=null;} if(typeof Chart==='undefined')return;
-  radarChart=new Chart(document.getElementById('chartRadar'),{type:'radar',data:{labels:metrics.map(m=>m.label),datasets:sel.map((r,k)=>({label:r.name,data:metrics.map((m,j)=>maxAll[j]?+(m.get(r)/maxAll[j]*100).toFixed(1):0),borderColor:COMPARE_COLORS[k],backgroundColor:hexA(COMPARE_COLORS[k],0.15),pointBackgroundColor:COMPARE_COLORS[k],borderWidth:2,pointRadius:3}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:chartColors.tick,font:{family:'Sora',size:11},boxWidth:12}}},scales:{r:{angleLines:{color:chartColors.grid},grid:{color:chartColors.grid},pointLabels:{color:chartColors.tick,font:{family:'Sora',size:11}},ticks:{display:false,backdropColor:'transparent'},suggestedMin:0,suggestedMax:100}}}});
-}
-
-// ═══ DETAIL ═══
-function openDetail(idx){
-  const r=DATA.ranking[idx], umsatzRank=[...DATA.ranking].sort((a,b)=>b.umsatz-a.umsatz).indexOf(r)+1;
-  document.getElementById('detailRank').textContent=`Rang #${umsatzRank} nach Umsatz`;
-  document.getElementById('detailName').textContent=r.name;
-  const rows=[['Umsatz (Deutschland)',deFmt(r.umsatz)+' Mio €'],['Mitarbeiter',deFmt(r._mit)],['Wachstum ggü. Vorjahr',r.wachstum],['Produktivität',deFmt(r._prod,1)+' T€ / MA'],['Marktanteil',deFmt(r._share,1)+' %']];
-  document.getElementById('detailRows').innerHTML=rows.map(([l,v])=>`<div class="detail-row"><span class="detail-label">${l}</span><span class="detail-value">${v}</span></div>`).join('');
-  const leader=DATA.ranking.reduce((m,x)=>Math.max(m,x.umsatz),0), pct=leader?r.umsatz/leader*100:0;
-  document.getElementById('detailBarPct').textContent=deFmt(pct,0)+'%';
-  document.getElementById('sheetBackdrop').classList.add('show'); document.getElementById('detailSheet').classList.add('show');
-  requestAnimationFrame(()=>{document.getElementById('detailBarFill').style.width=pct+'%';});
-}
-function closeDetail(){document.getElementById('sheetBackdrop').classList.remove('show');document.getElementById('detailSheet').classList.remove('show');document.getElementById('detailBarFill').style.width='0';}
-
-// ═══ NEWS ═══
-function renderNews(){document.getElementById('newsList').innerHTML='<div class="card-title">Branchen-News</div>'+DATA.news.map(n=>`<div class="news-item"><div class="news-date">${n.date}</div><div class="news-title">${n.title}</div><div class="news-desc">${n.desc}</div></div>`).join('');}
-
-// ═══ NAV + SUBTABS ═══
-function navigateTo(target){document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.target===target)); document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===target)); window.scrollTo(0,0); updateCmpBar();}
-document.querySelectorAll('.nav-item').forEach(btn=>btn.addEventListener('click',()=>navigateTo(btn.dataset.target)));
-document.querySelectorAll('.subtabs').forEach(tabs=>tabs.addEventListener('click',e=>{const seg=e.target.closest('.seg'); if(!seg)return; const g=tabs.dataset.group; tabs.querySelectorAll('.seg').forEach(s=>s.classList.toggle('active',s===seg)); document.querySelectorAll('.subpanel[data-group="'+g+'"]').forEach(p=>p.style.display=p.dataset.sub===seg.dataset.sub?'block':'none');}));
-
-// ═══ RANKING CONTROLS ═══
-document.getElementById('rankSort').addEventListener('click',e=>{const seg=e.target.closest('.seg'); if(!seg)return; rankSort=seg.dataset.sort; document.querySelectorAll('#rankSort .seg').forEach(s=>s.classList.toggle('active',s===seg)); renderRanking();});
-const searchInput=document.getElementById('rankSearch'), clearBtn=document.getElementById('rankClear');
-searchInput.addEventListener('input',()=>{rankQuery=searchInput.value.trim(); clearBtn.classList.toggle('show',rankQuery.length>0); renderRanking();});
-clearBtn.addEventListener('click',()=>{searchInput.value='';rankQuery='';clearBtn.classList.remove('show');renderRanking();searchInput.focus();});
-document.getElementById('cmpBar').addEventListener('click',()=>navigateTo('sec-vergleich'));
-document.getElementById('sheetBackdrop').addEventListener('click',closeDetail);
-
-// ═══ ACCORDION ═══
-document.querySelectorAll('.acc-head').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
-
-// ═══ TOOL: Qualifikations-Finder ═══
-const QUALI=[
-  {v:'objektschutz',label:'Objekt- / Werkschutz',type:'unterrichtung',text:'Für allgemeinen Objekt- und Werkschutz genügt die 40-stündige Unterrichtung bei der IHK.'},
-  {v:'pfoertner',label:'Pförtner- / Empfangsdienst',type:'unterrichtung',text:'Empfangs- und Pförtnerdienste erfordern nur die Unterrichtung.'},
-  {v:'revier',label:'Separat- / Revierwachdienst',type:'unterrichtung',text:'Revier- und Streifendienst (nicht im öffentlichen Verkehrsraum) ist mit Unterrichtung möglich.'},
-  {v:'gwt',label:'Geld- und Werttransport',type:'unterrichtung',text:'GWT erfordert nach § 34a keine Sachkundeprüfung – aber hohe Zuverlässigkeit und Schulung. Unterrichtung genügt formal.'},
-  {v:'event',label:'Veranstaltungsschutz (mitwirkend)',type:'unterrichtung',text:'Mitwirkende Kräfte benötigen die Unterrichtung. Achtung: leitende Funktion bei zugangsgeschützten Großveranstaltungen erfordert Sachkunde.'},
-  {v:'tuersteher',label:'Türsteher (Diskothek / Einlass)',type:'sachkunde',text:'Bewachung im Einlassbereich gastgewerblicher Diskotheken erfordert die Sachkundeprüfung § 34a.'},
-  {v:'laden',label:'Ladendetektiv (Schutz vor Ladendieben)',type:'sachkunde',text:'Der Schutz vor Ladendieben ist eine sachkundepflichtige Tätigkeit.'},
-  {v:'city',label:'City-Streife / öffentlicher Verkehrsraum',type:'sachkunde',text:'Kontrollgänge im öffentlichen Verkehrsraum erfordern die Sachkundeprüfung.'},
-  {v:'asyl',label:'Leitung: Flüchtlings-/Asylunterkunft',type:'sachkunde',text:'Die Bewachung von Aufnahme-/Gemeinschaftsunterkünften in leitender Funktion erfordert Sachkunde.'},
-  {v:'grossevent',label:'Leitung: zugangsgeschützte Großveranstaltung',type:'sachkunde',text:'Leitende Tätigkeit bei zugangsgeschützten Großveranstaltungen erfordert die Sachkundeprüfung.'},
-  {v:'selbst',label:'Selbstständig / Gewerbeerlaubnis',type:'sachkunde',text:'Wer selbstständig ein Bewachungsgewerbe führt, braucht die § 34a-Erlaubnis und muss die Sachkundeprüfung nachweisen.'}
-];
-(function(){const sel=document.getElementById('finderSelect'); QUALI.forEach(q=>{const o=document.createElement('option');o.value=q.v;o.textContent=q.label;sel.appendChild(o);});
-  function render(){const q=QUALI.find(x=>x.v===sel.value)||QUALI[0]; const badge=q.type==='sachkunde'?'Sachkundeprüfung § 34a':'Unterrichtung 40 Std.'; document.getElementById('finderResult').innerHTML=`<span class="finder-badge ${q.type}">${badge}</span><p>${q.text}</p>`;}
-  sel.addEventListener('change',render); render();})();
-
-// ═══ TOOL: Quiz ═══
-const QUIZ=[
-  {cat:'Strafrecht',q:'Worauf stützt sich die vorläufige Festnahme durch eine Sicherheitskraft (Jedermannsrecht)?',opts:['§ 127 Abs. 1 StPO','§ 32 StGB (Notwehr)','§ 823 BGB','§ 34a GewO'],correct:0,expl:'§ 127 Abs. 1 StPO – zulässig bei frischer Tat, wenn der Täter fluchtverdächtig ist oder seine Identität nicht festgestellt werden kann.'},
-  {cat:'Strafrecht',q:'Notwehr (§ 32 StGB) setzt voraus, dass der Angriff …',opts:['gegenwärtig und rechtswidrig ist','bereits beendet ist','nur verbal erfolgt','geringfügig ist'],correct:0,expl:'Notwehr ist die erforderliche Verteidigung gegen einen gegenwärtigen, rechtswidrigen Angriff.'},
-  {cat:'BGB',q:'Als Objektschützer übt der Mitarbeiter das Hausrecht aus. Rechtlich ist er meist …',opts:['Besitzdiener (§ 855 BGB)','Eigentümer','unmittelbarer Besitzer','Eigenbesitzer'],correct:0,expl:'Besitzdiener nach § 855 BGB – er übt die Sachherrschaft weisungsgebunden für den Besitzer aus.'},
-  {cat:'Datenschutz',q:'Eine Videoüberwachung öffentlich zugänglicher Bereiche muss …',opts:['durch Hinweisschild kenntlich gemacht werden','heimlich erfolgen','nur nachts laufen','nicht dokumentiert werden'],correct:0,expl:'Nach DSGVO/BDSG ist die Beobachtung erkennbar zu machen; Zweck und Verantwortlicher müssen ersichtlich sein.'},
-  {cat:'Waffenrecht',q:'Reizstoffsprühgeräte (Pfefferspray) dürfen ohne Erlaubnis geführt werden, wenn sie …',opts:['ein amtliches Prüfzeichen zur Tierabwehr tragen','über 50 ml Inhalt haben','als Verteidigungsspray deklariert sind','selbst gemischt sind'],correct:0,expl:'Tierabwehrsprays mit amtlichem Prüfzeichen gelten waffenrechtlich nicht als Waffe und dürfen ab 18 geführt werden.'},
-  {cat:'DGUV V 23',q:'Die Unfallverhütungsvorschrift für Wach- und Sicherungsdienste ist die …',opts:['DGUV Vorschrift 23','DGUV Vorschrift 1','DIN 77200','ISO 9001'],correct:0,expl:'Die UVV „Wach- und Sicherungsdienste" ist die DGUV Vorschrift 23 (früher BGV C7 / VBG 68).'},
-  {cat:'Strafrecht',q:'Nach einer vorläufigen Festnahme muss die Sicherheitskraft die Person …',opts:['unverzüglich der Polizei übergeben','selbst vernehmen','durchsuchen und bestrafen','über Nacht festhalten'],correct:0,expl:'Kein Recht zur Bestrafung – die Person ist unverzüglich der Polizei zu übergeben.'},
-  {cat:'Gewerberecht',q:'Wer ein Bewachungsunternehmen selbstständig führen will, benötigt …',opts:['eine Erlaubnis nach § 34a GewO inkl. Sachkundeprüfung','nur ein Gewerbe nach § 14 GewO','einen Waffenschein','nur die 40-Std.-Unterrichtung'],correct:0,expl:'Selbstständige brauchen die § 34a-Erlaubnis und müssen die Sachkundeprüfung nachweisen.'},
-  {cat:'Strafrecht',q:'Der rechtfertigende Notstand ist geregelt in …',opts:['§ 34 StGB','§ 127 StPO','§ 859 BGB','§ 32 StGB'],correct:0,expl:'§ 34 StGB erlaubt eine Handlung, wenn ein wesentlich höherwertiges Rechtsgut aus gegenwärtiger Gefahr gerettet wird.'},
-  {cat:'BGB',q:'Die Selbsthilfe des Besitzers (Besitzwehr und Besitzkehr) findet sich in …',opts:['§ 859 BGB','§ 226 BGB','§ 34a GewO','§ 240 StGB'],correct:0,expl:'§ 859 BGB regelt die Selbsthilfe des Besitzers – relevant bei der Durchsetzung des Hausrechts.'},
-  {cat:'Gewerberecht',q:'Welche Stelle führt das Bewacherregister (BWR)?',opts:['Statistisches Bundesamt','Bundeskriminalamt','die örtliche IHK','das Gewerbeamt'],correct:0,expl:'Das Bewacherregister wird beim Statistischen Bundesamt geführt; Behörden und Gewerbetreibende greifen darauf zu.'},
-  {cat:'Öff. Sicherheit',q:'Private Sicherheitskräfte verfügen gegenüber Bürgern grundsätzlich über …',opts:['nur die Jedermannsrechte','hoheitliche Polizeibefugnisse','ein Festnahmemonopol','das Gewaltmonopol'],correct:0,expl:'Sicherheitskräfte haben keine hoheitlichen Befugnisse – sie stützen sich auf Jedermannsrechte und das Hausrecht.'},
-  {cat:'BGB',q:'Die „verbotene Eigenmacht" ist geregelt in …',opts:['§ 858 BGB','§ 859 BGB','§ 903 BGB','§ 123 StGB'],correct:0,expl:'§ 858 BGB: widerrechtliche Störung/Entziehung des Besitzes ohne Willen des Besitzers.'},
-  {cat:'Strafrecht',q:'Eine Notwehrhandlung ist nicht (mehr) gerechtfertigt, wenn der Angriff …',opts:['bereits beendet ist','gegenwärtig ist','rechtswidrig ist','unmittelbar bevorsteht'],correct:0,expl:'Notwehr ist nur gegen einen gegenwärtigen Angriff zulässig. Ist er beendet, liegt keine Notwehrlage mehr vor.'},
-  {cat:'Strafrecht',q:'Diebstahl (§ 242 StGB) setzt voraus:',opts:['Wegnahme einer fremden beweglichen Sache in Zueignungsabsicht','Beschädigung einer Sache','Anwendung von Gewalt','Betreten eines Grundstücks'],correct:0,expl:'§ 242 StGB: Wegnahme einer fremden beweglichen Sache in der Absicht rechtswidriger Zueignung.'},
-  {cat:'Waffenrecht',q:'Anscheinswaffen (täuschend echte Spielzeugwaffen) dürfen in der Öffentlichkeit …',opts:['nicht geführt werden (§ 42a WaffG)','frei geführt werden','nur nachts geführt werden','ab 16 geführt werden'],correct:0,expl:'§ 42a WaffG verbietet das Führen von Anscheinswaffen und bestimmten Messern in der Öffentlichkeit.'},
-  {cat:'DGUV V 23',q:'Welche Schusswaffen sind bei Wach- und Sicherungsaufgaben nach DGUV V 23 unzulässig?',opts:['Schreck- und Gas-Schusswaffen','Signalwaffen für Seenot','keine','alle Schusswaffen generell'],correct:0,expl:'Nach § 18 DGUV V 23 ist das Bereithalten und Führen von Schreck-/Gas-Schusswaffen bei Wach-/Sicherungsaufgaben unzulässig.'},
-  {cat:'DGUV V 23',q:'Als Wachhund dürfen eingesetzt werden …',opts:['nur geprüfte Hunde mit ausgebildeten Hundeführern','alle Hunde ab 1 Jahr','nur Schäferhunde','Hunde ohne Führer'],correct:0,expl:'Die DGUV V 23 lässt nur geprüfte Hunde mit ausgebildeten Hundeführern zu.'},
-  {cat:'DGUV V 23',q:'Das Mindestalter für Wach- und Sicherungstätigkeiten beträgt …',opts:['18 Jahre','16 Jahre','21 Jahre','25 Jahre'],correct:0,expl:'Versicherte müssen mindestens 18 Jahre alt und geeignet sein.'},
-  {cat:'Deeskalation',q:'Oberstes Ziel der Deeskalation ist …',opts:['einen Konflikt ohne Gewalt zu entschärfen','den Gegner zu besiegen','sofort zuzuschlagen','den Konflikt zu ignorieren'],correct:0,expl:'Deeskalation zielt darauf ab, Konflikte durch Kommunikation gewaltfrei zu lösen.'},
-  {cat:'Deeskalation',q:'Aktives Zuhören bedeutet …',opts:['Aufmerksamkeit signalisieren, nachfragen und spiegeln','wegzuhören','nur selbst zu reden','Anweisungen zu brüllen'],correct:0,expl:'Aktives Zuhören schafft Vertrauen und entschärft Spannungen – ein Kernwerkzeug der Deeskalation.'},
-  {cat:'Strafrecht',q:'Wer unbefugt in befriedetes Besitztum eindringt und trotz Aufforderung nicht geht, begeht …',opts:['Hausfriedensbruch (§ 123 StGB)','Diebstahl','Nötigung','Sachbeschädigung'],correct:0,expl:'§ 123 StGB: widerrechtliches Eindringen oder Verbleiben in befriedetem Besitztum/Räumen.'},
-  {cat:'Datenschutz',q:'Videoaufnahmen sind grundsätzlich zu löschen, sobald …',opts:['der Zweck der Speicherung erreicht/entfallen ist','ein Jahr vergangen ist','der Speicher voll ist','die Polizei es erlaubt'],correct:0,expl:'Grundsatz der Speicherbegrenzung (DSGVO): Daten löschen, wenn der Zweck erreicht ist (oft nach 48–72 Std.).'},
-  {cat:'Gewerberecht',q:'Die aktuelle Bewachungsverordnung (BewachV) gilt seit …',opts:['1. Juni 2019','1. Januar 2003','1. Juni 2009','1. Januar 2023'],correct:0,expl:'Die neugefasste BewachV trat am 1. Juni 2019 in Kraft.'}
-];
-let quizCat='Alle', quizI=0, quizScore=0, quizAnswered=false;
-function quizPool(){return quizCat==='Alle'?QUIZ:QUIZ.filter(q=>q.cat===quizCat);}
-(function initQuizCat(){const sel=document.getElementById('quizCat'); const cats=['Alle',...[...new Set(QUIZ.map(q=>q.cat))]];
-  sel.innerHTML=cats.map(c=>`<option value="${c}">${c==='Alle'?'Alle Themen':c}</option>`).join('');
-  sel.addEventListener('change',()=>{quizCat=sel.value;quizI=0;quizScore=0;quizAnswered=false;renderQuiz();});})();
-function renderQuiz(){
-  const pool=quizPool(), c=document.getElementById('quizContent');
-  document.getElementById('quizBarFill').style.width=(quizI/pool.length*100)+'%';
-  if(quizI>=pool.length){document.getElementById('quizBarFill').style.width='100%';
-    const pct=Math.round(quizScore/pool.length*100), verdict=pct>=80?'Stark! Prüfungsreif. 💪':pct>=50?'Solide – noch etwas üben.':'Da geht mehr – dranbleiben!';
-    c.innerHTML=`<div class="quiz-result"><div class="quiz-score">${quizScore}<small>/${pool.length}</small></div><div class="quiz-verdict">${verdict} (${pct} %)</div><button class="btn" id="quizRestart">Nochmal starten</button></div>`;
-    document.getElementById('quizRestart').addEventListener('click',()=>{quizI=0;quizScore=0;quizAnswered=false;renderQuiz();}); return;}
-  const item=pool[quizI]; quizAnswered=false;
-  c.innerHTML=`<div class="quiz-meta">Frage ${quizI+1} / ${pool.length} · ${item.cat}</div><div class="quiz-q">${item.q}</div><div id="quizOpts">${item.opts.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}</div><div id="quizFooter"></div>`;
-  c.querySelectorAll('.quiz-opt').forEach(b=>b.addEventListener('click',()=>answerQuiz(+b.dataset.i)));
-}
-function answerQuiz(i){
-  if(quizAnswered)return; quizAnswered=true; const pool=quizPool(), item=pool[quizI];
-  document.querySelectorAll('#quizOpts .quiz-opt').forEach((b,k)=>{b.classList.add('locked'); if(k===item.correct)b.classList.add('correct'); else if(k===i)b.classList.add('wrong');});
-  if(i===item.correct)quizScore++;
-  const last=quizI===pool.length-1;
-  document.getElementById('quizFooter').innerHTML=`<div class="quiz-expl"><strong>${i===item.correct?'✓ Richtig. ':'✗ Leider falsch. '}</strong>${item.expl}</div><button class="btn" id="quizNext">${last?'Ergebnis anzeigen':'Nächste Frage'}</button>`;
-  document.getElementById('quizNext').addEventListener('click',()=>{quizI++;renderQuiz();});
-}
-renderQuiz();
-
-// ═══ TOOL: Lernkarten ═══
-const FLASHCARDS=[
-  {cat:'Strafrecht',q:'Notwehr (§ 32 StGB)?',a:'Die Verteidigung, die erforderlich ist, um einen gegenwärtigen, rechtswidrigen Angriff von sich oder einem anderen abzuwenden.'},
-  {cat:'Strafrecht',q:'Rechtfertigender Notstand (§ 34 StGB)?',a:'Handlung zur Abwehr einer gegenwärtigen Gefahr, wenn das geschützte Interesse das beeinträchtigte wesentlich überwiegt.'},
-  {cat:'Strafrecht',q:'Vorläufige Festnahme (§ 127 StPO)?',a:'Jeder darf bei frischer Tat festnehmen, wenn der Täter fluchtverdächtig ist oder seine Identität nicht festgestellt werden kann. Übergabe an die Polizei!'},
-  {cat:'BGB',q:'Besitzdiener (§ 855 BGB)?',a:'Wer die tatsächliche Sachherrschaft für einen anderen weisungsgebunden ausübt – z. B. der Objektschützer für den Auftraggeber.'},
-  {cat:'BGB',q:'Verbotene Eigenmacht (§ 858 BGB)?',a:'Widerrechtliche Störung oder Entziehung des Besitzes ohne den Willen des Besitzers.'},
-  {cat:'BGB',q:'Besitzwehr & Besitzkehr (§ 859 BGB)?',a:'Selbsthilferecht des Besitzers: Abwehr verbotener Eigenmacht und Wiederbeschaffung frisch entzogenen Besitzes.'},
-  {cat:'BGB',q:'Hausrecht?',a:'Recht des Eigentümers/Besitzers zu bestimmen, wer sich auf dem Grundstück/in Räumen aufhält – Grundlage für Platzverweis und Hausverbot.'},
-  {cat:'Strafrecht',q:'Hausfriedensbruch (§ 123 StGB)?',a:'Widerrechtliches Eindringen oder Verbleiben in befriedetem Besitztum/Räumen trotz Aufforderung zu gehen.'},
-  {cat:'Strafrecht',q:'Diebstahl (§ 242 StGB)?',a:'Wegnahme einer fremden beweglichen Sache in der Absicht rechtswidriger Zueignung.'},
-  {cat:'Strafrecht',q:'Nötigung (§ 240 StGB)?',a:'Jemanden mit Gewalt oder durch Drohung mit einem empfindlichen Übel zu einer Handlung, Duldung oder Unterlassung zwingen.'},
-  {cat:'DGUV V 23',q:'Was ist die DGUV Vorschrift 23?',a:'Unfallverhütungsvorschrift „Wach- und Sicherungsdienste" – Arbeitsschutz im Sicherheitsgewerbe (früher BGV C7).'},
-  {cat:'DGUV V 23',q:'Schreck-/Gas-Schusswaffen im Dienst?',a:'Bei Wach- und Sicherungsaufgaben nach § 18 DGUV V 23 unzulässig.'},
-  {cat:'Gewerberecht',q:'Bewacherregister (BWR)?',a:'Bundesweites Online-Register beim Statistischen Bundesamt; jede Wachperson erhält eine Bewacher-ID.'},
-  {cat:'Gewerberecht',q:'§ 34a GewO?',a:'Erlaubnispflicht für das Bewachungsgewerbe – Grundlage für Unterrichtung und Sachkundeprüfung.'},
-  {cat:'Waffenrecht',q:'Anscheinswaffen (§ 42a WaffG)?',a:'Führen in der Öffentlichkeit verboten – z. B. täuschend echte Spielzeugwaffen und bestimmte Messer.'},
-  {cat:'Deeskalation',q:'Deeskalation?',a:'Konfliktentschärfung durch Kommunikation: ruhig bleiben, aktiv zuhören, Distanz wahren, Ich-Botschaften, keine Provokation.'},
-  {cat:'Öff. Sicherheit',q:'Jedermannsrechte?',a:'Rechte, die jedem zustehen: Notwehr (§ 32 StGB), Festnahme (§ 127 StPO), Selbsthilfe (§ 859 BGB). Sicherheitskräfte haben keine Sonderrechte.'}
-];
-let fcI=0;
-function renderFlash(){const c=FLASHCARDS[fcI]; document.getElementById('flashWrap').classList.remove('flipped'); document.getElementById('flashCat').textContent=c.cat; document.getElementById('flashQ').textContent=c.q; document.getElementById('flashA').textContent=c.a; document.getElementById('flashCount').textContent=(fcI+1)+' / '+FLASHCARDS.length;}
-document.getElementById('flashWrap').addEventListener('click',function(){this.classList.toggle('flipped');});
-document.getElementById('flashPrev').addEventListener('click',()=>{fcI=(fcI-1+FLASHCARDS.length)%FLASHCARDS.length;renderFlash();});
-document.getElementById('flashNext').addEventListener('click',()=>{fcI=(fcI+1)%FLASHCARDS.length;renderFlash();});
-renderFlash();
-
-// ═══ TOOL: Glossar ═══
-const GLOSSAR=[
-  {ref:'§ 32 StGB',title:'Notwehr',cat:'Strafrecht',text:'Erforderliche Verteidigung gegen einen gegenwärtigen, rechtswidrigen Angriff.'},
-  {ref:'§ 33 StGB',title:'Notwehrüberschreitung',cat:'Strafrecht',text:'Überschreitung der Notwehr aus Verwirrung, Furcht oder Schrecken bleibt straflos.'},
-  {ref:'§ 34 StGB',title:'Rechtfertigender Notstand',cat:'Strafrecht',text:'Rettung eines wesentlich höherwertigen Rechtsguts aus gegenwärtiger Gefahr.'},
-  {ref:'§ 35 StGB',title:'Entschuldigender Notstand',cat:'Strafrecht',text:'Gefahr für Leib/Leben/Freiheit (auch Angehöriger) – entschuldigt, rechtfertigt aber nicht.'},
-  {ref:'§ 127 StPO',title:'Vorläufige Festnahme',cat:'Strafrecht',text:'Jedermann-Festnahmerecht bei frischer Tat; Übergabe an die Polizei.'},
-  {ref:'§ 123 StGB',title:'Hausfriedensbruch',cat:'Strafrecht',text:'Widerrechtliches Eindringen/Verbleiben in befriedetem Besitztum.'},
-  {ref:'§ 223 StGB',title:'Körperverletzung',cat:'Strafrecht',text:'Körperliche Misshandlung oder Gesundheitsschädigung einer Person.'},
-  {ref:'§ 240 StGB',title:'Nötigung',cat:'Strafrecht',text:'Zwang zu Handlung/Duldung/Unterlassung durch Gewalt oder Drohung.'},
-  {ref:'§ 242 StGB',title:'Diebstahl',cat:'Strafrecht',text:'Wegnahme einer fremden beweglichen Sache in Zueignungsabsicht.'},
-  {ref:'§ 303 StGB',title:'Sachbeschädigung',cat:'Strafrecht',text:'Rechtswidriges Beschädigen oder Zerstören einer fremden Sache.'},
-  {ref:'§ 185 StGB',title:'Beleidigung',cat:'Strafrecht',text:'Angriff auf die Ehre einer Person durch Kundgabe von Missachtung.'},
-  {ref:'§ 855 BGB',title:'Besitzdiener',cat:'BGB',text:'Weisungsgebundene Ausübung der Sachherrschaft für einen anderen.'},
-  {ref:'§ 858 BGB',title:'Verbotene Eigenmacht',cat:'BGB',text:'Widerrechtliche Störung/Entziehung des Besitzes ohne Willen des Besitzers.'},
-  {ref:'§ 859 BGB',title:'Selbsthilfe des Besitzers',cat:'BGB',text:'Besitzwehr (Abwehr) und Besitzkehr (Wiederbeschaffung) gegen verbotene Eigenmacht.'},
-  {ref:'§ 903 BGB',title:'Eigentum',cat:'BGB',text:'Der Eigentümer kann mit der Sache nach Belieben verfahren und andere ausschließen.'},
-  {ref:'§ 823 BGB',title:'Schadensersatzpflicht',cat:'BGB',text:'Wer widerrechtlich ein Rechtsgut verletzt, ist zum Schadensersatz verpflichtet.'},
-  {ref:'§ 227 BGB',title:'Notwehr (zivilrechtlich)',cat:'BGB',text:'Zivilrechtliche Notwehr – eine in Notwehr begangene Handlung ist nicht widerrechtlich.'},
-  {ref:'§ 34a GewO',title:'Bewachungsgewerbe',cat:'Gewerberecht',text:'Erlaubnispflicht; Grundlage für Unterrichtung, Sachkunde und Bewacherregister.'},
-  {ref:'§ 14 GewO',title:'Gewerbeanzeige',cat:'Gewerberecht',text:'Pflicht zur Anzeige der Aufnahme eines stehenden Gewerbes beim Gewerbeamt.'},
-  {ref:'§ 4 WaffG',title:'Waffenrechtliche Erlaubnis',cat:'Waffenrecht',text:'Umgang mit Waffen/Munition setzt grundsätzlich Bedürfnis, Sachkunde und Zuverlässigkeit voraus.'},
-  {ref:'§ 42a WaffG',title:'Führungsverbot',cat:'Waffenrecht',text:'Verbot, Anscheinswaffen und bestimmte Messer in der Öffentlichkeit zu führen.'},
-  {ref:'DGUV V 23',title:'UVV Wach- und Sicherungsdienste',cat:'Arbeitsschutz',text:'Unfallverhütungsvorschrift für das Sicherheitsgewerbe (früher BGV C7).'},
-  {ref:'Art. 13 GG',title:'Unverletzlichkeit der Wohnung',cat:'Grundgesetz',text:'Die Wohnung ist grundrechtlich besonders geschützt.'},
-  {ref:'Art. 6 DSGVO',title:'Rechtmäßigkeit der Verarbeitung',cat:'Datenschutz',text:'Personenbezogene Daten nur mit Rechtsgrundlage (z. B. Einwilligung, berechtigtes Interesse).'},
-  {ref:'§ 4 BDSG',title:'Videoüberwachung',cat:'Datenschutz',text:'Beobachtung öffentlich zugänglicher Räume mit optisch-elektronischen Einrichtungen – kenntlich machen.'}
-];
-let glossQuery='';
-function renderGloss(){
-  const list=document.getElementById('glossList'); const q=glossQuery.toLowerCase();
-  const items=GLOSSAR.filter(g=>!q||(g.ref+' '+g.title+' '+g.text+' '+g.cat).toLowerCase().includes(q));
-  if(!items.length){list.innerHTML='<div class="rank-empty">Kein Eintrag gefunden.</div>';return;}
-  list.innerHTML=items.map(g=>`<div class="gloss-item"><div class="gloss-top"><span class="gloss-ref">${g.ref}</span><span class="gloss-cat">${g.cat}</span></div><div class="gloss-title">${g.title}</div><div class="gloss-text">${g.text}</div></div>`).join('');
-}
-(function(){const gi=document.getElementById('glossSearch'), gc=document.getElementById('glossClear');
-  gi.addEventListener('input',()=>{glossQuery=gi.value.trim(); gc.classList.toggle('show',glossQuery.length>0); renderGloss();});
-  gc.addEventListener('click',()=>{gi.value='';glossQuery='';gc.classList.remove('show');renderGloss();gi.focus();}); renderGloss();})();
-
-// ═══ TOOL: Versicherungs-Check ═══
-const INS=[{name:'Personenschäden',min:1000000},{name:'Sachschäden',min:250000},{name:'reine Vermögensschäden',min:12500},{name:'Abhandenkommen bewachter Sachen',min:15000}];
-(function(){const wrap=document.getElementById('insRows');
-  wrap.innerHTML=INS.map((x,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">${x.name}</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px">min. ${deFmt(x.min)} €</div></div><input type="number" inputmode="numeric" data-i="${i}" value="${x.min}" style="width:118px;flex-shrink:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;text-align:right"><div style="width:22px;text-align:center;font-size:15px;flex-shrink:0" data-flag="${i}">✅</div></div>`).join('');
-  function check(){let allOk=true; INS.forEach((x,i)=>{const v=parseFloat(wrap.querySelector(`input[data-i="${i}"]`).value)||0, ok=v>=x.min; if(!ok)allOk=false; wrap.querySelector(`[data-flag="${i}"]`).textContent=ok?'✅':'❌';});
-    const s=document.getElementById('insSummary'); s.style.cssText='margin-top:14px;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:14px;'+(allOk?'background:var(--accent-dim);color:var(--accent)':'background:var(--red-dim);color:var(--red)'); s.textContent=allOk?'✓ Alle gesetzlichen Mindestsummen erfüllt':'✗ Mindestens eine Deckungssumme zu niedrig';}
-  wrap.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',check)); check();})();
-
-// ═══ TOOL: Lohnrechner ═══
-(function(){const ids=['lohnStunde','lohnStunden','lohnNacht','lohnSonntag','lohnFeiertag'], S={nacht:0.25,sonntag:0.50,feiertag:1.25};
-  const val=id=>parseFloat(document.getElementById(id).value)||0;
-  function calc(){const rate=val('lohnStunde'),h=val('lohnStunden'),n=val('lohnNacht'),so=val('lohnSonntag'),f=val('lohnFeiertag');
-    const grund=rate*h, zN=rate*S.nacht*n, zS=rate*S.sonntag*so, zF=rate*S.feiertag*f, brutto=grund+zN+zS+zF;
-    document.getElementById('lohnBrutto').textContent=deFmt(brutto,2)+' €';
-    const rows=[['Grundlohn',grund]]; if(zN>0)rows.push(['+ Nachtzuschlag (25 %)',zN]); if(zS>0)rows.push(['+ Sonntagszuschlag (50 %)',zS]); if(zF>0)rows.push(['+ Feiertagszuschlag (125 %)',zF]); rows.push(['Brutto gesamt',brutto]);
-    document.getElementById('lohnBreak').innerHTML=rows.map(([l,v],k)=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);${k===rows.length-1?'font-weight:700;color:var(--text);border-bottom:none':''}"><span>${l}</span><span style="font-family:'JetBrains Mono',monospace">${deFmt(v,2)} €</span></div>`).join('');}
-  ids.forEach(id=>document.getElementById(id).addEventListener('input',calc)); calc();})();
-
-// ═══ TOOL: Checklisten ═══
-const CHECKLISTS={
-  dienstantritt:{title:'Dienstantritt / Schichtbeginn',items:['Dienstausweis & Ausrüstung prüfen','Dienstanweisung / Objektmappe lesen','Übergabe vom Vorgänger entgegennehmen','Schlüssel, Funk & Telefon prüfen','Erste-Hilfe-Mittel & Notrufnummern bereit','Streifen-/Kontrollplan checken','Besonderheiten & Auflagen notieren']},
-  streife:{title:'Streifen- / Kontrollgang',items:['Vorgegebene Route einhalten','Türen, Fenster & Tore kontrollieren','Beleuchtung & Fluchtwege prüfen','Auffälligkeiten mit Zeit & Ort dokumentieren','Brandschutz: keine Gefahrenquellen','Kontrollpunkte (Wächterkontrolle) erfassen','Vorkommnisse unverzüglich melden']},
-  uebergabe:{title:'Schlüssel- / Objektübergabe',items:['Schlüssel auf Vollständigkeit zählen','Objektzustand prüfen','Offene Vorgänge übergeben','Eintrag ins Wachbuch','Übergabe quittieren lassen']},
-  notfall:{title:'Notfall / Zwischenfall',items:['Eigenschutz geht vor','Notruf 110/112 absetzen (Wo? Was? Wie viele? Welche? Warten!)','Erste Hilfe leisten','Bereich sichern / absperren','Zeugen & Beweise sichern','Leitstelle / Vorgesetzten informieren','Dokumentation / Bericht erstellen']}
-};
-const CHECK_STATE={};
-(function(){const sel=document.getElementById('checkSelect'), keys=Object.keys(CHECKLISTS);
-  sel.innerHTML=keys.map(k=>`<option value="${k}">${CHECKLISTS[k].title}</option>`).join('');
-  function render(){const key=sel.value, list=CHECKLISTS[key], wrap=document.getElementById('chkList');
-    wrap.innerHTML=list.items.map((it,i)=>{const done=CHECK_STATE[key+':'+i]; return `<div class="chk-item ${done?'done':''}" data-i="${i}"><div class="chk-box"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><div class="chk-label">${it}</div></div>`;}).join('');
-    wrap.querySelectorAll('.chk-item').forEach(el=>el.addEventListener('click',()=>{const i=el.dataset.i, k=key+':'+i; CHECK_STATE[k]=!CHECK_STATE[k]; render();}));
-    const total=list.items.length, done=list.items.filter((_,i)=>CHECK_STATE[key+':'+i]).length;
-    document.getElementById('chkFill').style.width=(done/total*100)+'%';
-    document.getElementById('chkCount').textContent=done+' / '+total+' erledigt';}
-  sel.addEventListener('change',render);
-  document.getElementById('chkReset').addEventListener('click',()=>{const key=sel.value; CHECKLISTS[key].items.forEach((_,i)=>delete CHECK_STATE[key+':'+i]); render();});
-  render();})();
-
-// ═══ WACHBUCH ═══
+// ═══ KONSTANTEN & HELPERS ═══
 const WB_CATS=[
   {v:'Kontrollgang',icon:'🚶'},{v:'Vorkommnis',icon:'⚠️'},{v:'Übergabe',icon:'🔑'},
   {v:'Besucher',icon:'🧍'},{v:'Alarm',icon:'🚨'},{v:'Technik/Mangel',icon:'🔧'},
@@ -929,9 +289,12 @@ const WB_CATS=[
 ];
 const WB_FORM_CATS=['Kontrollgang','Vorkommnis','Übergabe','Besucher','Alarm','Technik/Mangel','Info'];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const deFmt=n=>new Intl.NumberFormat('de-DE').format(n);
 const wbDfDay=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
 const wbDfTime=new Intl.DateTimeFormat('de-DE',{hour:'2-digit',minute:'2-digit'});
-let wbEntries=[],wbShift=null,wbQuery='',wbCatFilter='Alle',wbChartInst=null;
+
+// ═══ STATE & STORAGE ═══
+let wbEntries=[],wbShift=null,wbQuery='',wbCatFilter='Alle';
 try{wbEntries=JSON.parse(localStorage.getItem('wb_entries'))||[];}catch(e){}
 try{wbShift=JSON.parse(localStorage.getItem('wb_shift'))||null;}catch(e){}
 function wbSave(){localStorage.setItem('wb_entries',JSON.stringify(wbEntries)); if(wbShift)localStorage.setItem('wb_shift',JSON.stringify(wbShift)); else localStorage.removeItem('wb_shift');}
@@ -939,13 +302,17 @@ function wbHash(str){let h=0x811c9dc5; for(let i=0;i<str.length;i++){h^=str.char
 function wbChainStr(e){return [e.prev,e.seq,e.ts,e.cat,e.sev,e.text,e.ort||'',e.autor||'',e.objekt||''].join('|');}
 function wbAddEntry(cat,text,sev='info',ort=''){
   const prev=wbEntries.length?wbEntries[wbEntries.length-1].hash:'GENESIS';
-  const e={seq:wbEntries.length+1,ts:new Date().toISOString(),cat,sev,text:text.trim(),ort:ort.trim(),
+  const e={seq:wbEntries.length+1,ts:new Date().toISOString(),cat,sev,text:text.trim(),ort:(ort||'').trim(),
     autor:wbShift?wbShift.name:(localStorage.getItem('wb_name')||''),objekt:wbShift?wbShift.objekt:'',prev};
   e.hash=wbHash(wbChainStr(e)); wbEntries.push(e); wbSave(); renderWB(); return e;
 }
 function wbFmtDur(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60);return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0')+':'+String(Math.floor(ms/1000)%60).padStart(2,'0');}
 
-// Dienststatus
+// ═══ NAV ═══
+function navigateTo(t){document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.target===t)); document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===t)); window.scrollTo(0,0);}
+document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>navigateTo(b.dataset.target)));
+
+// ═══ DIENST / SCHICHT ═══
 function renderShiftCard(){
   const c=document.getElementById('wbShiftCard');
   if(wbShift){
@@ -979,15 +346,17 @@ function renderShiftCard(){
 function wbTick(){const el=document.getElementById('wbTimer'); if(el&&wbShift)el.textContent=wbFmtDur(Date.now()-new Date(wbShift.start).getTime());}
 setInterval(wbTick,1000);
 
-// Formular + Schnell-Einträge
+// ═══ FORMULAR + SCHNELL-EINTRÄGE ═══
 (function(){const sel=document.getElementById('wbCat');
   sel.innerHTML=WB_FORM_CATS.map(c=>`<option value="${c}">${c}</option>`).join('');
   document.getElementById('wbAdd').addEventListener('click',()=>{
     const text=document.getElementById('wbText').value.trim();
-    if(!text){alert('Bitte das Ereignis beschreiben.');return;}
+    if(!text){alert('Bitte das Ereignis beschreiben oder diktieren.');return;}
+    stopRec();
     wbAddEntry(sel.value,text,document.getElementById('wbSev').value,document.getElementById('wbOrt').value);
     document.getElementById('wbText').value=''; document.getElementById('wbOrt').value='';
-    document.getElementById('wbSev').value='info';
+    document.getElementById('wbSev').value='info'; sel.value=WB_FORM_CATS[0];
+    hideKiNote();
   });
   const QUICK={kontrollgang:['Kontrollgang','Kontrollgang durchgeführt – ohne besondere Vorkommnisse.'],
     ruhig:['Info','Lagemeldung: alles ruhig, keine besonderen Vorkommnisse.'],
@@ -996,7 +365,114 @@ setInterval(wbTick,1000);
   document.querySelectorAll('.wb-quick button').forEach(b=>b.addEventListener('click',()=>{const q=QUICK[b.dataset.quick]; wbAddEntry(q[0],q[1]);}));
 })();
 
-// Logbuch
+// ═══ SPRACHERKENNUNG ═══
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recog=null,recActive=false,recBase='';
+const micBtn=document.getElementById('micBtn'), recHint=document.getElementById('recHint'), wbTextEl=document.getElementById('wbText');
+function stopRec(){if(recActive){recActive=false;try{recog.stop();}catch(e){} micBtn.classList.remove('rec'); recHint.classList.remove('show');}}
+if(SR){
+  recog=new SR(); recog.lang='de-DE'; recog.continuous=true; recog.interimResults=true;
+  recog.onresult=e=>{
+    let interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];
+      if(r.isFinal)recBase=(recBase+' '+r[0].transcript).trim(); else interim+=r[0].transcript;}
+    wbTextEl.value=(recBase+' '+interim).trim();
+  };
+  recog.onend=()=>{if(recActive){try{recog.start();}catch(e){}}};
+  recog.onerror=ev=>{if(ev.error==='not-allowed'){stopRec();alert('Mikrofon-Zugriff verweigert. Bitte in den Browser-Einstellungen erlauben.');}};
+  micBtn.addEventListener('click',()=>{
+    if(recActive){stopRec();return;}
+    recBase=wbTextEl.value.trim(); recActive=true;
+    micBtn.classList.add('rec'); recHint.classList.add('show');
+    try{recog.start();}catch(e){}
+  });
+  document.getElementById('speechInfo').textContent='Spracherkennung ist auf diesem Gerät verfügbar. Tippe im Eintragsformular auf das Mikrofon und diktiere auf Deutsch – der Text erscheint live im Feld.';
+}else{
+  micBtn.style.display='none';
+  document.getElementById('speechInfo').textContent='Spracherkennung wird von diesem Browser nicht unterstützt. In Chrome (Android/Desktop) steht sie zur Verfügung.';
+}
+
+// ═══ KI-ASSISTENT ═══
+const kiNote=document.getElementById('kiNote');
+function showKiNote(cls,html){kiNote.className='ki-note show '+cls;kiNote.innerHTML=html;}
+function hideKiNote(){kiNote.className='ki-note';}
+const KI_KEYWORDS=[
+  {cat:'Alarm',sev:'kritisch',words:['alarm','bma','ema','brandmelde','einbruchmelde','sirene','feuer','brand','rauch','notruf','110','112']},
+  {cat:'Vorkommnis',sev:'kritisch',words:['polizei','einbruch','überfall','gewalt','verletzt','notarzt','diebstahl','bedroh','angriff','waffe']},
+  {cat:'Vorkommnis',sev:'wichtig',words:['verdächtig','unbekannte person','fremde person','beschädig','vandalismus','sachschaden','unfall','vorfall','festgestellt am zaun','offen vorgefunden','aufgebrochen']},
+  {cat:'Technik/Mangel',sev:'wichtig',words:['defekt','kaputt','ausgefallen','störung','klemmt','undicht','wasserschaden','leck','heizung','beleuchtung defekt','licht ausgefallen','tor schließt nicht']},
+  {cat:'Übergabe',sev:'info',words:['übergabe','übernommen','schlüssel','übergeben','abgelöst','ablösung']},
+  {cat:'Besucher',sev:'info',words:['besucher','lieferant','fremdfirma','handwerker','angemeldet','ausweis ausgestellt','paketdienst','anlieferung']},
+  {cat:'Kontrollgang',sev:'info',words:['kontrollgang','streife','rundgang','revier','kontrollpunkt','ohne besondere vorkommnisse','o.b.','alles ruhig']}
+];
+function kiLocal(raw){
+  let t=raw.trim().replace(/\s+/g,' ');
+  t=t.charAt(0).toUpperCase()+t.slice(1);
+  if(!/[.!?]$/.test(t))t+='.';
+  const low=raw.toLowerCase();
+  let cat='Info',sev='info';
+  outer:for(const k of KI_KEYWORDS){for(const w of k.words){if(low.includes(w)){cat=k.cat;sev=k.sev;break outer;}}}
+  return {text:t,kategorie:cat,stufe:sev,ort:''};
+}
+async function kiClaude(raw){
+  const key=(localStorage.getItem('wb_apikey')||'').trim();
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01',
+      'anthropic-beta':'server-side-fallback-2026-07-01',
+      'anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({
+      model:'claude-opus-5',
+      max_tokens:1024,
+      fallbacks:'default',
+      output_config:{effort:'low',format:{type:'json_schema',schema:{
+        type:'object',
+        properties:{
+          text:{type:'string',description:'Der professionell formulierte Wachbuch-Eintrag auf Deutsch'},
+          kategorie:{type:'string',enum:WB_FORM_CATS},
+          stufe:{type:'string',enum:['info','wichtig','kritisch']},
+          ort:{type:'string',description:'Ort/Bereich falls genannt, sonst leerer String'}
+        },
+        required:['text','kategorie','stufe','ort'],
+        additionalProperties:false
+      }}},
+      system:'Du bist der KI-Assistent des digitalen Wachbuchs "B·B PROTECT" für professionelle Sicherheitsdienste in Deutschland. Du erhältst eine formlose, oft diktierte Notiz einer Sicherheitskraft. Formuliere daraus einen professionellen, sachlichen Wachbuch-Eintrag: Berichtsstil, vollständige Sätze, keine Umgangssprache, alle genannten Fakten (Zeiten, Namen, Orte, Maßnahmen) exakt erhalten, nichts hinzuerfinden. Ordne die passende Kategorie und Stufe zu (kritisch = Gefahr für Personen/Objekt, Polizei/Feuerwehr/Alarm; wichtig = Schäden, Mängel, verdächtige Feststellungen; info = Routine). Extrahiere den Ort/Bereich, falls genannt.',
+      messages:[{role:'user',content:raw}]
+    })
+  });
+  if(!resp.ok){const err=await resp.json().catch(()=>({}));throw new Error('API-Fehler '+resp.status+(err.error?': '+err.error.message:''));}
+  const data=await resp.json();
+  if(data.stop_reason==='refusal')throw new Error('Die Anfrage wurde von der KI abgelehnt.');
+  const block=data.content.find(b=>b.type==='text');
+  if(!block)throw new Error('Leere Antwort der KI.');
+  return JSON.parse(block.text);
+}
+document.getElementById('kiBtn').addEventListener('click',async()=>{
+  const raw=wbTextEl.value.trim();
+  if(!raw){alert('Bitte zuerst etwas diktieren oder tippen.');return;}
+  stopRec();
+  const btn=document.getElementById('kiBtn'), orig=btn.innerHTML;
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> KI arbeitet…';
+  const hasKey=!!(localStorage.getItem('wb_apikey')||'').trim();
+  let res,source;
+  try{
+    if(hasKey){res=await kiClaude(raw);source='claude';}
+    else{res=kiLocal(raw);source='local';}
+  }catch(err){
+    res=kiLocal(raw);source='fallback';
+    console.warn('KI-Fehler:',err);
+  }
+  wbTextEl.value=res.text; recBase=res.text;
+  document.getElementById('wbCat').value=WB_FORM_CATS.includes(res.kategorie)?res.kategorie:'Info';
+  document.getElementById('wbSev').value=['info','wichtig','kritisch'].includes(res.stufe)?res.stufe:'info';
+  if(res.ort&&!document.getElementById('wbOrt').value.trim())document.getElementById('wbOrt').value=res.ort;
+  if(source==='claude')showKiNote('ok','✨ <strong>Claude</strong> hat den Eintrag formuliert und als <strong>'+esc(res.kategorie)+' · '+esc(res.stufe)+'</strong> eingeordnet. Prüfe kurz und trage ein.');
+  else if(source==='local')showKiNote('ok','🤖 Der <strong>Offline-Assistent</strong> hat den Text aufbereitet ('+esc(res.kategorie)+' · '+esc(res.stufe)+'). Für echte KI-Formulierung: API-Key unter „Mehr" hinterlegen.');
+  else showKiNote('warn','⚠️ Claude war nicht erreichbar – der Offline-Assistent hat übernommen ('+esc(res.kategorie)+' · '+esc(res.stufe)+').');
+  btn.disabled=false; btn.innerHTML=orig;
+});
+
+// ═══ LOGBUCH ═══
 function renderWbLog(){
   const chips=document.getElementById('wbCatChips');
   const usedCats=['Alle',...new Set(wbEntries.map(e=>e.cat))];
@@ -1028,21 +504,20 @@ function renderWbLog(){
   si.addEventListener('input',()=>{wbQuery=si.value.trim(); sc.classList.toggle('show',wbQuery.length>0); renderWbLog();});
   sc.addEventListener('click',()=>{si.value='';wbQuery='';sc.classList.remove('show');renderWbLog();si.focus();});})();
 
-// Auswertung
+// ═══ AUSWERTUNG ═══
 function renderWbStats(){
   const today=new Date().toDateString();
   document.getElementById('wbKpiTotal').textContent=deFmt(wbEntries.length);
   document.getElementById('wbKpiToday').textContent=deFmt(wbEntries.filter(e=>new Date(e.ts).toDateString()===today).length);
   document.getElementById('wbKpiRounds').textContent=deFmt(wbEntries.filter(e=>e.cat==='Kontrollgang'&&!e.storniert).length);
   document.getElementById('wbKpiCrit').textContent=deFmt(wbEntries.filter(e=>e.sev==='kritisch'&&!e.storniert).length);
-  const cv=document.getElementById('wbChart'), empty=document.getElementById('wbChartEmpty');
-  if(wbChartInst){wbChartInst.destroy();wbChartInst=null;}
-  if(!wbEntries.length||typeof Chart==='undefined'){cv.style.display='none';empty.style.display='block';return;}
-  cv.style.display='block';empty.style.display='none';
+  const bars=document.getElementById('wbBars');
+  if(!wbEntries.length){bars.innerHTML='<div class="wb-empty">Noch keine Einträge vorhanden.</div>';return;}
   const counts={}; wbEntries.forEach(e=>{counts[e.cat]=(counts[e.cat]||0)+1;});
-  const labels=Object.keys(counts), palette=['#00d4aa','#5b9cf6','#f5a623','#ff6b6b','#b388ff','#4dd0e1','#ffb74d','#81c784','#f06292','#90a4ae'];
-  wbChartInst=new Chart(cv,{type:'doughnut',data:{labels,datasets:[{data:labels.map(l=>counts[l]),backgroundColor:labels.map((_,i)=>palette[i%palette.length]),borderColor:'#060611',borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:chartColors.tick,font:{family:'Sora',size:11},boxWidth:11,padding:10}}}}});
+  const max=Math.max(...Object.values(counts));
+  bars.innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([c,n])=>{
+    const ic=(WB_CATS.find(k=>k.v===c)||{}).icon||'';
+    return `<div class="bar-row"><div class="bar-name">${ic} ${esc(c)}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(3,n/max*100)}%"></div></div><div class="bar-val">${n}</div></div>`;}).join('');
 }
 document.getElementById('wbVerify').addEventListener('click',()=>{
   const box=document.getElementById('wbIntegrity'); box.className='wb-integrity';
@@ -1055,7 +530,7 @@ document.getElementById('wbVerify').addEventListener('click',()=>{
   box.classList.add('ok'); box.textContent=`✓ Alle ${wbEntries.length} Einträge unverändert – Kette intakt.`;
 });
 
-// Export
+// ═══ EXPORT ═══
 document.getElementById('wbExportCsv').addEventListener('click',()=>{
   if(!wbEntries.length){alert('Keine Einträge zum Exportieren.');return;}
   const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
@@ -1065,33 +540,60 @@ document.getElementById('wbExportCsv').addEventListener('click',()=>{
   const csv='\uFEFF'+rows.map(r=>r.map(cell).join(';')).join('\r\n');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  a.download='wachbuch_'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+  a.download='bb-protect-wachbuch_'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); URL.revokeObjectURL(a.href);
 });
 document.getElementById('wbPrint').addEventListener('click',()=>{
   if(!wbEntries.length){alert('Keine Einträge zum Drucken.');return;}
   const w=window.open('','_blank'); if(!w){alert('Pop-up-Blocker verhindert die Druckansicht.');return;}
   const rows=wbEntries.map(e=>{const d=new Date(e.ts);
     return `<tr${e.storniert?' class="storno"':''}><td>#${String(e.seq).padStart(3,'0')}</td><td>${d.toLocaleDateString('de-DE')}<br>${wbDfTime.format(d)}</td><td>${esc(e.cat)}<br><small>${esc(e.sev)}</small></td><td>${esc(e.text)}${e.storniert?'<br><small>STORNIERT: '+esc(e.stornoGrund||'')+'</small>':''}</td><td>${esc(e.ort||'–')}</td><td>${esc(e.autor||'–')}<br><small>${esc(e.objekt||'')}</small></td></tr>`;}).join('');
-  w.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Wachbuch</title><style>
-    body{font-family:Arial,sans-serif;font-size:11px;color:#111;margin:24px}
-    h1{font-size:18px;margin:0 0 2px} .sub{color:#555;margin-bottom:14px}
+  w.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>B·B PROTECT Wachbuch</title><style>
+    body{font-family:Georgia,serif;font-size:11px;color:#111;margin:24px}
+    h1{font-size:19px;margin:0 0 2px;letter-spacing:1px} .sub{color:#555;margin-bottom:14px;font-size:11px}
     table{width:100%;border-collapse:collapse} th,td{border:1px solid #999;padding:5px 7px;text-align:left;vertical-align:top}
     th{background:#eee;font-size:10px;text-transform:uppercase} small{color:#666} tr.storno td{text-decoration:line-through;color:#999}
     .foot{margin-top:18px;color:#555;font-size:10px} .sig{margin-top:36px;display:flex;gap:40px}
     .sig div{flex:1;border-top:1px solid #111;padding-top:4px;font-size:10px}</style></head><body>
-    <h1>Wachbuch / Dienstbuch</h1><div class="sub">Ausdruck vom ${new Date().toLocaleString('de-DE')} · ${wbEntries.length} Einträge · fortlaufend nummeriert, Prüfsummen-verkettet</div>
+    <h1>B·B PROTECT — Wachbuch / Dienstbuch</h1><div class="sub">Benjamin Barsamian · Meister für Schutz und Sicherheit · Ausdruck vom ${new Date().toLocaleString('de-DE')} · ${wbEntries.length} Einträge · fortlaufend nummeriert, Prüfsummen-verkettet</div>
     <table><tr><th>Nr</th><th>Datum</th><th>Kategorie</th><th>Ereignis</th><th>Ort</th><th>Wachperson</th></tr>${rows}</table>
-    <div class="foot">Stornierte Einträge bleiben ersichtlich (durchgestrichen). Erstellt mit dem digitalen Wachbuch der SiWi-App.</div>
+    <div class="foot">Stornierte Einträge bleiben ersichtlich (durchgestrichen). Erstellt mit dem digitalen B·B PROTECT Wachbuch.</div>
     <div class="sig"><div>Datum, Unterschrift Wachperson</div><div>Datum, Unterschrift Einsatzleitung</div></div>
     </body></html>`);
   w.document.close(); w.focus(); setTimeout(()=>w.print(),300);
 });
 
+// ═══ MEHR: KI-KEY + BACKUP ═══
+(function(){
+  const inp=document.getElementById('apiKey'), status=document.getElementById('kiStatus');
+  function upd(){const k=(localStorage.getItem('wb_apikey')||'').trim();
+    status.innerHTML=k?'<span style="color:var(--green)">● Claude-KI aktiv</span>':'<span style="color:var(--text-dim)">○ Offline-Assistent aktiv (kein Key hinterlegt)</span>';}
+  inp.value=localStorage.getItem('wb_apikey')||'';
+  inp.addEventListener('input',()=>{localStorage.setItem('wb_apikey',inp.value.trim());upd();});
+  upd();
+})();
+document.getElementById('wbBackup').addEventListener('click',()=>{
+  const data={app:'bb-protect-wachbuch',version:2,exported:new Date().toISOString(),entries:wbEntries};
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));
+  a.download='bb-protect-backup_'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById('wbRestoreBtn').addEventListener('click',()=>document.getElementById('wbRestoreFile').click());
+document.getElementById('wbRestoreFile').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{
+    const data=JSON.parse(r.result);
+    if(!data||!Array.isArray(data.entries))throw new Error('Format');
+    if(!confirm('Backup mit '+data.entries.length+' Einträgen wiederherstellen? Vorhandene Einträge werden ersetzt.'))return;
+    wbEntries=data.entries; wbSave(); renderWB();
+    alert('Backup wiederhergestellt.');
+  }catch(err){alert('Ungültige Backup-Datei.');}};
+  r.readAsText(f); e.target.value='';
+});
+
+// ═══ RENDER + INIT ═══
 function renderWB(){renderShiftCard();renderWbLog();renderWbStats();}
 renderWB();
-
-// ═══ INIT ═══
-loadData();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#08080d">
+<link rel="icon" href="icon-192.png">
+<title>B·B PROTECT · EMA 3D</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#08080d;--surface:rgba(14,14,22,0.88);--border:rgba(255,255,255,0.10);
+  --text:#e9ebf2;--text-dim:rgba(233,235,242,0.5);
+  --gold:#d4af37;--red:#ff5252;--green:#3ecf8e;--amber:#f5a623;--blue:#5b9cf6;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Sora',sans-serif}
+#app{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+
+/* ── Top bar ── */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:10px;
+  padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));
+  background:linear-gradient(180deg,rgba(8,8,13,.92),rgba(8,8,13,0));pointer-events:none}
+#topbar>*{pointer-events:auto}
+.back{display:flex;align-items:center;gap:6px;color:var(--text-dim);text-decoration:none;font-size:12px;
+  border:1px solid var(--border);border-radius:10px;padding:7px 11px;background:var(--surface);backdrop-filter:blur(12px)}
+.back:hover{color:var(--gold)}
+#title{font-family:'Cinzel',serif;font-size:15px;font-weight:700;letter-spacing:1.5px;color:#c9cfdb}
+#title span{color:var(--gold)}
+#subT{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+#armBadge{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:1.5px;padding:7px 13px;border-radius:99px;
+  border:1px solid var(--green);color:var(--green);background:rgba(62,207,142,.1)}
+#armBadge.armed{border-color:var(--red);color:var(--red);background:rgba(255,82,82,.12)}
+
+/* ── Meldergruppen panel ── */
+#mgPanel{position:fixed;left:12px;top:72px;z-index:15;width:218px;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(14px);overflow:hidden;
+  transition:transform .3s ease,opacity .3s}
+#mgPanel h2{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  padding:10px 13px 7px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;cursor:pointer}
+#mgPanel h2 .tgl{color:var(--text-dim)}
+#mgBody{padding:7px 13px 10px}
+.mg{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px}
+.mg .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);flex-shrink:0}
+.mg.open .dot{background:var(--red);box-shadow:0 0 8px var(--red);animation:blink .5s infinite alternate}
+.mg.sab .dot{background:var(--amber);box-shadow:0 0 8px var(--amber);animation:blink .5s infinite alternate}
+.mg .nm{flex:1;color:var(--text)}
+.mg .ohm{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)}
+.mg.open .ohm,.mg.sab .ohm{color:var(--red);font-weight:700}
+@keyframes blink{from{opacity:1}to{opacity:.25}}
+#evLog{border-top:1px solid var(--border);padding:7px 13px 10px;max-height:96px;overflow-y:auto}
+#evLog .ev{font-size:9.5px;font-family:'JetBrains Mono',monospace;color:var(--text-dim);padding:1.5px 0;line-height:1.4}
+#evLog .ev.alarm{color:var(--red)}
+#evLog .ev.ok{color:var(--green)}
+#mgPanel.min #mgBody,#mgPanel.min #evLog{display:none}
+
+/* ── Info card ── */
+#info{position:fixed;right:12px;top:72px;z-index:16;width:min(310px,calc(100vw - 24px));
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(14px);
+  padding:15px;display:none}
+#info.show{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#infoT{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:7px;padding-right:24px}
+#infoB{font-size:11.5px;line-height:1.65;color:var(--text)}
+#infoB b{color:var(--gold)}
+#infoX{position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:8px;border:1px solid var(--border);
+  background:none;color:var(--text-dim);cursor:pointer;font-size:14px}
+
+/* ── Alarm banner ── */
+#alarmBanner{position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:25;
+  background:rgba(180,20,20,.92);border:1px solid #ff8080;border-radius:12px;padding:10px 22px;
+  font-weight:700;font-size:14px;letter-spacing:1px;opacity:0;pointer-events:none;transition:all .3s;
+  box-shadow:0 0 30px rgba(255,60,60,.5);text-align:center}
+#alarmBanner.show{opacity:1;transform:translateX(-50%) translateY(0);animation:blink .6s infinite alternate}
+#alarmBanner small{display:block;font-size:10px;font-weight:400;letter-spacing:.5px;opacity:.85;margin-top:2px}
+#alarmFlash{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:0;
+  box-shadow:inset 0 0 120px 30px rgba(255,40,40,.55);transition:opacity .15s}
+
+/* ── Hint toast ── */
+#hint{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);z-index:25;background:var(--surface);
+  border:1px solid var(--amber);color:var(--amber);border-radius:11px;padding:9px 17px;font-size:12px;
+  opacity:0;pointer-events:none;transition:opacity .3s;max-width:88vw;text-align:center;backdrop-filter:blur(12px)}
+#hint.show{opacity:1}
+
+/* ── Bottom controls ── */
+#controls{position:fixed;bottom:0;left:0;right:0;z-index:20;padding:10px 12px;
+  padding-bottom:max(10px,env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,rgba(8,8,13,.94),rgba(8,8,13,0));display:flex;gap:8px;overflow-x:auto;
+  scrollbar-width:none}
+#controls::-webkit-scrollbar{display:none}
+.btn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:76px;
+  padding:9px 11px;border-radius:12px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font-family:'Sora',sans-serif;font-size:10.5px;font-weight:600;cursor:pointer;
+  backdrop-filter:blur(12px);transition:all .15s}
+.btn:active{transform:scale(.95)}
+.btn .ic{font-size:17px;line-height:1}
+.btn.gold{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.1)}
+.btn.gold.armed{border-color:var(--red);color:var(--red);background:rgba(255,82,82,.12)}
+.btn.warn{border-color:rgba(245,166,35,.5)}
+.btn.danger{border-color:rgba(255,82,82,.45)}
+.btn:disabled{opacity:.35;pointer-events:none}
+
+/* ── 3D labels ── */
+.lbl{font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(233,235,242,.85);
+  background:rgba(8,8,13,.72);border:1px solid rgba(212,175,55,.35);border-radius:6px;padding:2.5px 7px;
+  white-space:nowrap;pointer-events:none;text-shadow:0 1px 3px #000}
+.lbl.red{border-color:var(--red);color:var(--red)}
+
+#loader{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;transition:opacity .5s}
+#loader.done{opacity:0;pointer-events:none}
+#loader .ring{width:44px;height:44px;border-radius:50%;border:3px solid rgba(212,175,55,.2);
+  border-top-color:var(--gold);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loader p{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+
+@media(max-width:640px){
+  #mgPanel{width:190px;top:64px}
+  #info{top:auto;bottom:88px;right:12px}
+  #title{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div id="loader"><div class="ring"></div><p>EMA wird aufgebaut …</p></div>
+<div id="alarmFlash"></div>
+
+<header id="topbar">
+  <a class="back" href="index.html">←</a>
+  <div><div id="title">B·B <span>PROTECT</span> · EMA 3D</div>
+    <div id="subT">Einbruchmeldeanlage · interaktive Simulation</div></div>
+  <div id="armBadge">UNSCHARF</div>
+</header>
+
+<aside id="mgPanel">
+  <h2 id="mgHead">Meldergruppen <span class="tgl">▾</span></h2>
+  <div id="mgBody"></div>
+  <div id="evLog"></div>
+</aside>
+
+<div id="info"><button id="infoX">✕</button><div id="infoT"></div><div id="infoB"></div></div>
+<div id="alarmBanner"><span id="alarmTxt"></span><small id="alarmSub"></small></div>
+<div id="hint"></div>
+
+<nav id="controls">
+  <button class="btn gold" id="bArm"><span class="ic">🔐</span><span id="bArmT">Scharf schalten</span></button>
+  <button class="btn" id="bDoor"><span class="ic">🚪</span><span id="bDoorT">Tür öffnen</span></button>
+  <button class="btn" id="bBolt"><span class="ic">🔒</span><span id="bBoltT">Verriegeln</span></button>
+  <button class="btn warn" id="bGlass"><span class="ic">🪟</span>Glasbruch</button>
+  <button class="btn warn" id="bIntruder"><span class="ic">🥷</span>Einbrecher</button>
+  <button class="btn warn" id="bSafe"><span class="ic">🔨</span>Tresor-Angriff</button>
+  <button class="btn danger" id="bSabo"><span class="ic">✂️</span>Sabotage</button>
+  <button class="btn" id="bSound"><span class="ic" id="bSoundIc">🔊</span>Ton</button>
+  <button class="btn" id="bLabels"><span class="ic">🏷️</span>Labels</button>
+  <button class="btn" id="bReset"><span class="ic">↺</span>Reset</button>
+</nav>
+
+<script type="importmap">
+{"imports":{
+  "three":"./vendor/three/three.module.min.js"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from './vendor/three/OrbitControls.js';
+import {CSS2DRenderer,CSS2DObject} from './vendor/three/CSS2DRenderer.js';
+
+/* ═════════ Grundgerüst ═════════ */
+const app=document.getElementById('app');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.35;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+app.appendChild(renderer.domElement);
+
+const labelRenderer=new CSS2DRenderer();
+labelRenderer.setSize(innerWidth,innerHeight);
+Object.assign(labelRenderer.domElement.style,{position:'fixed',top:'0',left:'0',pointerEvents:'none',zIndex:'8'});
+document.body.appendChild(labelRenderer.domElement);
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x08080d);
+scene.fog=new THREE.Fog(0x08080d,18,40);
+
+const camera=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,0.1,100);
+camera.position.set(7.4,5.4,8.2);
+if(innerHeight>innerWidth)camera.position.set(10.2,6.8,11.2);   // Hochformat: weiter raus
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.target.set(0,1.1,-0.3);
+controls.enableDamping=true;controls.dampingFactor=0.07;
+controls.maxPolarAngle=1.52;controls.minDistance=2.5;controls.maxDistance=19;
+
+/* Licht */
+scene.add(new THREE.HemisphereLight(0xaab4d0,0x22232e,1.0));
+const sun=new THREE.DirectionalLight(0xfff2d8,1.7);
+sun.position.set(6,10,5);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-9;sun.shadow.camera.right=9;
+sun.shadow.camera.top=9;sun.shadow.camera.bottom=-9;
+sun.shadow.bias=-0.0004;
+scene.add(sun);
+const fillL=new THREE.PointLight(0xffe6b8,14,16,1.6);fillL.position.set(-1,2.55,1.4);scene.add(fillL);
+const roomL=new THREE.PointLight(0xdfe6ff,10,14,1.6);roomL.position.set(1.6,2.5,-0.8);scene.add(roomL);
+
+/* Boden */
+const ground=new THREE.Mesh(new THREE.CircleGeometry(24,64),
+  new THREE.MeshStandardMaterial({color:0x14141d,roughness:.95}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+const grid=new THREE.GridHelper(30,30,0x2a2618,0x16161f);
+grid.position.y=0.002;grid.material.transparent=true;grid.material.opacity=.5;scene.add(grid);
+
+/* ═════════ Material-Palette ═════════ */
+const M={
+  wall:new THREE.MeshStandardMaterial({color:0x3a3e50,roughness:.92}),
+  floor:new THREE.MeshStandardMaterial({color:0x2a2e3c,roughness:.85}),
+  frame:new THREE.MeshStandardMaterial({color:0x454a5c,roughness:.6,metalness:.35}),
+  wood:new THREE.MeshStandardMaterial({color:0x6b4a2f,roughness:.75}),
+  device:new THREE.MeshStandardMaterial({color:0xe6e8ef,roughness:.4}),
+  deviceDark:new THREE.MeshStandardMaterial({color:0x3a3d4a,roughness:.5}),
+  metal:new THREE.MeshStandardMaterial({color:0xb8bcc8,roughness:.3,metalness:.85}),
+  gold:new THREE.MeshStandardMaterial({color:0xd4af37,roughness:.35,metalness:.7}),
+  safe:new THREE.MeshStandardMaterial({color:0x2f4f43,roughness:.45,metalness:.6}),
+  glass:new THREE.MeshPhysicalMaterial({color:0x9fc8ff,transparent:true,opacity:.16,roughness:.05,metalness:0,side:THREE.DoubleSide}),
+};
+
+/* ═════════ Raum ═════════ */
+const W=0.15,H=2.8;                          // Wandstärke / -höhe
+const room=new THREE.Group();scene.add(room);
+function box(w,h,d,mat,x,y,z,parent=room){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+  m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;
+}
+/* Raumboden 8 × 6 */
+const rf=box(8.3,0.1,6.3,M.floor,0,-0.05+0.06,0);rf.position.y=0.03;
+/* Rückwand z = −3, Fensteröffnung x 0.7…2.5, y 0.9…2.1 */
+box((0.7+4),H,W,M.wall,(-4+0.7)/2,H/2,-3);
+box((4-2.5),H,W,M.wall,(2.5+4)/2,H/2,-3);
+box(1.8,0.9,W,M.wall,1.6,0.45,-3);
+box(1.8,H-2.1,W,M.wall,1.6,(2.1+H)/2,-3);
+/* Linke Wand x = −4, Türöffnung z 0.4…1.5, Höhe 2.1 */
+box(W,H,3.4,M.wall,-4,H/2,(-3+0.4)/2);
+box(W,H,1.5,M.wall,-4,H/2,(1.5+3)/2);
+box(W,H-2.1,1.1,M.wall,-4,(2.1+H)/2,0.95);
+/* Niedrige Schnittkanten vorn / rechts */
+box(8.3,0.32,W,M.wall,0,0.16,3.07);
+box(W,0.32,6.3,M.wall,4.07,0.16,0);
+
+/* Fensterrahmen + Glas */
+const winFrame=new THREE.Group();room.add(winFrame);
+[[1.6,2.13,-3,1.86,0.06],[1.6,0.87,-3,1.86,0.06]].forEach(p=>box(p[3],p[4],W+0.04,M.frame,p[0],p[1],p[2],winFrame));
+[[0.67,1.5,-3],[2.53,1.5,-3]].forEach(p=>box(0.06,1.32,W+0.04,M.frame,p[0],p[1],p[2],winFrame));
+let glassPane=null;
+function makeGlass(){
+  glassPane=new THREE.Mesh(new THREE.BoxGeometry(1.76,1.16,0.02),M.glass);
+  glassPane.position.set(1.6,1.5,-3);room.add(glassPane);
+  glassPane.userData.info='glas';pickables.push(glassPane);
+}
+
+/* ═════════ Tür + Beschläge ═════════ */
+/* Zarge */
+box(0.08,2.12,0.07,M.frame,-4,1.06,0.405);
+box(0.08,2.12,0.07,M.frame,-4,1.06,1.5);
+box(0.08,0.07,1.16,M.frame,-4,2.12,0.95);
+const doorG=new THREE.Group();doorG.position.set(-3.96,0,0.44);room.add(doorG);
+const doorLeaf=box(0.07,2.06,1.02,M.wood,0,1.03,0.52,doorG);
+doorLeaf.userData.info='tuer';
+const handle=box(0.05,0.04,0.22,M.gold,0.07,1.02,0.88,doorG);handle.userData.info='tuer';
+/* Magnetkontakt: Reed (Zarge) + Magnet (Türblatt) */
+const mkReed=box(0.06,0.05,0.16,M.device,-3.9,2.155,1.28);mkReed.userData.info='mk';
+const mkMag=box(0.06,0.05,0.16,M.deviceDark,0.045,2.09,0.84,doorG);mkMag.userData.info='mk';
+/* Riegel (fährt aus dem Türblatt in die Zarge) */
+const bolt=new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.16,12),M.metal);
+bolt.rotation.x=Math.PI/2;bolt.position.set(0.035,0.96,1.02);doorG.add(bolt);
+/* Riegelschaltkontakt in der Zarge */
+const rsk=box(0.07,0.12,0.07,M.device,-3.9,0.96,1.53);rsk.userData.info='riegel';
+/* Blockschloss (Scharfschalteinrichtung) */
+const blockG=new THREE.Group();blockG.position.set(-3.9,1.25,1.85);room.add(blockG);
+const blockBody=box(0.07,0.34,0.16,M.deviceDark,0,0,0,blockG);blockBody.userData.info='block';
+const blockKey=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.03,16),M.gold);
+blockKey.rotation.z=Math.PI/2;blockKey.position.set(0.05,0.06,0);blockG.add(blockKey);
+box(0.015,0.008,0.05,M.metal,0.068,0.06,0,blockG);   // Schlüsselbart
+
+/* ═════════ EMZ + ÜE ═════════ */
+const emzG=new THREE.Group();emzG.position.set(-2.3,1.55,-2.9);room.add(emzG);
+const emzBody=box(0.56,0.78,0.13,M.device,0,0,0,emzG);emzBody.userData.info='emz';
+box(0.46,0.66,0.02,new THREE.MeshStandardMaterial({color:0xf2f3f7,roughness:.35}),0,0,0.07,emzG);
+function led(color,x,y){
+  const l=new THREE.Mesh(new THREE.SphereGeometry(0.022,12,12),
+    new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:.15}));
+  l.position.set(x,y,0.085);emzG.add(l);return l;
+}
+const ledPower=led(0x3ecf8e,-0.14,0.26), ledArmed=led(0xd4af37,0,0.26),
+      ledAlarm=led(0xff3030,0.14,0.26), ledFault=led(0xf5a623,0.14,0.14);
+/* Übertragungseinrichtung */
+const ueBox=box(0.3,0.22,0.1,M.deviceDark,-2.3,0.95,-2.92);ueBox.userData.info='ue';
+const ant=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.3,8),M.metal);
+ant.position.set(-2.18,1.2,-2.92);room.add(ant);
+
+/* ═════════ Melder ═════════ */
+/* Glasbruchmelder auf der Scheibe */
+const gbm=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.03,20),M.device);
+gbm.rotation.x=Math.PI/2;gbm.position.set(2.22,1.92,-2.97);room.add(gbm);gbm.userData.info='glas';
+/* PIR-Bewegungsmelder + Erfassungskegel */
+const pirG=new THREE.Group();pirG.position.set(3.5,2.55,-2.82);room.add(pirG);
+const pirBody=box(0.14,0.2,0.12,M.device,0,0,0,pirG);pirBody.userData.info='pir';
+const pirLens=new THREE.Mesh(new THREE.SphereGeometry(0.055,16,16,0,Math.PI*2,0,Math.PI/2),
+  new THREE.MeshStandardMaterial({color:0x222630,roughness:.2}));
+pirLens.rotation.x=Math.PI/2;pirLens.position.set(0,-0.04,0.07);pirG.add(pirLens);
+const pirLed=new THREE.Mesh(new THREE.SphereGeometry(0.016,10,10),
+  new THREE.MeshStandardMaterial({color:0xff3030,emissive:0xff3030,emissiveIntensity:0}));
+pirLed.position.set(0,0.06,0.065);pirG.add(pirLed);
+/* Kegel */
+const pirTip=new THREE.Vector3(3.5,2.5,-2.8), pirTarget=new THREE.Vector3(0.9,0,0.5);
+const pirDir=pirTarget.clone().sub(pirTip), pirLen=pirDir.length();
+const coneMat=new THREE.MeshBasicMaterial({color:0x5b9cf6,transparent:true,opacity:.06,side:THREE.DoubleSide,depthWrite:false});
+const cone=new THREE.Mesh(new THREE.ConeGeometry(2.1,pirLen,40,1,true),coneMat);
+cone.position.copy(pirTip.clone().add(pirDir.clone().multiplyScalar(.5)));
+cone.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),pirDir.clone().normalize().negate());
+scene.add(cone);
+/* Tresor + Körperschallmelder */
+const safeG=new THREE.Group();safeG.position.set(2.7,0,-1.9);room.add(safeG);
+const safeBody=box(0.85,1.08,0.85,M.safe,0,0.6,0,safeG);safeBody.userData.info='tresor';
+box(0.6,0.7,0.03,M.metal,-0.43,0.62,0,safeG).rotation.y=Math.PI/2;
+const dial=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,0.05,20),M.gold);
+dial.rotation.z=Math.PI/2;dial.position.set(-0.46,0.72,0.18);safeG.add(dial);
+const ksm=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.075,0.045,20),M.device);
+ksm.rotation.z=Math.PI/2;ksm.position.set(-0.46,0.35,-0.22);safeG.add(ksm);ksm.userData.info='koerper';
+/* Außensirene + Blitzleuchte */
+const sirG=new THREE.Group();sirG.position.set(-4.18,2.42,2.35);room.add(sirG);
+const sirBody=box(0.1,0.42,0.32,M.device,0,0,0,sirG);sirBody.userData.info='sirene';
+const strobe=new THREE.Mesh(new THREE.SphereGeometry(0.07,16,16,0,Math.PI*2,0,Math.PI/2),
+  new THREE.MeshStandardMaterial({color:0x3060ff,emissive:0x2050ff,emissiveIntensity:.1,transparent:true,opacity:.9}));
+strobe.position.set(0,0.245,0);sirG.add(strobe);strobe.userData.info='sirene';
+const strobeLight=new THREE.PointLight(0x4466ff,0,10);strobeLight.position.set(-4.4,2.8,2.35);scene.add(strobeLight);
+/* NSL-Symbol */
+const nslG=new THREE.Group();nslG.position.set(-2.3,3.9,-4.4);scene.add(nslG);
+const nslM=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.44,0.5),
+  new THREE.MeshStandardMaterial({color:0x1c2434,roughness:.5,emissive:0x5b9cf6,emissiveIntensity:.12}));
+nslM.castShadow=false;nslG.add(nslM);nslM.userData.info='ue';
+const nslMast=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.5,8),M.metal);
+nslMast.position.y=0.45;nslG.add(nslMast);
+
+/* ═════════ Beschriftungen ═════════ */
+const labels=[];
+function addLabel(txt,pos,parent=scene){
+  const d=document.createElement('div');d.className='lbl';d.textContent=txt;
+  const o=new CSS2DObject(d);o.position.copy(pos);parent.add(o);labels.push({o,d});return d;
+}
+addLabel('EMZ · Zentrale',new THREE.Vector3(0,0.55,0),emzG);
+addLabel('ÜE',new THREE.Vector3(-2.55,0.95,-2.9));
+addLabel('NSL · Leitstelle',new THREE.Vector3(0,0.55,0),nslG);
+addLabel('Magnetkontakt',new THREE.Vector3(-3.9,2.33,1.28));
+addLabel('Riegelschaltkontakt',new THREE.Vector3(-3.9,0.72,1.6));
+addLabel('Blockschloss',new THREE.Vector3(0,0.32,0),blockG);
+addLabel('Glasbruchmelder',new THREE.Vector3(2.22,2.18,-2.95));
+addLabel('PIR-Bewegungsmelder',new THREE.Vector3(0,0.25,0),pirG);
+addLabel('Körperschallmelder',new THREE.Vector3(-0.75,0.35,-0.25),safeG);
+addLabel('Außensirene + Blitzleuchte',new THREE.Vector3(0,0.45,0),sirG);
+const tresorLbl=addLabel('Wertbehältnis',new THREE.Vector3(0,1.35,0),safeG);
+
+/* ═════════ Meldelinien (Ruhestromprinzip) ═════════ */
+function pathFrom(pts){
+  const cp=new THREE.CurvePath();
+  for(let i=0;i<pts.length-1;i++)cp.add(new THREE.LineCurve3(
+    new THREE.Vector3(...pts[i]),new THREE.Vector3(...pts[i+1])));
+  return cp;
+}
+const wires=[];   // {id,path,tube,mat,pulses[],ok,cut,speed}
+function makeWire(id,pts,color=0xb8860b,pulseColor=0x3ecf8e,nPulse=4,speed=.55){
+  const path=pathFrom(pts);
+  const mat=new THREE.MeshStandardMaterial({color,roughness:.4,metalness:.6,emissive:color,emissiveIntensity:.12});
+  const tube=new THREE.Mesh(new THREE.TubeGeometry(path,64,0.013,6,false),mat);
+  tube.castShadow=false;scene.add(tube);
+  const pulses=[];
+  for(let i=0;i<nPulse;i++){
+    const p=new THREE.Mesh(new THREE.SphereGeometry(0.028,8,8),
+      new THREE.MeshBasicMaterial({color:pulseColor}));
+    p.userData.t=i/nPulse;scene.add(p);pulses.push(p);
+  }
+  const w={id,path,tube,mat,pulses,ok:true,cut:false,speed,baseColor:color,pulseColor};
+  wires.push(w);return w;
+}
+const wMK  =makeWire('mk',    [[-3.9,2.2,1.28],[-3.88,2.42,1.28],[-3.88,2.42,-2.78],[-3.7,2.42,-2.88],[-2.3,2.42,-2.88],[-2.3,1.96,-2.88]]);
+const wRSK =makeWire('riegel',[[-3.9,1.02,1.53],[-3.88,1.02,1.68],[-3.88,2.3,1.68],[-3.88,2.3,-2.72],[-3.62,2.3,-2.88],[-2.44,2.3,-2.88],[-2.44,1.96,-2.88]]);
+const wBLK =makeWire('block', [[-3.9,1.42,1.85],[-3.88,2.18,1.85],[-3.88,2.18,-2.66],[-3.55,2.18,-2.88],[-2.16,2.18,-2.88],[-2.16,1.96,-2.88]],0xb8860b,0xd4af37,3,.45);
+const wGBM =makeWire('glas',  [[2.22,1.98,-2.9],[2.22,2.52,-2.9],[-2.02,2.52,-2.9],[-2.02,1.96,-2.9]]);
+const wPIR =makeWire('pir',   [[3.5,2.62,-2.86],[3.5,2.66,-2.9],[-1.88,2.66,-2.9],[-1.88,1.96,-2.9]]);
+const wKSM =makeWire('koerper',[[2.24,0.35,-2.12],[2.24,0.12,-2.12],[2.24,0.12,-2.88],[-2.3,0.12,-2.88],[-2.3,0.84,-2.9]]);
+const wSIR =makeWire('sirene',[[-2.3,1.96,-2.88],[-2.3,2.74,-2.88],[-3.8,2.74,-2.88],[-3.9,2.74,-2.6],[-3.9,2.74,2.35],[-4.18,2.74,2.35],[-4.18,2.64,2.35]],0xb8860b,0x3ecf8e,5,.5);
+const wNSL =makeWire('nsl',   [[-2.3,1.06,-2.95],[-2.3,1.06,-3.35],[-2.3,3.9,-3.35],[-2.3,3.9,-4.12]],0x33507a,0x5b9cf6,4,.9);
+
+/* Schnittstelle für Sabotage: Trennstelle auf der Glasbruch-Linie */
+let cutMarker=null;
+
+/* ═════════ Zustands-Logik ═════════ */
+const S={
+  armed:false, doorOpen:false, doorAnim:0, doorTarget:0,
+  bolted:false, boltAnim:0,
+  glassOk:true, saboCut:false,
+  pirDetect:false, ksmDetect:false,
+  alarm:false, alarmSrc:'',
+  intruder:null, attack:null, shards:[],
+  labelsOn:true, soundOn:true, time:0
+};
+const MGs=[
+  {id:'mk',    nm:'MG 1 · Magnetkontakt Tür'},
+  {id:'riegel',nm:'MG 2 · Riegelkontakt'},
+  {id:'glas',  nm:'MG 3 · Glasbruchmelder'},
+  {id:'pir',   nm:'MG 4 · Bewegungsmelder'},
+  {id:'koerper',nm:'MG 5 · Körperschall'},
+  {id:'sab',   nm:'SAB · Sabotagelinie'},
+];
+const mgBody=document.getElementById('mgBody');
+MGs.forEach(m=>{
+  const d=document.createElement('div');d.className='mg';d.id='mg-'+m.id;
+  d.innerHTML=`<span class="dot"></span><span class="nm">${m.nm}</span><span class="ohm">12,1 kΩ</span>`;
+  mgBody.appendChild(d);
+});
+function mgState(id,cls,ohm){
+  const d=document.getElementById('mg-'+id);
+  d.className='mg'+(cls?' '+cls:'');d.querySelector('.ohm').textContent=ohm;
+}
+function loopStatus(){
+  mgState('mk',S.doorOpen?'open':'',S.doorOpen?'∞ Ω':'12,1 kΩ');
+  mgState('riegel',S.bolted?'':'open',S.bolted?'12,1 kΩ':'∞ Ω');
+  mgState('glas',(S.glassOk&&!S.saboCut)?'':(S.saboCut?'sab':'open'),S.saboCut?'∞ Ω (Leitung!)':(S.glassOk?'12,1 kΩ':'∞ Ω'));
+  mgState('pir',S.pirDetect?'open':'','—  aktiv');
+  mgState('koerper',S.ksmDetect?'open':'','—  aktiv');
+  mgState('sab',S.saboCut?'sab':'',S.saboCut?'unterbrochen':'geschlossen');
+  wMK.ok=!S.doorOpen; wRSK.ok=S.bolted; wGBM.ok=S.glassOk&&!S.saboCut; wGBM.cut=S.saboCut;
+  wPIR.ok=!S.pirDetect; wKSM.ok=!S.ksmDetect;
+  [wMK,wRSK,wGBM,wPIR,wKSM].forEach(w=>{
+    w.mat.color.set(w.ok?w.baseColor:0xff3030);
+    w.mat.emissive.set(w.ok?w.baseColor:0xff3030);
+    w.mat.emissiveIntensity=w.ok?.12:.6;
+  });
+}
+const evLog=document.getElementById('evLog');
+function logEv(t,cls=''){
+  const d=document.createElement('div');d.className='ev '+cls;
+  d.textContent=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+'  '+t;
+  evLog.prepend(d);while(evLog.children.length>14)evLog.lastChild.remove();
+}
+function hint(t){
+  const h=document.getElementById('hint');h.textContent=t;h.classList.add('show');
+  clearTimeout(hint._t);hint._t=setTimeout(()=>h.classList.remove('show'),3200);
+}
+
+/* ── Alarm ── */
+const banner=document.getElementById('alarmBanner'),
+      alarmTxt=document.getElementById('alarmTxt'),alarmSub=document.getElementById('alarmSub'),
+      alarmFlash=document.getElementById('alarmFlash');
+function triggerAlarm(srcName,srcId){
+  if(S.alarm)return;
+  S.alarm=true;S.alarmSrc=srcName;
+  alarmTxt.textContent='⚠ EINBRUCHALARM';
+  alarmSub.textContent='Auslösung: '+srcName+' · Übertragung an NSL läuft';
+  banner.classList.add('show');
+  logEv('ALARM ausgelöst: '+srcName,'alarm');
+  logEv('ÜE → NSL: Alarm aufgeschaltet','alarm');
+  wNSL.speed=2.6;wNSL.pulses.forEach(p=>p.material.color.set(0xff5252));
+  startSiren();
+}
+function sabotageAlarm(){
+  alarmTxt.textContent='⚠ SABOTAGE';
+  alarmSub.textContent='Meldelinie MG 3 unterbrochen (∞ Ω) – Störung auch im unscharfen Zustand';
+  banner.classList.add('show');
+  logEv('SABOTAGE: Leitung MG 3 durchtrennt','alarm');
+  logEv('ÜE → NSL: Sabotagemeldung übertragen','alarm');
+  wNSL.speed=2.2;wNSL.pulses.forEach(p=>p.material.color.set(0xf5a623));
+  if(S.armed){S.alarm=true;S.alarmSrc='Sabotage';startSiren();}
+}
+function clearAlarm(){
+  S.alarm=false;banner.classList.remove('show');alarmFlash.style.opacity=0;
+  wNSL.speed=.9;wNSL.pulses.forEach(p=>p.material.color.set(0x5b9cf6));
+  stopSiren();strobeLight.intensity=0;strobe.material.emissiveIntensity=.1;
+}
+
+/* ── Sound (WebAudio) ── */
+let AC=null,sirOsc=null,sirLfo=null,sirGain=null;
+function ac(){if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();return AC;}
+function startSiren(){
+  if(!S.soundOn||sirOsc)return;
+  try{
+    const c=ac();sirGain=c.createGain();sirGain.gain.value=.06;sirGain.connect(c.destination);
+    sirOsc=c.createOscillator();sirOsc.type='sawtooth';sirOsc.frequency.value=750;
+    sirLfo=c.createOscillator();sirLfo.frequency.value=.9;
+    const lg=c.createGain();lg.gain.value=280;sirLfo.connect(lg);lg.connect(sirOsc.frequency);
+    sirOsc.connect(sirGain);sirOsc.start();sirLfo.start();
+  }catch(e){}
+}
+function stopSiren(){
+  try{if(sirOsc){sirOsc.stop();sirLfo.stop();sirOsc=sirLfo=null;}}catch(e){}
+}
+function thud(){
+  if(!S.soundOn)return;
+  try{
+    const c=ac(),o=c.createOscillator(),g=c.createGain();
+    o.type='sine';o.frequency.setValueAtTime(90,c.currentTime);
+    o.frequency.exponentialRampToValueAtTime(35,c.currentTime+.18);
+    g.gain.setValueAtTime(.4,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.25);
+    o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.3);
+  }catch(e){}
+}
+function crash(){
+  if(!S.soundOn)return;
+  try{
+    const c=ac(),len=c.sampleRate*.4,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);
+    for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.2);
+    const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();
+    f.type='highpass';f.frequency.value=2500;g.gain.value=.5;
+    s.buffer=buf;s.connect(f);f.connect(g);g.connect(c.destination);s.start();
+  }catch(e){}
+}
+
+/* ═════════ Aktionen ═════════ */
+function setArmedUI(){
+  const b=document.getElementById('armBadge'),bt=document.getElementById('bArm');
+  b.textContent=S.armed?'EXTERN SCHARF':'UNSCHARF';
+  b.classList.toggle('armed',S.armed);bt.classList.toggle('armed',S.armed);
+  document.getElementById('bArmT').textContent=S.armed?'Unscharf schalten':'Scharf schalten';
+  ledArmed.material.emissiveIntensity=S.armed?1.4:.1;
+}
+function toggleArm(){
+  if(S.alarm&&S.armed){ // Unscharf = Alarm quittieren
+    S.armed=false;clearAlarm();setArmedUI();
+    logEv('Anlage unscharf – Alarm quittiert','ok');loopStatus();return;
+  }
+  if(S.armed){S.armed=false;setArmedUI();logEv('Anlage unscharf geschaltet','ok');return;}
+  /* Zwangsläufigkeit prüfen */
+  if(S.doorOpen){hint('Zwangsläufigkeit: Scharfschalten nicht möglich – Tür ist offen.');logEv('Scharfschaltung verweigert: Tür offen');return;}
+  if(!S.bolted){hint('Zwangsläufigkeit: erst Riegel vorschließen (Riegelschaltkontakt offen).');logEv('Scharfschaltung verweigert: Riegel nicht vorgeschlossen');return;}
+  if(!S.glassOk||S.saboCut){hint('Scharfschalten nicht möglich: Meldelinie MG 3 nicht geschlossen.');logEv('Scharfschaltung verweigert: MG 3 offen');return;}
+  S.armed=true;setArmedUI();
+  blockKey.rotation.x+=Math.PI/2;
+  logEv('Blockschloss: Anlage EXTERN SCHARF','ok');
+}
+function toggleDoor(){
+  if(S.bolted){hint('Tür ist verriegelt – erst Riegel zurückschließen.');return;}
+  S.doorOpen=!S.doorOpen;S.doorTarget=S.doorOpen?1.72:0;
+  document.getElementById('bDoorT').textContent=S.doorOpen?'Tür schließen':'Tür öffnen';
+  logEv(S.doorOpen?'Tür geöffnet – Magnetkontakt: Linie offen (∞ Ω)':'Tür geschlossen – MG 1 wieder 12,1 kΩ',S.doorOpen?'':'ok');
+  loopStatus();
+  if(S.doorOpen&&S.armed)triggerAlarm('Magnetkontakt Tür (MG 1)','mk');
+}
+function toggleBolt(){
+  if(S.doorOpen){hint('Tür erst schließen, dann verriegeln.');return;}
+  S.bolted=!S.bolted;
+  document.getElementById('bBoltT').textContent=S.bolted?'Entriegeln':'Verriegeln';
+  logEv(S.bolted?'Riegel vorgeschlossen – Riegelschaltkontakt betätigt':'Riegel zurückgeschlossen',S.bolted?'ok':'');
+  loopStatus();
+}
+/* Glasbruch mit Scherbenphysik */
+function breakGlass(){
+  if(!S.glassOk){hint('Scheibe ist bereits zerstört – Reset für neue Scheibe.');return;}
+  S.glassOk=false;crash();
+  if(glassPane){room.remove(glassPane);const i=pickables.indexOf(glassPane);if(i>=0)pickables.splice(i,1);glassPane=null;}
+  for(let i=0;i<55;i++){
+    const s=new THREE.Mesh(new THREE.PlaneGeometry(0.05+Math.random()*0.14,0.05+Math.random()*0.14),
+      new THREE.MeshPhysicalMaterial({color:0x9fc8ff,transparent:true,opacity:.55,roughness:.1,side:THREE.DoubleSide}));
+    s.position.set(0.75+Math.random()*1.7,0.95+Math.random()*1.1,-2.99);
+    s.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);
+    s.userData.v=new THREE.Vector3((Math.random()-.5)*1.4,Math.random()*1.2,1.2+Math.random()*1.8);
+    s.userData.av=new THREE.Vector3(Math.random()*8-4,Math.random()*8-4,Math.random()*8-4);
+    s.userData.life=0;scene.add(s);S.shards.push(s);
+  }
+  logEv('GLASBRUCH! Piezo-Sensor registriert ~100 kHz','alarm');
+  loopStatus();
+  if(S.armed)triggerAlarm('Glasbruchmelder (MG 3)','glas');
+  else hint('Anlage unscharf: Glasbruch wird nur angezeigt, kein Alarm.');
+}
+/* Einbrecher */
+function spawnIntruder(){
+  if(S.intruder){hint('Einbrecher ist bereits unterwegs.');return;}
+  if(S.bolted){hint('Tür ist verriegelt – Einbrecher kommt nicht rein. Erst entriegeln (oder Glasbruch wählen).');return;}
+  if(!S.doorOpen)toggleDoor();
+  const g=new THREE.Group();
+  const bodyM=new THREE.MeshStandardMaterial({color:0x14151c,roughness:.8});
+  const body=new THREE.Mesh(new THREE.CapsuleGeometry(0.16,0.62,6,12),bodyM);
+  body.position.y=0.78;body.castShadow=true;g.add(body);
+  const head=new THREE.Mesh(new THREE.SphereGeometry(0.13,14,14),bodyM);
+  head.position.y=1.36;head.castShadow=true;g.add(head);
+  const eye=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.035,0.02),
+    new THREE.MeshBasicMaterial({color:0xeeeeee}));
+  eye.position.set(0,1.38,0.12);g.add(eye);
+  g.position.set(-4.6,0,0.95);scene.add(g);
+  S.intruder={g,seg:0,t:0,flee:false,
+    path:[new THREE.Vector3(-4.6,0,0.95),new THREE.Vector3(-3.2,0,0.9),
+          new THREE.Vector3(-1.4,0,0.4),new THREE.Vector3(0.6,0,-0.4),
+          new THREE.Vector3(1.9,0,-1.35)]};
+  logEv('Person betritt den überwachten Bereich');
+}
+/* Tresor-Angriff */
+function attackSafe(){
+  if(S.attack){hint('Angriff läuft bereits.');return;}
+  const hammerG=new THREE.Group();
+  const stick=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.5,10),M.wood);
+  stick.position.y=0.25;hammerG.add(stick);
+  const headM=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.09,0.09),M.metal);
+  headM.position.y=0.5;hammerG.add(headM);
+  hammerG.position.set(1.55,0.7,-1.9);hammerG.rotation.z=-0.9;
+  scene.add(hammerG);
+  S.attack={g:hammerG,t:0,hits:0,rings:[]};
+  logEv('Angriff auf Wertbehältnis (Schlagwerkzeug)');
+}
+/* Sabotage: Leitung durchtrennen */
+function sabotage(){
+  if(S.saboCut){hint('Leitung ist bereits durchtrennt.');return;}
+  S.saboCut=true;
+  const p=wGBM.path.getPointAt(0.55);
+  cutMarker=new THREE.Group();cutMarker.position.copy(p);
+  const spark=new THREE.Mesh(new THREE.SphereGeometry(0.045,10,10),
+    new THREE.MeshBasicMaterial({color:0xffcc44}));
+  cutMarker.add(spark);
+  const x=new THREE.Mesh(new THREE.TorusGeometry(0.09,0.012,8,20),
+    new THREE.MeshBasicMaterial({color:0xff5252}));
+  cutMarker.add(x);scene.add(cutMarker);
+  loopStatus();sabotageAlarm();
+  hint('Ruhestromüberwachung: Die Unterbrechung wird sofort erkannt – auch unscharf (Sabotagemeldung).');
+}
+/* Reset */
+function resetAll(){
+  clearAlarm();
+  S.armed=false;setArmedUI();
+  if(S.doorOpen){S.doorOpen=false;S.doorTarget=0;document.getElementById('bDoorT').textContent='Tür öffnen';}
+  S.bolted=false;document.getElementById('bBoltT').textContent='Verriegeln';
+  S.glassOk=true;S.saboCut=false;S.pirDetect=false;S.ksmDetect=false;
+  if(!glassPane)makeGlass();
+  S.shards.forEach(s=>scene.remove(s));S.shards=[];
+  if(S.intruder){scene.remove(S.intruder.g);S.intruder=null;}
+  if(S.attack){scene.remove(S.attack.g);S.attack.rings.forEach(r=>scene.remove(r));S.attack=null;}
+  if(cutMarker){scene.remove(cutMarker);cutMarker=null;}
+  pirLed.material.emissiveIntensity=0;
+  ledAlarm.material.emissiveIntensity=.15;ledFault.material.emissiveIntensity=.1;
+  loopStatus();logEv('Anlage zurückgesetzt – alle Linien 12,1 kΩ','ok');
+}
+
+/* ═════════ Info-Texte ═════════ */
+const INFO={
+  emz:{t:'Einbruchmeldezentrale (EMZ)',b:'Das Herzstück der EMA. Alle Meldergruppen werden im <b>Ruhestromprinzip</b> überwacht: Durch jede Linie fließt permanent ein kleiner Strom über einen <b>Abschlusswiderstand (z. B. 12,1 kΩ)</b>. Öffnet ein Melder die Linie (∞ Ω) oder wird sie kurzgeschlossen (0 Ω), erkennt die EMZ das sofort – Einbruch oder Sabotage. Notstromakku ≥ 12 h, Aufbau nach DIN EN 50131 / VdS 2311.'},
+  mk:{t:'Magnetkontakt (Öffnungsüberwachung)',b:'Zwei Teile: <b>Reedkontakt</b> in der Zarge, <b>Dauermagnet</b> im Türblatt. Solange die Tür zu ist, hält das Magnetfeld die Kontaktzungen geschlossen – der Ruhestrom fließt. Beim Öffnen entfernt sich der Magnet, der Reedkontakt öffnet, die Linie geht auf ∞ Ω → Alarm bei scharfer Anlage.'},
+  riegel:{t:'Riegelschaltkontakt (Verschlussüberwachung)',b:'Sitzt im Schließblech und wird nur vom <b>vollständig vorgeschlossenen Riegel</b> mechanisch betätigt. Baustein der <b>Zwangsläufigkeit</b>: Die Anlage lässt sich nur scharf schalten, wenn die Tür wirklich verschlossen ist – nicht nur zugezogen.'},
+  block:{t:'Blockschloss (Scharfschalteinrichtung)',b:'Mechanisch-elektrische Scharfschaltung an der Zutrittstür. Es <b>blockiert die Tür</b> im scharfen Zustand und schaltet nur scharf, wenn alle Meldelinien geschlossen sind (<b>Zwangsläufigkeit</b>). So sind Falschalarme durch versehentliches Betreten des scharfen Bereichs ausgeschlossen.'},
+  glas:{t:'Passiver Glasbruchmelder',b:'Piezoelektrischer <b>Körperschallsensor</b>, direkt auf die Scheibe geklebt. Brechendes Glas erzeugt charakteristische hochfrequente Schwingungen (~<b>100 kHz</b>), die der Melder per Frequenzanalyse von Umgebungsgeräuschen unterscheidet.'},
+  pir:{t:'PIR-Bewegungsmelder (Passiv-Infrarot)',b:'Pyroelektrischer Sensor hinter einer <b>Fresnel-Linse</b>, die den Raum in Erfassungszonen aufteilt (blauer Kegel). Bewegt sich ein Wärmekörper über Zonengrenzen, ändert sich die empfangene IR-Strahlung → Auslösung. Dient der <b>Innenraum-/fallenmäßigen Überwachung</b>.'},
+  koerper:{t:'Körperschallmelder',b:'Piezo-Sensor, fest mit dem Wertbehältnis verbunden. Erkennt <b>Bohren, Schlagen, Trennschleifen und thermische Angriffe</b> an der Schallausbreitung im Material – lange bevor der Tresor geöffnet ist.'},
+  tresor:{t:'Wertbehältnis (Tresor)',b:'Überwachungsobjekt der höchsten Sicherungsstufe. Neben mechanischem Widerstand (VdS-/EN-1143-Klassen) wird es elektronisch per <b>Körperschallmelder</b> überwacht – jeder Angriffsversuch auf den Korpus löst aus.'},
+  sirene:{t:'Außensignalgeber',b:'<b>Sirene ≥ 110 dB(A)</b> + blaue <b>Blitzleuchte</b>. Gehäuse sabotageüberwacht (Öffnungs-/Abreißkontakt), eigener Stützakku. Die Sirene schaltet nach max. 3 Minuten ab, die Blitzleuchte läuft als Ortungshilfe weiter.'},
+  ue:{t:'Übertragungseinrichtung → NSL',b:'Die <b>ÜE</b> meldet Alarm-, Sabotage- und Störungsmeldungen <b>redundant (IP + Mobilfunk)</b> an die ständig besetzte <b>Notruf- und Serviceleitstelle</b> (NSL, DIN EN 50518). Dort: Voralarmprüfung, Intervention, Polizei.'},
+  tuer:{t:'Zutrittstür',b:'Doppelt überwacht: <b>Magnetkontakt</b> (offen/zu) + <b>Riegelschaltkontakt</b> (verriegelt ja/nein). Zusammen mit dem Blockschloss entsteht die Zwangsläufigkeit der Scharfschaltung.'},
+};
+const pickables=[];
+makeGlass();
+[emzBody,mkReed,mkMag,rsk,blockBody,gbm,pirBody,ksm,safeBody,sirBody,strobe,ueBox,nslM,doorLeaf,handle].forEach(m=>pickables.push(m));
+
+const infoEl=document.getElementById('info');
+function showInfo(key){
+  const d=INFO[key];if(!d)return;
+  document.getElementById('infoT').textContent=d.t;
+  document.getElementById('infoB').innerHTML=d.b;
+  infoEl.classList.add('show');
+}
+document.getElementById('infoX').onclick=()=>infoEl.classList.remove('show');
+
+/* Raycast-Klick (Klick von Drag unterscheiden) */
+const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();
+let downPos=null;
+renderer.domElement.addEventListener('pointerdown',e=>{downPos=[e.clientX,e.clientY];});
+renderer.domElement.addEventListener('pointerup',e=>{
+  if(!downPos)return;
+  const dx=e.clientX-downPos[0],dy=e.clientY-downPos[1];downPos=null;
+  if(dx*dx+dy*dy>36)return;
+  ptr.x=(e.clientX/innerWidth)*2-1;ptr.y=-(e.clientY/innerHeight)*2+1;
+  ray.setFromCamera(ptr,camera);
+  const hits=ray.intersectObjects(pickables,false);
+  if(hits.length)showInfo(hits[0].object.userData.info);
+});
+
+/* ═════════ Buttons ═════════ */
+document.getElementById('bArm').onclick=toggleArm;
+document.getElementById('bDoor').onclick=toggleDoor;
+document.getElementById('bBolt').onclick=toggleBolt;
+document.getElementById('bGlass').onclick=breakGlass;
+document.getElementById('bIntruder').onclick=spawnIntruder;
+document.getElementById('bSafe').onclick=attackSafe;
+document.getElementById('bSabo').onclick=sabotage;
+document.getElementById('bReset').onclick=resetAll;
+document.getElementById('bSound').onclick=()=>{
+  S.soundOn=!S.soundOn;
+  document.getElementById('bSoundIc').textContent=S.soundOn?'🔊':'🔇';
+  if(!S.soundOn)stopSiren();else if(S.alarm)startSiren();
+};
+document.getElementById('bLabels').onclick=()=>{
+  S.labelsOn=!S.labelsOn;
+  labels.forEach(l=>l.d.style.display=S.labelsOn?'':'none');
+};
+document.getElementById('mgHead').onclick=()=>document.getElementById('mgPanel').classList.toggle('min');
+
+/* ═════════ Animations-Loop ═════════ */
+const clock=new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt=Math.min(clock.getDelta(),0.05);S.time+=dt;
+
+  /* Tür (geglättete Rotation) */
+  S.doorAnim+=(S.doorTarget-S.doorAnim)*Math.min(1,dt*4.5);
+  doorG.rotation.y=S.doorAnim;
+  /* Riegel */
+  const bt=S.bolted?1:0;
+  S.boltAnim+=(bt-S.boltAnim)*Math.min(1,dt*7);
+  bolt.position.z=1.02+S.boltAnim*0.09;
+  rsk.material=S.bolted?M.gold:M.device;
+
+  /* Ruhestrom-Pulse */
+  wires.forEach(w=>{
+    const run=w.ok&&!w.cut;
+    w.pulses.forEach(p=>{
+      p.visible=run;
+      if(run){
+        p.userData.t=(p.userData.t+dt*w.speed/Math.max(w.path.getLength(),0.001)*3)%1;
+        p.position.copy(w.path.getPointAt(p.userData.t));
+      }
+    });
+  });
+
+  /* PIR-Kegel-Puls */
+  coneMat.opacity=0.05+Math.sin(S.time*2.2)*0.02+(S.pirDetect?0.06:0);
+  coneMat.color.set(S.pirDetect?0xff5252:0x5b9cf6);
+
+  /* Einbrecher */
+  if(S.intruder){
+    const I=S.intruder,speed=I.flee?2.6:0.85;
+    const path=I.path;
+    if(!I.flee&&I.seg<path.length-1){
+      const a=path[I.seg],b=path[I.seg+1],d=a.distanceTo(b);
+      I.t+=dt*speed/d;
+      if(I.t>=1){I.seg++;I.t=0;}
+      else{I.g.position.lerpVectors(a,b,I.t);I.g.lookAt(b.x,0,b.z);}
+      I.g.position.y=Math.abs(Math.sin(S.time*9))*0.03;
+      /* PIR-Erfassung */
+      const toI=I.g.position.clone().setY(1).sub(pirTip);
+      const ang=toI.angleTo(pirDir);
+      if(ang<Math.atan(2.1/pirLen)&&toI.length()<pirLen+0.5&&!S.pirDetect){
+        S.pirDetect=true;pirLed.material.emissiveIntensity=2;
+        logEv('PIR: Wärmesignatur über Zonengrenzen erkannt','alarm');
+        loopStatus();
+        if(S.armed){triggerAlarm('Bewegungsmelder (MG 4)','pir');I.flee=true;}
+        else hint('Anlage unscharf: PIR meldet Bewegung, aber kein Alarm.');
+      }
+      if(I.seg>=path.length-1){/* am Tresor angekommen → Angriff */ if(!S.attack)attackSafe();I.flee=true;I.auto=true;}
+    }else if(I.flee&&!I.auto){
+      I.g.position.x-=dt*speed;I.g.lookAt(I.g.position.x-1,0,I.g.position.z);
+      if(I.g.position.x<-5){scene.remove(I.g);S.intruder=null;logEv('Person flüchtet aus dem Objekt');}
+    }
+  }
+
+  /* Tresor-Angriff (Hammer + Körperschall-Ringe) */
+  if(S.attack){
+    const A=S.attack;A.t+=dt;
+    const phase=(A.t%0.9)/0.9;
+    A.g.rotation.z=-0.9+Math.sin(Math.min(phase,0.5)*Math.PI)*0.75;
+    if(phase>0.48&&!A.hitDone){
+      A.hitDone=true;A.hits++;thud();
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(0.05,0.012,8,32),
+        new THREE.MeshBasicMaterial({color:0xf5a623,transparent:true,opacity:.9}));
+      ring.position.set(2.24,0.7,-1.9);ring.rotation.y=Math.PI/2;
+      ring.userData.life=0;scene.add(ring);A.rings.push(ring);
+      if(A.hits===2&&!S.ksmDetect){
+        S.ksmDetect=true;loopStatus();
+        logEv('Körperschallmelder: Schlagimpulse am Behältnis erkannt','alarm');
+        if(S.armed)triggerAlarm('Körperschallmelder (MG 5)','koerper');
+        else hint('Anlage unscharf: Körperschall erkannt, kein Alarm.');
+      }
+      if(A.hits>=4){scene.remove(A.g);A.done=true;}
+    }
+    if(phase<0.4)A.hitDone=false;
+    A.rings.forEach(r=>{
+      r.userData.life+=dt;
+      const s=1+r.userData.life*6;r.scale.set(1,s,s);
+      r.material.opacity=Math.max(0,0.9-r.userData.life*1.4);
+    });
+    A.rings=A.rings.filter(r=>{if(r.material.opacity<=0){scene.remove(r);return false;}return true;});
+    if(A.done&&A.rings.length===0)S.attack=null;
+  }
+
+  /* Glasscherben-Physik */
+  for(let i=S.shards.length-1;i>=0;i--){
+    const s=S.shards[i];s.userData.life+=dt;
+    s.userData.v.y-=9.81*dt;
+    s.position.addScaledVector(s.userData.v,dt);
+    s.rotation.x+=s.userData.av.x*dt;s.rotation.y+=s.userData.av.y*dt;
+    if(s.position.y<0.03){s.position.y=0.03;s.userData.v.y*=-0.28;s.userData.v.x*=0.7;s.userData.v.z*=0.7;s.userData.av.multiplyScalar(0.5);}
+    if(s.userData.life>2.4)s.material.opacity=Math.max(0,0.55-(s.userData.life-2.4)*0.8);
+    if(s.userData.life>3.2){scene.remove(s);S.shards.splice(i,1);}
+  }
+
+  /* Sabotage-Funken */
+  if(cutMarker){
+    cutMarker.children[0].scale.setScalar(0.7+Math.random()*0.8);
+    cutMarker.children[1].rotation.z+=dt*2;
+  }
+
+  /* Alarm-Effekte */
+  if(S.alarm){
+    const f=(Math.sin(S.time*10)+1)/2;
+    strobeLight.intensity=f*8;
+    strobe.material.emissiveIntensity=0.2+f*2.5;
+    ledAlarm.material.emissiveIntensity=0.2+f*2;
+    alarmFlash.style.opacity=0.4+f*0.5;
+    sirG.scale.setScalar(1+f*0.05);
+  }
+  if(S.saboCut)ledFault.material.emissiveIntensity=0.3+((Math.sin(S.time*6)+1)/2)*1.5;
+  ledPower.material.emissiveIntensity=0.9;
+
+  controls.update();
+  renderer.render(scene,camera);
+  labelRenderer.render(scene,camera);
+}
+
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+  labelRenderer.setSize(innerWidth,innerHeight);
+});
+
+loopStatus();setArmedUI();
+logEv('EMA betriebsbereit – Ruhestrom auf allen Linien','ok');
+document.getElementById('loader').classList.add('done');
+animate();
+</script>
+</body>
+</html>

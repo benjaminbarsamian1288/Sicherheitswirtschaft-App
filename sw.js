@@ -1,5 +1,6 @@
-const CACHE_NAME = 'bb-protect-wachbuch-v1';
-const ASSETS = ['./', './index.html', './manifest.json', './logo.jpg', './icon-192.png', './icon-512.png'];
+const CACHE_NAME = 'bb-protect-wachbuch-v2';
+const ASSETS = ['./', './index.html', './ema.html', './manifest.json', './logo.jpg', './icon-192.png', './icon-512.png',
+  './vendor/three/three.module.min.js', './vendor/three/OrbitControls.js', './vendor/three/CSS2DRenderer.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bb-protect-wachbuch-v2';
+const CACHE_NAME = 'bb-protect-wachbuch-v3';
 const ASSETS = ['./', './index.html', './ema.html', './manifest.json', './logo.jpg', './icon-192.png', './icon-512.png',
   './vendor/three/three.module.min.js', './vendor/three/OrbitControls.js', './vendor/three/CSS2DRenderer.js'];
 

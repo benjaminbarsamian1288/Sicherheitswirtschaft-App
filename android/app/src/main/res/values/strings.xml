@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">B·B PROTECT</string>
+    <string name="mic_denied">Mikrofon-Zugriff verweigert – Diktat nicht möglich.</string>
+    <string name="saved_to_downloads">Gespeichert im Ordner \"Download\": %1$s</string>
+    <string name="save_failed">Datei konnte nicht gespeichert werden.</string>
+</resources>

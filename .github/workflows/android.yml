@@ -1,0 +1,80 @@
+name: Android-App bauen
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+      - main
+    paths:
+      - 'android/**'
+      - '*.html'
+      - '*.js'
+      - '*.json'
+      - 'vendor/**'
+      - '.github/workflows/android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Quellcode holen
+        uses: actions/checkout@v4
+
+      - name: JDK 17 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Gradle einrichten
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: APK bauen
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: APK benennen
+        id: apk
+        run: |
+          set -e
+          SRC=android/app/build/outputs/apk/debug/app-debug.apk
+          NAME="BB-PROTECT-$(date +%Y%m%d)-${GITHUB_SHA::7}.apk"
+          cp "$SRC" "$NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          ls -lh "$NAME"
+
+      - name: APK als Artefakt ablegen
+        uses: actions/upload-artifact@v4
+        with:
+          name: BB-PROTECT-APK
+          path: ${{ steps.apk.outputs.name }}
+          retention-days: 90
+
+      - name: Release aktualisieren
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          TAG=app-latest
+          cat > notes.md <<'NOTES'
+          Aktuelle Android-App (Wachbuch + EMA 3D).
+
+          **Installation:** APK unten antippen, herunterladen und öffnen. Android fragt
+          einmalig nach der Erlaubnis, Apps aus dieser Quelle zu installieren –
+          bestaetigen, dann installiert die App.
+
+          Die App laeuft vollstaendig offline, alle Daten bleiben auf dem Geraet.
+          NOTES
+          sed -i 's/^          //' notes.md
+          echo "Gebaut aus Commit ${GITHUB_SHA::7}." >> notes.md
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" "${{ steps.apk.outputs.name }}" \
+            --target "$GITHUB_SHA" \
+            --title "B·B PROTECT – Android-App" \
+            --notes-file notes.md
+          gh release view "$TAG" --json assets --jq '.assets[].browser_download_url'

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08080d">
+<link rel="icon" href="icon-192.png">
+<title>B·B PROTECT · App installieren</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#08080d;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.1);--text:#e9ebf2;--dim:rgba(233,235,242,.5);--gold:#d4af37;--green:#3ecf8e}
+html,body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100%}
+body{padding:28px 18px 48px;background-image:radial-gradient(ellipse 90% 40% at 50% -5%,rgba(212,175,55,.09),transparent)}
+.wrap{max-width:520px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.brand img{width:72px;height:72px;border-radius:18px;border:1px solid var(--border);box-shadow:0 6px 22px rgba(0,0,0,.6)}
+.brand-name{font-family:'Cinzel',serif;font-size:22px;font-weight:700;letter-spacing:2px;color:#c9cfdb;line-height:1.15}
+.brand-name span{color:var(--gold)}
+.brand-sub{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-top:4px}
+h1{font-size:26px;font-weight:700;letter-spacing:-.3px;margin-bottom:6px}
+.sub{color:var(--dim);font-size:14px;font-weight:300;margin-bottom:24px}
+.dl{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:20px 22px;border-radius:18px;
+  background:linear-gradient(135deg,#e2c25a,#b8912a);color:#141005;font-weight:700;font-size:18px;text-decoration:none;
+  box-shadow:0 10px 36px rgba(212,175,55,.35);letter-spacing:.3px;transition:transform .1s}
+.dl:active{transform:scale(.98)}
+.dl small{display:block;font-size:11px;font-weight:500;opacity:.75;letter-spacing:.5px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-top:18px}
+.card h2{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+ol{padding-left:0;list-style:none;counter-reset:s}
+ol li{counter-increment:s;display:flex;gap:12px;padding:9px 0;font-size:14px;line-height:1.55;border-bottom:1px solid var(--border)}
+ol li:last-child{border-bottom:none}
+ol li::before{content:counter(s);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(212,175,55,.15);color:var(--gold);
+  font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+ol li b{color:var(--text)}
+.note{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:10px}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid rgba(62,207,142,.4);color:var(--green);margin-right:6px;margin-top:4px}
+.alt{display:block;text-align:center;margin-top:22px;color:var(--dim);font-size:13px;text-decoration:none}
+.alt span{color:var(--gold);text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><img src="icon-192.png" alt="">
+    <div><div class="brand-name">B·B <span>PROTECT</span></div><div class="brand-sub">Meister für Schutz &amp; Sicherheit</div></div></div>
+
+  <h1>App installieren</h1>
+  <p class="sub">Wachbuch und EMA 3D als Android-App – läuft komplett offline.</p>
+
+  <a class="dl" href="BB-PROTECT.apk" download="BB-PROTECT.apk">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>
+    <span>APP HERUNTERLADEN<small>Android · APK · 3,4 MB</small></span>
+  </a>
+
+  <div class="card"><h2>So geht's</h2>
+    <ol>
+      <li><span>Oben auf <b>App herunterladen</b> tippen. Fragt der Browser „Datei behalten?" oder warnt vor der Datei – <b>Trotzdem herunterladen</b> wählen.</span></li>
+      <li><span>Die Meldung <b>„Download abgeschlossen"</b> antippen – oder die Datei im Ordner <b>Download</b> öffnen.</span></li>
+      <li><span>Android fragt nach der Erlaubnis für diese Quelle: <b>Einstellungen → Zulassen</b>, dann zurück.</span></li>
+      <li><span>Auf <b>Installieren</b> tippen. Kommt eine Play-Protect-Warnung: „Weitere Details" → <b>Trotzdem installieren</b>.</span></li>
+    </ol>
+    <div class="note">Die Warnungen kommen, weil die App nicht aus dem Play Store stammt – das ist bei eigenen Apps normal. Eine neue Version installiert sich später einfach über die alte, die Einträge bleiben erhalten.</div>
+    <span class="pill">100 % offline</span><span class="pill">Alle Daten bleiben auf dem Gerät</span>
+  </div>
+
+  <a class="alt" href="index.html">Lieber ohne Installation? <span>App im Browser öffnen</span></a>
+</div>
+</body>
+</html>

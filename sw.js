@@ -13,7 +13,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin)) return;
+  if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin) || e.request.url.endsWith('.apk')) return;
   e.respondWith(fetch(e.request).then(r => {
     const clone = r.clone();
     caches.open(CACHE_NAME).then(c => c.put(e.request, clone));

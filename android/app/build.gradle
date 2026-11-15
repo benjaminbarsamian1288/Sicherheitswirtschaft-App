@@ -13,7 +13,8 @@ def ciRun = (System.getenv('GITHUB_RUN_NUMBER') ?: '1') as int
 
 tasks.register('copyWebApp', Copy) {
     from(webRoot) {
-        include 'index.html', 'ema.html', 'android-bridge.js', 'manifest.json', 'sw.js'
+        include 'index.html', 'ema.html', 'rundgang.html', 'android-bridge.js', 'sw.js'
+        include 'manifest.json', 'manifest-rundgang.json'
         include 'logo.jpg', 'icon-192.png', 'icon-512.png'
         include 'vendor/**'
     }
@@ -30,6 +31,29 @@ android {
         targetSdk 34
         versionCode ciRun
         versionName "1.0.$ciRun"
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    /* Zwei eigenständige Apps aus demselben Code:
+       wachbuch = B·B PROTECT (Wachbuch + EMA 3D)
+       rundgang = B·B Rundgang (Kontrollgänge mit QR-Checkpunkten) */
+    flavorDimensions 'app'
+    productFlavors {
+        wachbuch {
+            dimension 'app'
+            applicationId 'de.bbprotect.wachbuch'
+            buildConfigField 'String', 'START_PAGE', '"index.html"'
+            resValue 'string', 'app_name', 'B·B PROTECT'
+        }
+        rundgang {
+            dimension 'app'
+            applicationId 'de.bbprotect.rundgang'
+            buildConfigField 'String', 'START_PAGE', '"rundgang.html"'
+            resValue 'string', 'app_name', 'BB Rundgang'
+        }
     }
 
     buildTypes {

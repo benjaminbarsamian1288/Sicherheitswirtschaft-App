@@ -1,0 +1,14 @@
+{
+  "name": "B·B PROTECT Rundgang",
+  "short_name": "BB Rundgang",
+  "description": "Kontrollgänge mit QR-Checkpunkten, revisionssicherem Protokoll und Bericht",
+  "start_url": "./rundgang.html",
+  "display": "standalone",
+  "background_color": "#08080d",
+  "theme_color": "#08080d",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}

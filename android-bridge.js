@@ -5,6 +5,7 @@
    von Haus aus nicht kann:
      1. Spracherkennung  → native Android-SpeechRecognizer
      2. Datei-Download   → Ablage im Ordner "Download"
+     3. Drucken          → Android-Druckdialog (auch "Als PDF speichern")
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -78,6 +79,13 @@
         return;
       }
       return nativeClick.apply(this, arguments);
+    };
+  }
+
+  /* ── 3. Drucken ─────────────────────────────────────────────────── */
+  if (window.AndroidPrint) {
+    window.print = function () {
+      window.AndroidPrint.print(document.title || 'Dokument');
     };
   }
 })();

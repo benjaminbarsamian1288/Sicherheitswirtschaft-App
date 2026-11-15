@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'claude/**'
+      - 'ccr-**'
       - main
     paths:
       - 'android/**'
@@ -34,25 +35,28 @@ jobs:
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
 
-      - name: APK bauen
+      - name: APKs bauen (Wachbuch + Rundgang)
         working-directory: android
-        run: ./gradlew --no-daemon assembleDebug
+        run: ./gradlew --no-daemon assembleWachbuchDebug assembleRundgangDebug
 
-      - name: APK benennen
+      - name: APKs benennen
         id: apk
         run: |
           set -e
-          SRC=android/app/build/outputs/apk/debug/app-debug.apk
+          OUT=android/app/build/outputs/apk
           NAME="BB-PROTECT-$(date +%Y%m%d)-${GITHUB_SHA::7}.apk"
-          cp "$SRC" "$NAME"
+          cp "$OUT/wachbuch/debug/app-wachbuch-debug.apk" "$NAME"
+          cp "$OUT/rundgang/debug/app-rundgang-debug.apk" BB-Rundgang.apk
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
-          ls -lh "$NAME"
+          ls -lh "$NAME" BB-Rundgang.apk
 
-      - name: APK als Artefakt ablegen
+      - name: APKs als Artefakt ablegen
         uses: actions/upload-artifact@v4
         with:
-          name: BB-PROTECT-APK
-          path: ${{ steps.apk.outputs.name }}
+          name: BB-PROTECT-APKs
+          path: |
+            ${{ steps.apk.outputs.name }}
+            BB-Rundgang.apk
           retention-days: 90
 
       - name: Release aktualisieren
@@ -77,4 +81,27 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "B·B PROTECT – Android-App" \
             --notes-file notes.md
+          gh release view "$TAG" --json assets --jq '.assets[].browser_download_url'
+
+      - name: Release Rundgang-App aktualisieren
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          TAG=rundgang-latest
+          cat > notes-rg.md <<'NOTES'
+          Aktuelle Android-App **BB Rundgang** – Kontrollgänge mit QR-Checkpunkten.
+
+          **Installation:** BB-Rundgang.apk antippen, herunterladen und öffnen. Android fragt
+          einmalig nach der Erlaubnis, Apps aus dieser Quelle zu installieren – bestaetigen.
+
+          Die App laeuft offline, alle Daten bleiben auf dem Geraet.
+          NOTES
+          sed -i 's/^          //' notes-rg.md
+          echo "Gebaut aus Commit ${GITHUB_SHA::7}." >> notes-rg.md
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" BB-Rundgang.apk \
+            --target "$GITHUB_SHA" \
+            --title "BB Rundgang – Android-App" \
+            --notes-file notes-rg.md
           gh release view "$TAG" --json assets --jq '.assets[].browser_download_url'

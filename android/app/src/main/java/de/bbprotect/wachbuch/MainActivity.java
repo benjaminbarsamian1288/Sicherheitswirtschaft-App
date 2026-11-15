@@ -1,9 +1,11 @@
 package de.bbprotect.wachbuch;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.webkit.WebViewAssetLoader;
 
@@ -30,12 +33,15 @@ import androidx.webkit.WebViewAssetLoader;
 public class MainActivity extends Activity {
 
     private static final String ORIGIN = "https://appassets.androidplatform.net";
-    private static final String START_URL = ORIGIN + "/assets/index.html";
+    private static final String START_URL = ORIGIN + "/assets/" + BuildConfig.START_PAGE;
     private static final int RC_FILE_CHOOSER = 1001;
+    private static final int RC_CAMERA = 2002;
 
     private WebView web;
     private SpeechBridge speech;
     private ValueCallback<Uri[]> fileCallback;
+    /** Kamera-Anfrage der Web-App, die auf die Android-Berechtigung wartet. */
+    private PermissionRequest pendingCamera;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -90,7 +96,9 @@ public class MainActivity extends Activity {
         web.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
-                request.deny();
+                runOnUiThread(new Runnable() {
+                    @Override public void run() { handleWebPermission(request); }
+                });
             }
 
             @Override
@@ -111,10 +119,34 @@ public class MainActivity extends Activity {
         speech = new SpeechBridge(this, web);
         web.addJavascriptInterface(speech, "AndroidSpeech");
         web.addJavascriptInterface(new FileBridge(this), "AndroidFiles");
+        web.addJavascriptInterface(new PrintBridge(this, web), "AndroidPrint");
 
         if (savedInstanceState == null || web.restoreState(savedInstanceState) == null) {
             web.loadUrl(START_URL);
         }
+    }
+
+    /**
+     * Kamera nur für die eigene Seite freigeben (QR-Scan). Fehlt die
+     * Android-Berechtigung, wird sie erst angefragt. Alles andere wird abgelehnt.
+     */
+    private void handleWebPermission(PermissionRequest request) {
+        boolean ownOrigin = request.getOrigin() != null && request.getOrigin().toString().startsWith(ORIGIN);
+        boolean wantsCamera = false;
+        for (String r : request.getResources()) {
+            if (PermissionRequest.RESOURCE_VIDEO_CAPTURE.equals(r)) wantsCamera = true;
+        }
+        if (!ownOrigin || !wantsCamera) {
+            request.deny();
+            return;
+        }
+        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            request.grant(new String[]{PermissionRequest.RESOURCE_VIDEO_CAPTURE});
+            return;
+        }
+        if (pendingCamera != null) pendingCamera.deny();
+        pendingCamera = request;
+        requestPermissions(new String[]{Manifest.permission.CAMERA}, RC_CAMERA);
     }
 
     /** Interne Seiten bleiben in der App, externe Links öffnet der Browser. */
@@ -143,6 +175,18 @@ public class MainActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
+        if (requestCode == RC_CAMERA) {
+            PermissionRequest req = pendingCamera;
+            pendingCamera = null;
+            if (req == null) return;
+            if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) {
+                req.grant(new String[]{PermissionRequest.RESOURCE_VIDEO_CAPTURE});
+            } else {
+                req.deny();
+                Toast.makeText(this, R.string.camera_denied, Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
         if (speech != null && speech.onPermissionsResult(requestCode, results)) return;
         super.onRequestPermissionsResult(requestCode, permissions, results);
     }

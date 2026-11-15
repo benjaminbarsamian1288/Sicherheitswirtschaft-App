@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#08080d">
+<link rel="manifest" href="manifest-rundgang.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>B·B PROTECT · Rundgang</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="android-bridge.js"></script>
+<script src="vendor/qr/jsQR.js"></script>
+<script src="vendor/qr/qrcode.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#08080d;--surface:rgba(255,255,255,0.035);--surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.09);--text:#e9ebf2;--dim:rgba(233,235,242,0.5);
+  --gold:#d4af37;--gold-dim:rgba(212,175,55,0.13);--silver:#c9cfdb;
+  --red:#ff6b6b;--red-dim:rgba(255,107,107,0.13);
+  --amber:#f5a623;--amber-dim:rgba(245,166,35,0.13);
+  --green:#3ecf8e;--green-dim:rgba(62,207,142,0.13);
+  --blue:#5b9cf6;--radius:16px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Sora',system-ui,sans-serif}
+body{padding-bottom:84px;background-image:radial-gradient(ellipse 90% 40% at 50% -5%,rgba(212,175,55,0.07),transparent)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+.brand{display:flex;align-items:center;gap:14px;padding:6px 0 16px}
+.brand img{width:56px;height:56px;border-radius:14px;border:1px solid var(--border)}
+.brand-name{font-family:'Cinzel',serif;font-size:20px;font-weight:700;letter-spacing:2px;color:var(--silver);line-height:1.15}
+.brand-name span{color:var(--gold)}
+.brand-sub{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-top:4px}
+
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,13,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom));z-index:100}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border:none;background:none;color:var(--dim);font-family:inherit;font-size:10.5px;font-weight:500;flex:1;cursor:pointer}
+.nav button.active{color:var(--gold)}
+.nav svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.section{display:none;padding:16px;padding-top:max(16px,env(safe-area-inset-top));max-width:640px;margin:0 auto}
+.section.active{display:block}
+.h-label{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.85;margin-bottom:5px}
+.h-title{font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1.2}
+.h-sub{font-size:13px;color:var(--dim);margin-top:4px;font-weight:300}
+.header{margin-bottom:16px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.card-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-bottom:12px}
+.note{font-size:12.5px;color:var(--dim);line-height:1.6}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 18px;border-radius:12px;border:none;background:linear-gradient(135deg,#d4af37,#b8912a);color:#141005;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 6px 22px rgba(212,175,55,.22)}
+.btn:active{transform:scale(.985)}
+.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn.danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,107,107,.35);box-shadow:none}
+.btn.small{width:auto;padding:9px 13px;font-size:12.5px;border-radius:10px}
+.btn.big{padding:22px;font-size:18px;border-radius:18px}
+.btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.btn:disabled{opacity:.4}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.stack>*+*{margin-top:10px}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--dim);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:15px;outline:none;appearance:none}
+.field textarea{resize:vertical;min-height:84px;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.check{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--gold)}
+
+.progress{display:flex;align-items:center;gap:16px}
+.ring{position:relative;width:92px;height:92px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:22px}
+.ring .val small{font-size:10px;color:var(--dim);font-weight:500}
+.meta div{font-size:13px;color:var(--dim);line-height:1.7}
+.meta b{color:var(--text);font-weight:600}
+
+.cp{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cp:last-child{border-bottom:none}
+.cp .num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:var(--surface2);color:var(--dim)}
+.cp.done .num{background:var(--green-dim);color:var(--green)}
+.cp.manual .num{background:var(--amber-dim);color:var(--amber)}
+.cp.mangel .num{background:var(--red-dim);color:var(--red)}
+.cp .info{flex:1;min-width:0}
+.cp .name{font-size:14.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.cp .sub{font-size:12px;color:var(--dim);margin-top:2px}
+.cp .tools{display:flex;gap:6px}
+.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn.del{color:var(--red)}
+
+.tag{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.tag.ok{background:var(--green-dim);color:var(--green)}
+.tag.warn{background:var(--amber-dim);color:var(--amber)}
+.tag.bad{background:var(--red-dim);color:var(--red)}
+.tag.gold{background:var(--gold-dim);color:var(--gold)}
+
+.list-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;cursor:pointer}
+.list-item .info{flex:1;min-width:0}
+.list-item .t1{font-size:14.5px;font-weight:600}
+.list-item .t2{font-size:12px;color:var(--dim);margin-top:3px}
+.list-item .chev{color:var(--dim)}
+.empty{text-align:center;padding:36px 16px;color:var(--dim);font-size:14px;line-height:1.6}
+
+/* Scanner */
+#scanner{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column}
+#scanner.open{display:flex}
+#scanner video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scan-frame{position:absolute;left:50%;top:44%;width:68vmin;height:68vmin;transform:translate(-50%,-50%);border-radius:22px;box-shadow:0 0 0 9999px rgba(0,0,0,.55);border:3px solid var(--gold)}
+.scan-frame::after{content:'';position:absolute;left:8%;right:8%;height:2px;background:var(--gold);top:50%;box-shadow:0 0 14px var(--gold);animation:scanline 2s ease-in-out infinite}
+@keyframes scanline{0%,100%{top:12%}50%{top:88%}}
+.scan-top{position:relative;z-index:2;padding:max(16px,env(safe-area-inset-top)) 16px 12px;text-align:center;font-size:14px;color:#fff;text-shadow:0 1px 4px #000}
+.scan-bottom{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px;padding-bottom:max(20px,env(safe-area-inset-bottom));display:flex;gap:10px}
+.scan-msg{position:absolute;left:16px;right:16px;top:calc(44% + 38vmin);z-index:2;text-align:center;font-size:14px;font-weight:600;color:#fff;text-shadow:0 1px 4px #000;min-height:20px}
+
+/* Sheet / dialog */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.sheet{background:#12121a;border:1px solid var(--border);border-bottom:none;border-radius:22px 22px 0 0;width:100%;max-width:640px;max-height:90vh;overflow:auto;padding:20px 18px;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+.sheet h3{font-size:19px;font-weight:700;margin-bottom:6px}
+.sheet .lead{font-size:13.5px;color:var(--dim);margin-bottom:16px;line-height:1.55}
+.big-ok{width:64px;height:64px;border-radius:50%;background:var(--green-dim);color:var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.big-ok.bad{background:var(--red-dim);color:var(--red)}
+.big-ok svg{width:34px;height:34px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.seg{display:flex;gap:8px;margin-bottom:14px}
+.seg button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:inherit;font-weight:600;font-size:14px;cursor:pointer}
+.seg button.on-ok{background:var(--green-dim);border-color:rgba(62,207,142,.5);color:var(--green)}
+.seg button.on-bad{background:var(--red-dim);border-color:rgba(255,107,107,.5);color:var(--red)}
+.mic{position:relative}
+.mic button{position:absolute;right:8px;bottom:8px;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mic button.rec{background:var(--red);color:#fff;border-color:var(--red)}
+.mic button svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#1c1c26;border:1px solid var(--border);color:var(--text);padding:12px 18px;border-radius:12px;font-size:13.5px;z-index:500;opacity:0;pointer-events:none;transition:opacity .25s;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+
+table.log{width:100%;border-collapse:collapse;font-size:12.5px}
+table.log th{text-align:left;color:var(--dim);font-weight:500;padding:6px 4px;border-bottom:1px solid var(--border)}
+table.log td{padding:8px 4px;border-bottom:1px solid var(--border);vertical-align:top}
+.hash{font-size:10px;color:var(--dim);word-break:break-all}
+
+/* Druck */
+#printArea{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  html,body{background:#fff!important;background-image:none!important;color:#000;padding:0}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important;color:#000;font-family:Arial,Helvetica,sans-serif}
+  .labels{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+  .label{border:1.5px dashed #888;border-radius:4mm;padding:5mm;text-align:center;page-break-inside:avoid;break-inside:avoid;height:84mm;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .label .lo{font-size:9pt;color:#555;text-transform:uppercase;letter-spacing:1px}
+  .label .ln{font-size:15pt;font-weight:bold;margin:1mm 0 2mm}
+  .label svg{width:48mm;height:48mm}
+  .label .lf{font-size:8pt;color:#666;margin-top:2mm}
+  .rep h1{font-size:18pt;margin-bottom:2mm}
+  .rep .rmeta{font-size:10pt;margin-bottom:5mm;line-height:1.5}
+  .rep table{width:100%;border-collapse:collapse;font-size:9.5pt}
+  .rep th,.rep td{border:1px solid #999;padding:2mm;text-align:left;vertical-align:top}
+  .rep th{background:#eee}
+  .rep .miss{color:#b00;font-weight:bold}
+  .rep .foot{font-size:8pt;color:#555;margin-top:5mm;word-break:break-all}
+  .rep .sign{display:flex;gap:20mm;margin-top:14mm;font-size:9pt}
+  .rep .sign div{flex:1;border-top:1px solid #000;padding-top:1mm}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ RUNDGANG ═══ -->
+<section class="section active" id="s-run">
+  <div class="brand"><img src="icon-192.png" alt="">
+    <div><div class="brand-name">B·B <span>PROTECT</span></div><div class="brand-sub">Kontrollgang · QR-Checkpunkte</div></div></div>
+  <div id="runView"></div>
+</section>
+
+<!-- ═══ PROTOKOLLE ═══ -->
+<section class="section" id="s-log">
+  <div class="header"><div class="h-label">Nachweis</div><div class="h-title">Protokolle</div><div class="h-sub">Abgeschlossene Kontrollgänge</div></div>
+  <div id="logView"></div>
+</section>
+
+<!-- ═══ VERWALTUNG ═══ -->
+<section class="section" id="s-admin">
+  <div class="header"><div class="h-label">Einrichtung</div><div class="h-title">Verwaltung</div><div class="h-sub">Objekte, Checkpunkte, QR-Etiketten</div></div>
+  <div id="adminView"></div>
+</section>
+
+<nav class="nav">
+  <button data-s="run" class="active"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>Rundgang</button>
+  <button data-s="log"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Protokolle</button>
+  <button data-s="admin"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Verwaltung</button>
+</nav>
+
+<!-- Scanner -->
+<div id="scanner">
+  <video id="scanVideo" playsinline muted></video>
+  <div class="scan-frame"></div>
+  <div class="scan-top" id="scanTitle">QR-Code des Checkpunkts in den Rahmen halten</div>
+  <div class="scan-msg" id="scanMsg"></div>
+  <div class="scan-bottom">
+    <button class="btn secondary" id="torchBtn" style="display:none">Licht</button>
+    <button class="btn secondary" id="scanClose">Schließen</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════════════════════════════
+   B·B PROTECT – Kontrollgang mit QR-Checkpunkten
+   Alle Daten liegen lokal auf dem Gerät (localStorage).
+   QR-Inhalt: BBRG1|<Objekt-ID>|<Checkpunkt-ID>|<Prüfschlüssel>
+   Jeder Protokolleintrag ist per SHA-256 mit dem vorherigen verkettet.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const QR_PREFIX = 'BBRG1';
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = (n = 8) => { const a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, b => b.toString(36).padStart(2, '0')).join('').slice(0, n * 1.5 | 0); };
+const fmtT = ts => new Date(ts).toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+const fmtD = ts => new Date(ts).toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
+const fmtDT = ts => fmtD(ts) + ' ' + fmtT(ts);
+const fmtDur = ms => { const m = Math.round(ms / 60000); return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + String(m % 60).padStart(2, '0') + ' min'; };
+
+/* ── Speicher ─────────────────────────────────────────────────────── */
+const load = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
+const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { toast('Speichern fehlgeschlagen – Speicher voll?'); } };
+let objects = load('rg_objects', []);
+let rounds = load('rg_rounds', []);
+let active = load('rg_active', null);
+const saveObjects = () => store('rg_objects', objects);
+const saveRounds = () => store('rg_rounds', rounds);
+const saveActive = () => active ? store('rg_active', active) : localStorage.removeItem('rg_active');
+
+/* ── Hilfen ───────────────────────────────────────────────────────── */
+function toast(msg, ms = 2600) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), ms);
+}
+function vibrate(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+function beep(ok) {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+    const ctx = beep.ctx || (beep.ctx = new C()); const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.value = ok ? 1320 : 260; o.type = ok ? 'sine' : 'square';
+    g.gain.setValueAtTime(.18, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + (ok ? .18 : .45));
+    o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + (ok ? .2 : .5));
+  } catch (e) {}
+}
+async function sha256(str) {
+  if (!(window.crypto && crypto.subtle)) return '';
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join('');
+}
+function download(name, mime, text) {
+  const blob = new Blob([text], {type: mime});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+}
+function doPrint(html, title) {
+  $('#printArea').innerHTML = html;
+  const old = document.title; document.title = title || old;
+  setTimeout(() => { window.print(); setTimeout(() => { document.title = old; }, 1500); }, 60);
+}
+function openSheet(html) { $('#sheet').innerHTML = html; $('#overlay').classList.add('open'); }
+function closeSheet() { $('#overlay').classList.remove('open'); $('#sheet').innerHTML = ''; }
+$('#overlay').addEventListener('click', e => { if (e.target.id === 'overlay' && !$('#overlay').dataset.locked) closeSheet(); });
+function confirmSheet(title, text, okLabel, danger) {
+  return new Promise(res => {
+    openSheet(`<h3>${esc(title)}</h3><p class="lead">${esc(text)}</p>
+      <div class="row"><button class="btn secondary" id="cNo">Abbrechen</button><button class="btn ${danger ? 'danger' : ''}" id="cYes">${esc(okLabel || 'OK')}</button></div>`);
+    $('#cNo').onclick = () => { closeSheet(); res(false); };
+    $('#cYes').onclick = () => { closeSheet(); res(true); };
+  });
+}
+function micField(id) {
+  const has = window.SpeechRecognition || window.webkitSpeechRecognition;
+  return has ? `<button type="button" data-mic="${id}" title="Diktieren"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 19v3"/></svg></button>` : '';
+}
+function bindMics(root) {
+  root.querySelectorAll('[data-mic]').forEach(b => b.onclick = () => {
+    const R = window.SpeechRecognition || window.webkitSpeechRecognition; if (!R) return;
+    if (bindMics.cur) { try { bindMics.cur.stop(); } catch (e) {} return; }
+    const field = document.getElementById(b.dataset.mic); const r = new R();
+    r.lang = 'de-DE'; r.interimResults = false; r.continuous = false;
+    r.onresult = ev => { const t = ev.results[0][0].transcript; field.value = (field.value ? field.value.trim() + ' ' : '') + t; };
+    r.onend = () => { b.classList.remove('rec'); bindMics.cur = null; };
+    r.onerror = () => { b.classList.remove('rec'); bindMics.cur = null; };
+    try { r.start(); b.classList.add('rec'); bindMics.cur = r; } catch (e) { toast('Diktat nicht verfügbar'); }
+  });
+}
+
+/* ── Navigation ───────────────────────────────────────────────────── */
+let adminUnlocked = false;
+function show(s) {
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.s === s));
+  document.querySelectorAll('.section').forEach(x => x.classList.toggle('active', x.id === 's-' + s));
+  if (s === 'run') renderRun();
+  if (s === 'log') renderLog();
+  if (s === 'admin') renderAdmin();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('.nav button').forEach(b => b.onclick = () => show(b.dataset.s));
+
+/* ═══ PROTOKOLLKETTE ═════════════════════════════════════════════════ */
+async function addEvent(ev) {
+  const prev = active.events.length ? active.events[active.events.length - 1].hash : '0';
+  ev.t = ev.t || Date.now();
+  ev.prev = prev;
+  const body = JSON.stringify(Object.assign({}, ev, {hash: undefined}));
+  ev.hash = await sha256(prev + '|' + body);
+  active.events.push(ev);
+  saveActive();
+  return ev;
+}
+async function verifyChain(r) {
+  let prev = '0';
+  for (const ev of r.events) {
+    if (ev.prev !== prev) return false;
+    const body = JSON.stringify(Object.assign({}, ev, {hash: undefined}));
+    const h = await sha256(prev + '|' + body);
+    if (h && h !== ev.hash) return false;
+    prev = ev.hash;
+  }
+  return true;
+}
+
+/* Status je Checkpunkt aus den Ereignissen ableiten */
+function cpState(r) {
+  const st = {};
+  r.cps.forEach(c => st[c.id] = {cp: c, t: null, how: null, status: 'ok', notes: [], order: true, reason: ''});
+  r.events.forEach(ev => {
+    const s = st[ev.cpId]; if (!s) return;
+    if (ev.type === 'scan' || ev.type === 'manual') { s.t = ev.t; s.how = ev.type; s.order = ev.order !== false; s.reason = ev.reason || ''; }
+    if (ev.type === 'note') { s.notes.push(ev); if (ev.status === 'mangel') s.status = 'mangel'; }
+  });
+  return st;
+}
+
+/* ═══ RUNDGANG ═══════════════════════════════════════════════════════ */
+let tick = null;
+function renderRun() {
+  clearInterval(tick);
+  const v = $('#runView');
+  if (!active) {
+    if (!objects.length) {
+      v.innerHTML = `<div class="card"><div class="card-title">Noch kein Objekt angelegt</div>
+        <p class="note" style="margin-bottom:14px">Legen Sie unter <b>Verwaltung</b> ein Objekt mit seinen Checkpunkten an und drucken Sie die QR-Etiketten aus. Oder importieren Sie eine Objekt-Datei, die Ihnen der Einsatzleiter geschickt hat.</p>
+        <button class="btn" onclick="show('admin')">Zur Verwaltung</button></div>`;
+      return;
+    }
+    const last = localStorage.getItem('rg_lastobj');
+    v.innerHTML = `<div class="header"><div class="h-label">Neuer Kontrollgang</div><div class="h-title">Rundgang starten</div></div>
+      <div class="card">
+        <div class="field"><label>Objekt</label><select id="rObj">${objects.map(o => `<option value="${o.id}" ${o.id === last ? 'selected' : ''}>${esc(o.name)} (${o.cps.length} Punkte)</option>`).join('')}</select></div>
+        <div class="field"><label>Name der Wachperson</label><input id="rName" autocomplete="off" placeholder="Vor- und Nachname" value="${esc(localStorage.getItem('rg_name') || '')}"></div>
+        <button class="btn big" id="rStart"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>Rundgang starten</button>
+      </div>
+      ${lastRoundCard()}`;
+    $('#rStart').onclick = startRound;
+    return;
+  }
+  const st = cpState(active), list = active.cps.map(c => st[c.id]);
+  const done = list.filter(s => s.t).length, total = list.length, pct = total ? done / total : 0;
+  const mangel = list.filter(s => s.status === 'mangel').length;
+  const C = 2 * Math.PI * 40;
+  v.innerHTML = `<div class="header"><div class="h-label">Rundgang läuft</div><div class="h-title">${esc(active.objectName)}</div></div>
+    <div class="card"><div class="progress">
+      <div class="ring"><svg width="92" height="92"><circle cx="46" cy="46" r="40" stroke="rgba(255,255,255,.08)" stroke-width="8" fill="none"/>
+        <circle cx="46" cy="46" r="40" stroke="${done === total ? 'var(--green)' : 'var(--gold)'}" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg>
+        <div class="val">${done}/${total}<small>Punkte</small></div></div>
+      <div class="meta"><div>Wachperson: <b>${esc(active.guard)}</b></div><div>Beginn: <b>${fmtT(active.start)}</b></div>
+        <div>Dauer: <b id="rDur">${fmtDur(Date.now() - active.start)}</b></div>${mangel ? `<div style="color:var(--red)">Mängel: <b style="color:var(--red)">${mangel}</b></div>` : ''}</div>
+    </div></div>
+    <button class="btn big" id="rScan" style="margin-bottom:14px"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>QR-Code scannen</button>
+    <div class="card"><div class="card-title">Checkpunkte${active.ordered ? ' · feste Reihenfolge' : ''}</div>
+      ${list.map((s, i) => `<div class="cp ${s.status === 'mangel' ? 'mangel' : s.how === 'manual' ? 'manual' : s.t ? 'done' : ''}">
+        <div class="num">${s.t ? '&#10003;' : i + 1}</div>
+        <div class="info"><div class="name">${esc(s.cp.name)}</div>
+          <div class="sub">${s.t ? fmtT(s.t) + (s.how === 'manual' ? ' · manuell' : '') + (!s.order ? ' · Reihenfolge abweichend' : '') + (s.notes.length ? ' · ' + s.notes.length + ' Bemerkung(en)' : '') : esc(s.cp.hint || 'offen')}</div></div>
+        <div class="tools">${s.t ? `<button class="icon-btn" data-note="${s.cp.id}" title="Bemerkung"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>`
+          : `<button class="btn secondary small" data-man="${s.cp.id}">manuell</button>`}</div>
+      </div>`).join('')}
+    </div>
+    <div class="row"><button class="btn secondary" id="rEvent">Ereignis melden</button><button class="btn ${done === total ? '' : 'secondary'}" id="rEnd">Rundgang beenden</button></div>`;
+  $('#rScan').onclick = openScanner;
+  $('#rEnd').onclick = endRound;
+  $('#rEvent').onclick = () => noteSheet(null);
+  v.querySelectorAll('[data-man]').forEach(b => b.onclick = () => manualSheet(b.dataset.man));
+  v.querySelectorAll('[data-note]').forEach(b => b.onclick = () => noteSheet(b.dataset.note));
+  tick = setInterval(() => { const d = $('#rDur'); if (d && active) d.textContent = fmtDur(Date.now() - active.start); }, 15000);
+}
+
+function lastRoundCard() {
+  if (!rounds.length) return '';
+  const r = rounds[0], s = summarize(r);
+  return `<div class="card"><div class="card-title">Letzter Rundgang</div>
+    <div class="list-item" style="margin:0" onclick="openRound('${r.id}')"><div class="info"><div class="t1">${esc(r.objectName)} ${s.tag}</div>
+    <div class="t2">${fmtDT(r.start)} · ${esc(r.guard)} · ${s.done}/${s.total}</div></div><div class="chev">&rsaquo;</div></div></div>`;
+}
+
+async function startRound() {
+  const o = objects.find(x => x.id === $('#rObj').value);
+  const name = $('#rName').value.trim();
+  if (!o) return;
+  if (!o.cps.length) return toast('Dieses Objekt hat noch keine Checkpunkte.');
+  if (!name) { $('#rName').focus(); return toast('Bitte Namen eintragen.'); }
+  localStorage.setItem('rg_name', name); localStorage.setItem('rg_lastobj', o.id);
+  active = {id: 'R' + Date.now().toString(36) + uid(3), objectId: o.id, objectName: o.name, address: o.address || '',
+    ordered: !!o.ordered, guard: name, start: Date.now(), cps: o.cps.map(c => ({id: c.id, name: c.name, hint: c.hint || '', token: c.token})), events: []};
+  await addEvent({type: 'start'});
+  renderRun();
+  openScanner();
+}
+
+async function registerCp(cpId, how, reason) {
+  const st = cpState(active);
+  const s = st[cpId];
+  if (!s) return null;
+  if (s.t) return {dup: true, s};
+  let order = true;
+  if (active.ordered) {
+    const next = active.cps.find(c => !st[c.id].t);
+    order = !next || next.id === cpId;
+  }
+  const ev = {type: how, cpId, cpName: s.cp.name, order};
+  if (reason) ev.reason = reason;
+  await addEvent(ev);
+  return {ev, s};
+}
+
+async function endRound() {
+  const st = cpState(active);
+  const missing = active.cps.filter(c => !st[c.id].t);
+  if (missing.length) {
+    openSheet(`<h3>Rundgang unvollständig</h3>
+      <p class="lead">${missing.length} von ${active.cps.length} Checkpunkten wurden nicht erfasst:<br><b style="color:var(--red)">${missing.map(c => esc(c.name)).join(', ')}</b></p>
+      <div class="field mic"><label>Begründung (Pflicht)</label><textarea id="eReason" placeholder="z. B. Bereich wegen Bauarbeiten gesperrt"></textarea>${micField('eReason')}</div>
+      <div class="row"><button class="btn secondary" id="eBack">Weiter prüfen</button><button class="btn danger" id="eGo">Trotzdem beenden</button></div>`);
+    bindMics($('#sheet'));
+    $('#eBack').onclick = closeSheet;
+    $('#eGo').onclick = async () => {
+      const r = $('#eReason').value.trim();
+      if (!r) return toast('Bitte Begründung eintragen.');
+      closeSheet(); await finish(r);
+    };
+  } else {
+    if (await confirmSheet('Rundgang beenden?', 'Alle Checkpunkte sind erfasst. Das Protokoll wird abgeschlossen und kann danach nicht mehr verändert werden.', 'Beenden')) await finish('');
+  }
+}
+async function finish(reason) {
+  const ev = {type: 'end'}; if (reason) ev.reason = reason;
+  await addEvent(ev);
+  active.end = Date.now();
+  active.hash = active.events[active.events.length - 1].hash;
+  rounds.unshift(active); saveRounds();
+  const id = active.id; active = null; saveActive();
+  vibrate([60, 60, 60]);
+  toast('Rundgang abgeschlossen und gespeichert.');
+  show('log'); openRound(id);
+}
+
+/* ── Manuell / Bemerkung ──────────────────────────────────────────── */
+function manualSheet(cpId) {
+  const c = active.cps.find(x => x.id === cpId);
+  openSheet(`<h3>Manuell bestätigen</h3><p class="lead">Checkpunkt <b>${esc(c.name)}</b> ohne Scan erfassen. Das wird im Protokoll gesondert gekennzeichnet.</p>
+    <div class="field mic"><label>Grund (Pflicht)</label><textarea id="mReason" placeholder="z. B. QR-Etikett beschädigt / fehlt"></textarea>${micField('mReason')}</div>
+    <div class="row"><button class="btn secondary" id="mNo">Abbrechen</button><button class="btn" id="mYes">Bestätigen</button></div>`);
+  bindMics($('#sheet'));
+  $('#mNo').onclick = closeSheet;
+  $('#mYes').onclick = async () => {
+    const r = $('#mReason').value.trim(); if (!r) return toast('Bitte Grund eintragen.');
+    await registerCp(cpId, 'manual', r); closeSheet(); renderRun(); toast('Manuell erfasst.');
+  };
+}
+function noteSheet(cpId, fromScan) {
+  const c = cpId ? active.cps.find(x => x.id === cpId) : null;
+  let status = 'ok';
+  openSheet(`${fromScan ? `<div class="big-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>` : ''}
+    <h3>${c ? esc(c.name) : 'Ereignis melden'}</h3>
+    <p class="lead">${fromScan ? 'Erfasst um ' + fmtT(Date.now()) + '. ' + (c.hint ? esc(c.hint) : '') : c ? 'Bemerkung zu diesem Checkpunkt.' : 'Allgemeines Vorkommnis während des Rundgangs.'}</p>
+    <div class="seg"><button id="nOk" class="on-ok">Alles in Ordnung</button><button id="nBad">Mangel / Vorfall</button></div>
+    <div class="field mic"><label>Bemerkung${fromScan ? ' (optional)' : ''}</label><textarea id="nText" placeholder="z. B. Tür 3 nicht verschlossen, abgeschlossen und gemeldet"></textarea>${micField('nText')}</div>
+    <div class="row">${fromScan ? `<button class="btn secondary" id="nNext">Weiter scannen</button>` : `<button class="btn secondary" id="nCancel">Abbrechen</button>`}<button class="btn" id="nSave">${fromScan ? 'Speichern' : 'Speichern'}</button></div>`);
+  bindMics($('#sheet'));
+  const setS = s => { status = s; $('#nOk').className = s === 'ok' ? 'on-ok' : ''; $('#nBad').className = s === 'mangel' ? 'on-bad' : ''; };
+  $('#nOk').onclick = () => setS('ok'); $('#nBad').onclick = () => setS('mangel');
+  const save = async (again) => {
+    const text = $('#nText').value.trim();
+    if (!fromScan && !text && status === 'ok') return toast('Bitte Bemerkung eintragen.');
+    if (status === 'mangel' && !text) return toast('Bitte den Mangel kurz beschreiben.');
+    if (text || status === 'mangel') await addEvent({type: 'note', cpId: cpId || null, cpName: c ? c.name : null, status, text});
+    closeSheet(); renderRun();
+    if (again) openScanner();
+  };
+  $('#nSave').onclick = () => save(false);
+  if ($('#nNext')) $('#nNext').onclick = () => save(true);
+  if ($('#nCancel')) $('#nCancel').onclick = closeSheet;
+}
+
+/* ═══ SCANNER ════════════════════════════════════════════════════════ */
+const scan = {stream: null, raf: 0, detector: null, canvas: document.createElement('canvas'), busy: false, lastVal: '', lastAt: 0, mode: 'round', onCode: null};
+async function openScanner(mode, onCode) {
+  scan.mode = mode || 'round'; scan.onCode = onCode || null;
+  $('#scanTitle').textContent = scan.mode === 'test' ? 'Testmodus: Etikett scannen' : 'QR-Code des Checkpunkts in den Rahmen halten';
+  $('#scanMsg').textContent = '';
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return toast('Kamera wird auf diesem Gerät nicht unterstützt.');
+  $('#scanner').classList.add('open');
+  try {
+    scan.stream = await navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: {ideal: 'environment'}, width: {ideal: 1280}, height: {ideal: 720}}});
+  } catch (e) {
+    $('#scanner').classList.remove('open');
+    return toast('Kein Kamerazugriff. Bitte Berechtigung erlauben.', 3500);
+  }
+  const v = $('#scanVideo'); v.srcObject = scan.stream; await v.play().catch(() => {});
+  const track = scan.stream.getVideoTracks()[0];
+  const caps = track && track.getCapabilities ? track.getCapabilities() : {};
+  $('#torchBtn').style.display = caps.torch ? '' : 'none'; scan.torch = false;
+  if (!scan.detector && 'BarcodeDetector' in window) {
+    try { const f = await BarcodeDetector.getSupportedFormats(); if (f.includes('qr_code')) scan.detector = new BarcodeDetector({formats: ['qr_code']}); } catch (e) {}
+  }
+  loop();
+}
+function closeScanner() {
+  cancelAnimationFrame(scan.raf);
+  if (scan.stream) scan.stream.getTracks().forEach(t => t.stop());
+  scan.stream = null; $('#scanVideo').srcObject = null;
+  $('#scanner').classList.remove('open');
+}
+$('#scanClose').onclick = closeScanner;
+$('#torchBtn').onclick = async () => {
+  const t = scan.stream && scan.stream.getVideoTracks()[0]; if (!t) return;
+  scan.torch = !scan.torch;
+  try { await t.applyConstraints({advanced: [{torch: scan.torch}]}); } catch (e) {}
+  $('#torchBtn').textContent = scan.torch ? 'Licht aus' : 'Licht';
+};
+async function loop() {
+  if (!scan.stream) return;
+  const v = $('#scanVideo');
+  if (!scan.busy && v.readyState >= 2 && v.videoWidth) {
+    scan.busy = true;
+    let val = null;
+    try {
+      if (scan.detector) {
+        const r = await scan.detector.detect(v); if (r.length) val = r[0].rawValue;
+      } else if (window.jsQR) {
+        const s = Math.min(1, 720 / Math.max(v.videoWidth, v.videoHeight));
+        const w = scan.canvas.width = v.videoWidth * s | 0, h = scan.canvas.height = v.videoHeight * s | 0;
+        const ctx = scan.canvas.getContext('2d', {willReadFrequently: true});
+        ctx.drawImage(v, 0, 0, w, h);
+        const r = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, {inversionAttempts: 'dontInvert'});
+        if (r) val = r.data;
+      }
+    } catch (e) {}
+    scan.busy = false;
+    if (val && !(val === scan.lastVal && Date.now() - scan.lastAt < 2500)) {
+      scan.lastVal = val; scan.lastAt = Date.now();
+      await handleCode(val);
+      if (!scan.stream) return;
+    }
+  }
+  scan.raf = requestAnimationFrame(loop);
+}
+function parseCode(val) {
+  const p = String(val).trim().split('|');
+  if (p.length !== 4 || p[0] !== QR_PREFIX) return null;
+  return {objectId: p[1], cpId: p[2], token: p[3]};
+}
+function scanFail(msg) { beep(false); vibrate([200, 80, 200]); $('#scanMsg').innerHTML = `<span style="color:var(--red)">${esc(msg)}</span>`; }
+
+async function handleCode(val) {
+  const c = parseCode(val);
+  if (scan.mode === 'test') {
+    if (!c) return scanFail('Kein B·B-Rundgang-Code');
+    const o = objects.find(x => x.id === c.objectId), cp = o && o.cps.find(x => x.id === c.cpId);
+    if (!cp || cp.token !== c.token) return scanFail('Code unbekannt oder veraltet');
+    beep(true); vibrate(80);
+    $('#scanMsg').innerHTML = `<span style="color:var(--green)">&#10003; ${esc(o.name)} · ${esc(cp.name)}</span>`;
+    return;
+  }
+  if (!active) { closeScanner(); return; }
+  if (!c) return scanFail('Kein gültiger Checkpunkt-Code');
+  if (c.objectId !== active.objectId) {
+    const o = objects.find(x => x.id === c.objectId);
+    return scanFail('Code gehört zu anderem Objekt' + (o ? ': ' + o.name : ''));
+  }
+  const cp = active.cps.find(x => x.id === c.cpId);
+  if (!cp || cp.token !== c.token) {
+    await addEvent({type: 'unknown', raw: String(val).slice(0, 80)});
+    return scanFail('Unbekannter oder ungültiger Code – protokolliert');
+  }
+  const res = await registerCp(cp.id, 'scan');
+  if (res && res.dup) { beep(false); vibrate(120); $('#scanMsg').textContent = cp.name + ' bereits erfasst um ' + fmtT(res.s.t); return; }
+  beep(true); vibrate(90);
+  closeScanner();
+  renderRun();
+  if (res && res.ev && res.ev.order === false) toast('Hinweis: Reihenfolge abweichend – wird protokolliert.', 3500);
+  noteSheet(cp.id, true);
+}
+
+/* ═══ PROTOKOLLE ═════════════════════════════════════════════════════ */
+function summarize(r) {
+  const st = cpState(r), list = r.cps.map(c => st[c.id]);
+  const done = list.filter(s => s.t).length, total = list.length;
+  const mangel = list.filter(s => s.status === 'mangel').length + r.events.filter(e => e.type === 'note' && !e.cpId && e.status === 'mangel').length;
+  const manual = list.filter(s => s.how === 'manual').length;
+  const unknown = r.events.filter(e => e.type === 'unknown').length;
+  const order = list.filter(s => s.t && !s.order).length;
+  const tag = done < total ? `<span class="tag bad">unvollständig</span>` : mangel ? `<span class="tag bad">${mangel} Mangel</span>` : manual || order ? `<span class="tag warn">Hinweise</span>` : `<span class="tag ok">vollständig</span>`;
+  return {st, list, done, total, mangel, manual, unknown, order, tag};
+}
+let logFilter = '';
+function renderLog() {
+  const v = $('#logView');
+  if (!rounds.length) { v.innerHTML = `<div class="empty">Noch keine abgeschlossenen Rundgänge.</div>`; return; }
+  const objs = [...new Map(rounds.map(r => [r.objectId, r.objectName])).entries()];
+  const list = rounds.filter(r => !logFilter || r.objectId === logFilter);
+  v.innerHTML = `<div class="row" style="margin-bottom:14px">
+      <div class="field" style="margin:0"><select id="lF"><option value="">Alle Objekte</option>${objs.map(([id, n]) => `<option value="${id}" ${id === logFilter ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></div>
+      <button class="btn secondary" style="flex:0 0 auto;width:auto" id="lCsv">CSV-Export</button></div>
+    ${list.map(r => { const s = summarize(r); return `<div class="list-item" onclick="openRound('${r.id}')"><div class="info">
+      <div class="t1">${esc(r.objectName)} ${s.tag}</div>
+      <div class="t2">${fmtDT(r.start)} · ${fmtDur(r.end - r.start)} · ${esc(r.guard)} · ${s.done}/${s.total} Punkte</div></div><div class="chev">&rsaquo;</div></div>`; }).join('')}`;
+  $('#lF').onchange = e => { logFilter = e.target.value; renderLog(); };
+  $('#lCsv').onclick = () => exportCsv(list);
+}
+async function openRound(id) {
+  const r = rounds.find(x => x.id === id); if (!r) return;
+  const s = summarize(r), ok = await verifyChain(r);
+  const v = $('#logView');
+  v.innerHTML = `<button class="btn secondary small" id="dBack" style="margin-bottom:14px">&lsaquo; Zurück</button>
+    <div class="card"><div class="card-title">${esc(r.objectName)} ${s.tag}</div>
+      <div class="meta"><div>Wachperson: <b>${esc(r.guard)}</b></div><div>Datum: <b>${fmtD(r.start)}</b></div>
+      <div>Zeit: <b>${fmtT(r.start)} – ${fmtT(r.end)}</b> (${fmtDur(r.end - r.start)})</div>
+      <div>Erfasst: <b>${s.done} von ${s.total}</b>${s.manual ? ' · ' + s.manual + ' manuell' : ''}${s.order ? ' · ' + s.order + '× Reihenfolge abweichend' : ''}${s.unknown ? ' · ' + s.unknown + '× unbekannter Code' : ''}</div>
+      <div>Integrität: ${ok ? '<span class="tag ok">Protokollkette geprüft</span>' : '<span class="tag bad">Kette verletzt – Daten verändert</span>'}</div></div>
+    </div>
+    <div class="card"><div class="card-title">Checkpunkte</div>
+      ${s.list.map((x, i) => `<div class="cp ${x.status === 'mangel' ? 'mangel' : x.how === 'manual' ? 'manual' : x.t ? 'done' : ''}"><div class="num">${x.t ? '&#10003;' : '&#10005;'}</div>
+        <div class="info"><div class="name">${i + 1}. ${esc(x.cp.name)}</div>
+        <div class="sub">${x.t ? fmtT(x.t) + (x.how === 'manual' ? ' · manuell: ' + esc(x.reason) : '') + (!x.order ? ' · Reihenfolge abweichend' : '') : '<span style="color:var(--red)">nicht erfasst</span>'}
+        ${x.notes.map(n => `<br><span style="color:${n.status === 'mangel' ? 'var(--red)' : 'var(--text)'}">${n.status === 'mangel' ? 'Mangel: ' : ''}${esc(n.text)}</span>`).join('')}</div></div></div>`).join('')}
+    </div>
+    <div class="card"><div class="card-title">Ereignisprotokoll</div>
+      <table class="log"><tr><th>Zeit</th><th>Ereignis</th></tr>${r.events.map(e => `<tr><td class="mono">${fmtT(e.t)}</td><td>${evText(e)}</td></tr>`).join('')}</table>
+      <div class="hash mono" style="margin-top:10px">Prüfsumme: ${esc(r.hash || '')}</div></div>
+    <div class="row"><button class="btn" id="dPrint">Bericht drucken / PDF</button><button class="btn danger" style="flex:0 0 auto;width:auto" id="dDel">Löschen</button></div>`;
+  $('#dBack').onclick = renderLog;
+  $('#dPrint').onclick = () => printReport(r);
+  $('#dDel').onclick = async () => {
+    if (!(await requireAdmin('Protokolle löschen darf nur die Verwaltung.'))) return;
+    if (!(await confirmSheet('Protokoll löschen?', 'Das Protokoll wird endgültig von diesem Gerät entfernt.', 'Löschen', true))) return;
+    rounds = rounds.filter(x => x.id !== r.id); saveRounds(); renderLog();
+  };
+  window.scrollTo(0, 0);
+}
+function evText(e) {
+  switch (e.type) {
+    case 'start': return 'Rundgang begonnen';
+    case 'end': return 'Rundgang beendet' + (e.reason ? ' – Begründung: ' + esc(e.reason) : '');
+    case 'scan': return 'Gescannt: <b>' + esc(e.cpName) + '</b>' + (e.order === false ? ' <span class="tag warn">Reihenfolge</span>' : '');
+    case 'manual': return 'Manuell: <b>' + esc(e.cpName) + '</b> – ' + esc(e.reason) + (e.order === false ? ' <span class="tag warn">Reihenfolge</span>' : '');
+    case 'note': return (e.status === 'mangel' ? '<span class="tag bad">Mangel</span> ' : 'Bemerkung ') + (e.cpName ? '(' + esc(e.cpName) + ') ' : '') + esc(e.text);
+    case 'unknown': return '<span class="tag bad">Unbekannter Code</span>';
+    default: return esc(e.type);
+  }
+}
+function printReport(r) {
+  const s = summarize(r);
+  const html = `<div class="rep"><h1>Kontrollgang-Protokoll</h1>
+    <div class="rmeta"><b>Objekt:</b> ${esc(r.objectName)}${r.address ? ', ' + esc(r.address) : ''}<br>
+    <b>Wachperson:</b> ${esc(r.guard)}<br><b>Datum:</b> ${fmtD(r.start)} &nbsp; <b>Zeit:</b> ${fmtT(r.start)} – ${fmtT(r.end)} (${fmtDur(r.end - r.start)})<br>
+    <b>Ergebnis:</b> ${s.done} von ${s.total} Checkpunkten erfasst${s.manual ? ', davon ' + s.manual + ' manuell' : ''}${s.mangel ? ', ' + s.mangel + ' Mangel/Mängel' : ''}</div>
+    <table><tr><th>#</th><th>Checkpunkt</th><th>Zeit</th><th>Erfassung</th><th>Bemerkung</th></tr>
+    ${s.list.map((x, i) => `<tr><td>${i + 1}</td><td>${esc(x.cp.name)}</td><td>${x.t ? fmtT(x.t) : '<span class="miss">fehlt</span>'}</td>
+      <td>${x.t ? (x.how === 'manual' ? 'manuell: ' + esc(x.reason) : 'QR-Scan') + (!x.order ? ' (Reihenfolge abw.)' : '') : '<span class="miss">nicht erfasst</span>'}</td>
+      <td>${x.notes.map(n => (n.status === 'mangel' ? '<b>Mangel:</b> ' : '') + esc(n.text)).join('<br>')}</td></tr>`).join('')}</table>
+    ${r.events.some(e => (e.type === 'note' && !e.cpId) || e.type === 'unknown' || (e.type === 'end' && e.reason)) ? `<h3 style="margin-top:5mm;font-size:11pt">Weitere Ereignisse</h3><table>${r.events.filter(e => (e.type === 'note' && !e.cpId) || e.type === 'unknown' || (e.type === 'end' && e.reason)).map(e => `<tr><td style="width:22mm">${fmtT(e.t)}</td><td>${evText(e).replace(/<span[^>]*>|<\/span>/g, '')}</td></tr>`).join('')}</table>` : ''}
+    <div class="sign"><div>Unterschrift Wachperson</div><div>Unterschrift Einsatzleitung</div></div>
+    <div class="foot">Protokoll-ID ${esc(r.id)} · SHA-256-Prüfsumme der Ereigniskette: ${esc(r.hash || '')}<br>Erstellt mit B·B PROTECT Rundgang am ${fmtDT(Date.now())}</div></div>`;
+  doPrint(html, 'Rundgang_' + r.objectName.replace(/\W+/g, '_') + '_' + fmtD(r.start).replace(/\./g, '-'));
+}
+function exportCsv(list) {
+  const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const rows = [['Protokoll-ID', 'Objekt', 'Wachperson', 'Datum', 'Beginn', 'Ende', 'Nr', 'Checkpunkt', 'Zeit', 'Erfassung', 'Reihenfolge', 'Status', 'Bemerkungen'].map(q).join(';')];
+  list.forEach(r => {
+    const s = summarize(r);
+    s.list.forEach((x, i) => rows.push([r.id, r.objectName, r.guard, fmtD(r.start), fmtT(r.start), fmtT(r.end), i + 1, x.cp.name,
+      x.t ? fmtT(x.t) : '', x.t ? (x.how === 'manual' ? 'manuell: ' + x.reason : 'QR-Scan') : 'nicht erfasst', x.t ? (x.order ? 'ok' : 'abweichend') : '',
+      x.status === 'mangel' ? 'Mangel' : 'ok', x.notes.map(n => n.text).join(' | ')].map(q).join(';')));
+  });
+  download('Rundgaenge_' + new Date().toISOString().slice(0, 10) + '.csv', 'text/csv;charset=utf-8', '﻿' + rows.join('\r\n'));
+}
+
+/* ═══ VERWALTUNG ═════════════════════════════════════════════════════ */
+async function hashPin(p) { return (await sha256('bbrg-pin|' + p)) || p; }
+function requireAdmin(text) {
+  const pinHash = localStorage.getItem('rg_pin');
+  if (!pinHash || adminUnlocked) return Promise.resolve(true);
+  return new Promise(res => {
+    openSheet(`<h3>Verwaltungs-PIN</h3><p class="lead">${esc(text || 'Dieser Bereich ist geschützt.')}</p>
+      <div class="field"><input id="pIn" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN"></div>
+      <div class="row"><button class="btn secondary" id="pNo">Abbrechen</button><button class="btn" id="pYes">Entsperren</button></div>`);
+    setTimeout(() => $('#pIn') && $('#pIn').focus(), 100);
+    $('#pNo').onclick = () => { closeSheet(); res(false); };
+    $('#pYes').onclick = async () => {
+      if (await hashPin($('#pIn').value) === pinHash) { adminUnlocked = true; closeSheet(); res(true); }
+      else { toast('PIN falsch.'); vibrate(200); }
+    };
+  });
+}
+async function renderAdmin() {
+  const v = $('#adminView');
+  if (localStorage.getItem('rg_pin') && !adminUnlocked) {
+    v.innerHTML = `<div class="card"><p class="note" style="margin-bottom:14px">Die Verwaltung ist mit einer PIN geschützt.</p><button class="btn" id="aUnlock">Entsperren</button></div>`;
+    $('#aUnlock').onclick = async () => { if (await requireAdmin()) renderAdmin(); };
+    return;
+  }
+  v.innerHTML = `<button class="btn" id="aNew" style="margin-bottom:14px"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Neues Objekt</button>
+    ${objects.length ? objects.map(o => `<div class="list-item" data-obj="${o.id}"><div class="info"><div class="t1">${esc(o.name)}</div>
+      <div class="t2">${o.cps.length} Checkpunkte${o.ordered ? ' · feste Reihenfolge' : ''}${o.address ? ' · ' + esc(o.address) : ''}</div></div><div class="chev">&rsaquo;</div></div>`).join('')
+      : `<div class="empty">Noch keine Objekte.</div>`}
+    <div class="card" style="margin-top:6px"><div class="card-title">Objekte übertragen</div>
+      <p class="note" style="margin-bottom:12px">Objekte einmal auf dem Diensthandy des Einsatzleiters anlegen, als Datei exportieren und auf den Geräten der Mitarbeiter importieren. Die Etiketten passen dann auf allen Geräten.</p>
+      <div class="row"><button class="btn secondary" id="aExp">Objekte exportieren</button><button class="btn secondary" id="aImp">Importieren</button></div>
+      <input type="file" id="aFile" accept=".json,application/json" style="display:none"></div>
+    <div class="card"><div class="card-title">Datensicherung</div>
+      <div class="row"><button class="btn secondary" id="aBak">Komplett-Backup</button><button class="btn secondary" id="aTest">Etikett testen</button></div></div>
+    <div class="card"><div class="card-title">Zugriffsschutz</div>
+      <p class="note" style="margin-bottom:12px">${localStorage.getItem('rg_pin') ? 'Eine PIN ist gesetzt. Mitarbeiter können Rundgänge durchführen, aber keine Objekte ändern und keine Protokolle löschen.' : 'Ohne PIN kann jeder Nutzer Objekte ändern und Protokolle löschen.'}</p>
+      <div class="row"><button class="btn secondary" id="aPin">${localStorage.getItem('rg_pin') ? 'PIN ändern' : 'PIN festlegen'}</button>${localStorage.getItem('rg_pin') ? `<button class="btn secondary" id="aLock">Sperren</button>` : ''}</div></div>`;
+  $('#aNew').onclick = () => editObject(null);
+  v.querySelectorAll('[data-obj]').forEach(el => el.onclick = () => editObject(el.dataset.obj));
+  $('#aExp').onclick = () => {
+    if (!objects.length) return toast('Keine Objekte vorhanden.');
+    download('Rundgang-Objekte_' + new Date().toISOString().slice(0, 10) + '.json', 'application/json', JSON.stringify({type: 'bbrg-objects', version: 1, exported: Date.now(), objects}, null, 2));
+  };
+  $('#aImp').onclick = () => $('#aFile').click();
+  $('#aFile').onchange = importFile;
+  $('#aBak').onclick = () => download('Rundgang-Backup_' + new Date().toISOString().slice(0, 10) + '.json', 'application/json', JSON.stringify({type: 'bbrg-backup', version: 1, exported: Date.now(), objects, rounds}, null, 2));
+  $('#aTest').onclick = () => openScanner('test');
+  $('#aPin').onclick = setPin;
+  if ($('#aLock')) $('#aLock').onclick = () => { adminUnlocked = false; renderAdmin(); };
+}
+function setPin() {
+  openSheet(`<h3>Verwaltungs-PIN</h3><p class="lead">4 bis 8 Ziffern. Leer lassen und speichern entfernt die PIN.</p>
+    <div class="field"><input id="pNew" type="password" inputmode="numeric" maxlength="8" placeholder="Neue PIN"></div>
+    <div class="field"><input id="pNew2" type="password" inputmode="numeric" maxlength="8" placeholder="PIN wiederholen"></div>
+    <div class="row"><button class="btn secondary" id="pC">Abbrechen</button><button class="btn" id="pS">Speichern</button></div>`);
+  $('#pC').onclick = closeSheet;
+  $('#pS').onclick = async () => {
+    const a = $('#pNew').value, b = $('#pNew2').value;
+    if (!a && !b) { localStorage.removeItem('rg_pin'); closeSheet(); toast('PIN entfernt.'); return renderAdmin(); }
+    if (!/^\d{4,8}$/.test(a)) return toast('PIN muss aus 4 bis 8 Ziffern bestehen.');
+    if (a !== b) return toast('PINs stimmen nicht überein.');
+    localStorage.setItem('rg_pin', await hashPin(a)); adminUnlocked = true; closeSheet(); toast('PIN gespeichert.'); renderAdmin();
+  };
+}
+function importFile(e) {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const fr = new FileReader();
+  fr.onload = async () => {
+    let d; try { d = JSON.parse(fr.result); } catch (x) { return toast('Datei ist kein gültiges JSON.'); }
+    const objs = Array.isArray(d.objects) ? d.objects.filter(o => o && o.id && o.name && Array.isArray(o.cps)) : [];
+    if (!objs.length && !Array.isArray(d.rounds)) return toast('Keine Objekte in der Datei gefunden.');
+    const upd = objs.filter(o => objects.some(x => x.id === o.id)).length;
+    const newRounds = Array.isArray(d.rounds) ? d.rounds.filter(r => r && r.id && !rounds.some(x => x.id === r.id)) : [];
+    if (!(await confirmSheet('Import', `${objs.length} Objekt(e)${upd ? `, davon ${upd} bereits vorhanden (werden aktualisiert)` : ''}${newRounds.length ? ` und ${newRounds.length} Protokoll(e)` : ''} übernehmen?`, 'Importieren'))) return;
+    objs.forEach(o => {
+      const clean = {id: String(o.id), name: String(o.name), address: String(o.address || ''), ordered: !!o.ordered, created: o.created || Date.now(),
+        cps: o.cps.filter(c => c && c.id && c.token).map(c => ({id: String(c.id), name: String(c.name || ''), hint: String(c.hint || ''), token: String(c.token)}))};
+      const i = objects.findIndex(x => x.id === clean.id);
+      if (i >= 0) objects[i] = clean; else objects.push(clean);
+    });
+    saveObjects();
+    if (newRounds.length) { rounds = rounds.concat(newRounds).sort((a, b) => b.start - a.start); saveRounds(); }
+    toast('Import abgeschlossen.'); renderAdmin();
+  };
+  fr.readAsText(f);
+}
+
+function editObject(id) {
+  const isNew = !id;
+  const o = isNew ? {id: 'O' + uid(5), name: '', address: '', ordered: false, cps: [], created: Date.now()} : JSON.parse(JSON.stringify(objects.find(x => x.id === id)));
+  const v = $('#adminView');
+  const draw = () => {
+    v.innerHTML = `<button class="btn secondary small" id="oBack" style="margin-bottom:14px">&lsaquo; Zurück</button>
+      <div class="card">
+        <div class="field"><label>Objektname</label><input id="oName" value="${esc(o.name)}" placeholder="z. B. Logistikzentrum Landshut"></div>
+        <div class="field"><label>Adresse (optional)</label><input id="oAddr" value="${esc(o.address)}" placeholder="Straße, Ort"></div>
+        <label class="check"><input type="checkbox" id="oOrd" ${o.ordered ? 'checked' : ''}> Feste Reihenfolge prüfen</label>
+      </div>
+      <div class="card"><div class="card-title">Checkpunkte (${o.cps.length})</div>
+        ${o.cps.length ? o.cps.map((c, i) => `<div class="cp"><div class="num">${i + 1}</div>
+          <div class="info"><div class="name">${esc(c.name)}</div>${c.hint ? `<div class="sub">${esc(c.hint)}</div>` : ''}</div>
+          <div class="tools"><button class="icon-btn" data-up="${i}" ${i ? '' : 'disabled'}><svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg></button>
+          <button class="icon-btn" data-ed="${i}"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+          <button class="icon-btn del" data-rm="${i}"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button></div></div>`).join('')
+          : `<p class="note">Noch keine Checkpunkte. Typisch sind Eingänge, Notausgänge, Technikräume, Zaunabschnitte und Parkflächen.</p>`}
+        <button class="btn secondary" id="oAdd" style="margin-top:12px">+ Checkpunkt hinzufügen</button>
+      </div>
+      <div class="stack">
+        <button class="btn" id="oSave">Speichern</button>
+        ${isNew ? '' : `<button class="btn secondary" id="oPrint">QR-Etiketten drucken / PDF</button>
+        <button class="btn danger" id="oDel">Objekt löschen</button>`}
+      </div>`;
+    const sync = () => { o.name = $('#oName').value.trim(); o.address = $('#oAddr').value.trim(); o.ordered = $('#oOrd').checked; };
+    $('#oBack').onclick = renderAdmin;
+    $('#oAdd').onclick = () => { sync(); cpSheet(o, -1, draw); };
+    v.querySelectorAll('[data-ed]').forEach(b => b.onclick = () => { sync(); cpSheet(o, +b.dataset.ed, draw); });
+    v.querySelectorAll('[data-up]').forEach(b => b.onclick = () => { sync(); const i = +b.dataset.up; [o.cps[i - 1], o.cps[i]] = [o.cps[i], o.cps[i - 1]]; draw(); });
+    v.querySelectorAll('[data-rm]').forEach(b => b.onclick = async () => {
+      sync(); const i = +b.dataset.rm;
+      if (await confirmSheet('Checkpunkt entfernen?', `„${o.cps[i].name}" wird entfernt. Das gedruckte Etikett wird damit ungültig.`, 'Entfernen', true)) { o.cps.splice(i, 1); draw(); }
+    });
+    $('#oSave').onclick = () => {
+      sync(); if (!o.name) return toast('Bitte Objektnamen eintragen.');
+      const i = objects.findIndex(x => x.id === o.id);
+      if (i >= 0) objects[i] = o; else objects.push(o);
+      saveObjects(); toast('Gespeichert.');
+      if (active && active.objectId === o.id) toast('Gespeichert. Der laufende Rundgang nutzt noch den alten Stand.', 3500);
+      editObject(o.id);
+    };
+    if ($('#oPrint')) $('#oPrint').onclick = () => { sync(); printLabels(objects.find(x => x.id === o.id) || o); };
+    if ($('#oDel')) $('#oDel').onclick = async () => {
+      if (!(await confirmSheet('Objekt löschen?', `„${o.name}" und alle Checkpunkte werden gelöscht. Vorhandene Protokolle bleiben erhalten.`, 'Löschen', true))) return;
+      objects = objects.filter(x => x.id !== o.id); saveObjects(); renderAdmin();
+    };
+  };
+  draw(); window.scrollTo(0, 0);
+}
+function cpSheet(o, i, done) {
+  const c = i >= 0 ? o.cps[i] : {id: 'C' + uid(4), name: '', hint: '', token: uid(8)};
+  openSheet(`<h3>${i >= 0 ? 'Checkpunkt bearbeiten' : 'Neuer Checkpunkt'}</h3>
+    <div class="field"><label>Bezeichnung</label><input id="cName" value="${esc(c.name)}" placeholder="z. B. Notausgang Halle 2 Ost"></div>
+    <div class="field"><label>Prüfhinweis für die Wachperson (optional)</label><input id="cHint" value="${esc(c.hint)}" placeholder="z. B. Tür verschlossen? Fluchtweg frei?"></div>
+    ${i >= 0 ? `<label class="check" style="margin-bottom:14px"><input type="checkbox" id="cRenew"> Neues Etikett erzeugen (altes wird ungültig)</label>` : ''}
+    <div class="row"><button class="btn secondary" id="cC">Abbrechen</button><button class="btn" id="cS">${i >= 0 ? 'Übernehmen' : 'Hinzufügen'}</button></div>`);
+  setTimeout(() => $('#cName') && $('#cName').focus(), 100);
+  $('#cC').onclick = closeSheet;
+  $('#cS').onclick = () => {
+    const name = $('#cName').value.trim(); if (!name) return toast('Bitte Bezeichnung eintragen.');
+    c.name = name; c.hint = $('#cHint').value.trim();
+    if ($('#cRenew') && $('#cRenew').checked) c.token = uid(8);
+    if (i < 0) o.cps.push(c);
+    closeSheet(); done();
+    toast('Noch nicht gespeichert – unten auf „Speichern" tippen.');
+  };
+}
+function qrSvg(text) {
+  const q = qrcode(0, 'M'); q.addData(text); q.make();
+  return q.createSvgTag({cellSize: 4, margin: 2, scalable: true});
+}
+function printLabels(o) {
+  if (!o.cps.length) return toast('Keine Checkpunkte vorhanden.');
+  const html = `<div class="labels">${o.cps.map((c, i) => `<div class="label">
+    <div class="lo">${esc(o.name)}</div><div class="ln">${i + 1}. ${esc(c.name)}</div>
+    ${qrSvg([QR_PREFIX, o.id, c.id, c.token].join('|'))}
+    <div class="lf">Kontrollpunkt · B·B PROTECT Rundgang</div></div>`).join('')}</div>`;
+  doPrint(html, 'QR-Etiketten_' + o.name.replace(/\W+/g, '_'));
+}
+
+/* ═══ START ══════════════════════════════════════════════════════════ */
+window.show = show; window.openRound = openRound;
+renderRun();
+if (active) toast('Laufender Rundgang wiederhergestellt.');
+if ('serviceWorker' in navigator && location.protocol === 'https:' && !window.AndroidFiles) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
